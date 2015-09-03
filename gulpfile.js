@@ -3,11 +3,13 @@ var $ = require('gulp-load-plugins')();
 var del = require('del');
 var karma = require('karma').server;
 var browserSync = require('browser-sync');
+var spawn = require('child_process').spawn;
 
 
 // VARIABLES ======================================================
 var isDist = $.util.env.type === 'dist';
 var outputFolder = isDist ? 'dist' : 'build';
+var node; // Reference to running node server
 
 var globs = {
   sass: 'src/style/**/*.scss',
@@ -18,7 +20,9 @@ var globs = {
   // up by the watch, rinse and repeat
   appWithDefinitions: ['src/**/*.ts', '!src/**/*.ktp.*'],
   integration: 'src/tests/integration/**/*.js',
-  index: 'src/index.html'
+  index: 'src/index.html',
+  serverFiles: ['server.js', 'server/**/*.js'],
+  server: 'server.js'
 };
 
 var destinations = {
@@ -34,6 +38,7 @@ var destinations = {
 var vendoredLibs = [
   'vendor/angular/angular.js',
   'vendor/ui-router/release/angular-ui-router.js',
+    'vendor/angular-socket-io/socket.js',
     'vendor/underscore/underscore.js',
 ];
 
@@ -162,12 +167,27 @@ gulp.task('index', function () {
   ).pipe(gulp.dest(destinations.index));
 });
 
+/**
+ * $ gulp server
+ * description: launch the server. If there's a server already running, kill it.
+ */
+gulp.task('server', function() {
+    if (node) node.kill();
+    node = spawn('node', [globs.server], {stdio: 'inherit'});
+    node.on('close', function (code) {
+        if (code === 8) {
+            gulp.log('Error detected, waiting for changes...');
+        }
+    });
+});
+
 gulp.task('watch', function() {
   gulp.watch(globs.sass, gulp.series('sass'));
   gulp.watch(globs.appWithDefinitions, gulp.series('ts-lint', 'ts-compile'));
   gulp.watch(globs.templates, gulp.series('templates'));
   gulp.watch(globs.index, gulp.series('index'));
   gulp.watch(globs.assets, gulp.series('copy-assets'));
+  gulp.watch(globs.serverFiles, gulp.series('server'));
 });
 
 gulp.task(
@@ -181,5 +201,11 @@ gulp.task(
 
 gulp.task(
   'default',
-  gulp.series('build', gulp.parallel(/*'browser-sync',*/ 'watch', 'karma-watch'))
+  gulp.series('build', gulp.parallel(/*'browser-sync',*/ 'server', 'watch', 'karma-watch'))
 );
+
+
+// clean up if an error goes unhandled.
+process.on('exit', function() {
+    if (node) node.kill();
+});

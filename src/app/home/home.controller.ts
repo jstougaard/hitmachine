@@ -12,7 +12,8 @@ class HomeController {
   /* @ngInject */
   constructor(
     private $rootScope: core.IRootScope,
-    private HomeService: core.IHomeService
+    private HomeService: core.IHomeService,
+    private socket: ng.socketIO.IWebSocket
   ) {
     $rootScope.pageTitle = "Hello";
     this.times = 5;
@@ -21,6 +22,10 @@ class HomeController {
     this.basePattern = [
         {start: 2, length: 4}
     ];
+
+      console.log("SOCKET!", socket);
+      socket.emit("some-event", "GET DATA");
+    //console.log("Factory data?", Socket);
       /*setTimeout(() => {
          console.log("Update it", this, this.basePattern);
           this.basePattern.push({"start": 6, "length": 2});
@@ -28,7 +33,7 @@ class HomeController {
   }
 
     addBlock() {
-        console.log("Update it", this, this.basePattern);
+        console.log("Update it now", this, this.basePattern);
         this.basePattern.push({"start": 6, "length": 2});
     }
 }

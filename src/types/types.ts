@@ -3,6 +3,7 @@
 /// <reference path="libs/angular.d.ts"/>
 /// <reference path="libs/angular-ui-router.d.ts"/>
 
+/// <reference path="libs/angular-socket-io.d.ts"/>
 
 // API TYPES
 

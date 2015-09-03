@@ -3,6 +3,7 @@
 interface RhythmScope extends ng.IScope {
     pattern: Array<core.RhythmBlock>;
     basePattern?: Array<core.RhythmBlock>;
+    callOnChange?: Function;
 }
 
 interface EditableRhythmBlock extends core.RhythmBlock {
@@ -29,11 +30,13 @@ function rhythm(): ng.IDirective {
 
         scope.$watch("basePattern", function (newValue, oldValue) {
             console.log("Base pattern changed", "rendering", newValue);
+            basePattern = newValue;
             render(canvas);
         }, true);
 
         scope.$watch("pattern", function (newValue, oldValue) {
             console.log("Pattern changed", "rendering", newValue);
+            pattern = newValue;
             render(canvas);
         }, true);
 
@@ -143,6 +146,12 @@ function rhythm(): ng.IDirective {
                 delete newBlock.isValid;
                 pattern.push(newBlock);
             }
+
+            // Pattern is changed
+            if (scope.callOnChange) {
+                scope.callOnChange();
+            }
+
             newBlock = null;
 
             // Update scope
@@ -250,7 +259,8 @@ function rhythm(): ng.IDirective {
         restrict: "A",
         scope: {
             pattern: "=",
-            basePattern: "="
+            basePattern: "=",
+            callOnChange: "&"
         },
         link: link
     };
