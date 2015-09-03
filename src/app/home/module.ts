@@ -11,9 +11,10 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
 }
 
 angular
-  .module("ngBoilerplate.home", [
+  .module("hitmachine.home", [
     "home.index",
     "home.directives",
+    "core.directives",
     "ui.router.state"
   ])
   .config(homeConfig);

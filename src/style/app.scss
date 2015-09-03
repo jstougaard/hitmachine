@@ -3,3 +3,16 @@
 @import "normalize";
 
 // Import your framework/app below
+h1,h2 {
+  text-align: center;
+}
+
+canvas {
+  border: 1px solid #333;
+}
+
+canvas.rhythm-pattern {
+  margin:15px auto;
+  display: block;
+  cursor:pointer;
+}

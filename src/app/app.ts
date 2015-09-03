@@ -7,9 +7,9 @@ function appConfig($urlRouterProvider: ng.ui.IUrlRouterProvider) {
 }
 
 angular
-  .module("ngBoilerplate", [
+  .module("hitmachine", [
     "templates",
-    "ngBoilerplate.home",
+    "hitmachine.home",
     "ui.router.state"
   ])
   .config(appConfig);

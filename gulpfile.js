@@ -34,6 +34,7 @@ var destinations = {
 var vendoredLibs = [
   'vendor/angular/angular.js',
   'vendor/ui-router/release/angular-ui-router.js',
+    'vendor/underscore/underscore.js',
 ];
 
 // Will be filled automatically
@@ -82,7 +83,7 @@ gulp.task('sass', function () {
     .pipe($.sass({style: 'compressed'}).on('error', $.sass.logError))
     .pipe($.autoprefixer())  // defauls to > 1%, last 2 versions, Firefox ESR, Opera 12.1
     .pipe(gulp.dest(destinations.css))
-    .pipe(browserSync.reload({stream: true}));
+    ; //.pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('ts-lint', function () {
@@ -100,7 +101,7 @@ gulp.task('ts-compile', function () {
     .pipe(isDist ? $.uglify() : $.util.noop())
     .pipe($.wrap({ src: './iife.txt'}))
     .pipe(gulp.dest(destinations.js))
-    .pipe(browserSync.reload({stream: true}));
+    ; //.pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('templates', function () {
@@ -114,7 +115,7 @@ gulp.task('templates', function () {
     .pipe($.concat('templates.js'))
     .pipe(isDist ? $.uglify() : $.util.noop())
     .pipe(gulp.dest(destinations.js))
-    .pipe(browserSync.reload({stream: true}));
+    ; //.pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('clean', function (cb) {
@@ -180,5 +181,5 @@ gulp.task(
 
 gulp.task(
   'default',
-  gulp.series('build', gulp.parallel('browser-sync', 'watch', 'karma-watch'))
+  gulp.series('build', gulp.parallel(/*'browser-sync',*/ 'watch', 'karma-watch'))
 );

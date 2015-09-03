@@ -1,4 +1,5 @@
 /// <reference path="../libs/angular.d.ts"/>
+/// <reference path="../libs/underscore.d.ts"/>
 
 declare module core {
 
@@ -14,4 +15,9 @@ declare module core {
   interface IHomeService {
     getGreeting(greeting: string): IGreeting;
   }
+
+    interface RhythmBlock {
+        start: number;
+        length: number;
+    }
 }
