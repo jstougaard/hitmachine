@@ -1,0 +1,101 @@
+var events = require('events').EventEmitter,
+    heartbeats = require('heartbeats');
+
+
+var defaultOptions = {
+    bpm: 120,
+    noteResolution: 16,
+    beatsPerBar: 4
+};
+
+// Constructor
+function BeatKeeper(options) {
+    if (!(this instanceof BeatKeeper)) return new BeatKeeper(options);
+    this.setOptions(options);
+
+    this._heart = null;
+    this._beatCount = 0;
+    this._basePattern = [];
+}
+
+// Extend EventEmitter
+BeatKeeper.prototype = Object.create(events.prototype);
+
+
+BeatKeeper.prototype.setOptions = function(options){
+    if (!this.options)
+        this.options = defaultOptions;
+
+    for (var key in options){
+        this.options[key] = options[key];
+    }
+
+    return this;
+};
+
+
+// Event callback - only works if bind(this)
+function onBeat() {
+
+    if (this._beatCount === 0) {
+        this.emit("loop", true); // Beginning of new loop
+    }
+
+    if (this._beatCount % this.beatsPerBar === 0) {
+        this.emit("bar"); // Beginning of new bar
+    }
+
+    // Emit event
+    this.emit('beat', this._beatCount);
+
+    // Increment count
+    this._beatCount++;
+    if (this._beatCount >= this.options.noteResolution) {
+        this._beatCount = 0;
+    }
+}
+
+BeatKeeper.prototype.start = function() {
+
+    // Create heart for keeping time
+    this._heart = heartbeats.createHeart( this._getHeartBeatIntervalTime() );
+
+    // Listen to heartbeats - listen to every pulse
+    this._heart.createEvent(1, onBeat.bind(this));
+
+};
+
+BeatKeeper.prototype.isStarted = function() {
+    return this._heart !== null;
+};
+
+
+BeatKeeper.prototype.stop = function() {
+    if (!this.isStarted()) return;
+
+    this._heart.killAllEvents();
+    this._heart.kill();
+    this._heart = null;
+};
+
+
+BeatKeeper.prototype.setBPM = function(bpm) {
+    this.options.bpm = bpm;
+    if (this.isStarted())
+        this._heart.setHeartrate( this._getHeartBeatIntervalTime() );
+};
+
+BeatKeeper.prototype.setBasePattern = function(pattern) {
+    this._basePattern = pattern;
+    this.emit("new-base-pattern", pattern);
+};
+
+BeatKeeper.prototype.getBasePattern = function() {
+    return this._basePattern;
+};
+
+BeatKeeper.prototype._getHeartBeatIntervalTime = function() {
+    return Math.round(60*1000 / this.options.bpm / (this.options.noteResolution/this.options.beatsPerBar) );
+};
+
+module.exports = BeatKeeper;

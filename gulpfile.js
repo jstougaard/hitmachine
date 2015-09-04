@@ -40,6 +40,7 @@ var vendoredLibs = [
   'vendor/ui-router/release/angular-ui-router.js',
     'vendor/angular-socket-io/socket.js',
     'vendor/underscore/underscore.js',
+    'vendor/jquery/dist/jquery.js'
 ];
 
 // Will be filled automatically

@@ -6,13 +6,15 @@
 h1,h2 {
   text-align: center;
 }
-
+.canvas-container {
+  width:80%;
+  margin:15px auto;
+}
 canvas {
   border: 1px solid #333;
 }
 
 canvas.rhythm-pattern {
-  margin:15px auto;
   display: block;
   cursor:pointer;
 }

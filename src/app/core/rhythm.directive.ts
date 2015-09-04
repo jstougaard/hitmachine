@@ -4,6 +4,7 @@ interface RhythmScope extends ng.IScope {
     pattern: Array<core.RhythmBlock>;
     basePattern?: Array<core.RhythmBlock>;
     callOnChange?: Function;
+    activeCell?:number;
 }
 
 interface EditableRhythmBlock extends core.RhythmBlock {
@@ -27,6 +28,10 @@ function rhythm(): ng.IDirective {
 
         var canvas = <HTMLCanvasElement> element[0];
         var blockLength: number = canvas.width / resolution;
+
+        scope.$watch("activeCell", function (newValue, oldValue) {
+            render(canvas);
+        }, true);
 
         scope.$watch("basePattern", function (newValue, oldValue) {
             console.log("Base pattern changed", "rendering", newValue);
@@ -182,7 +187,25 @@ function rhythm(): ng.IDirective {
 
         });
 
-        render(canvas);
+
+        // Handle canvas size
+        var container = element.parent();
+
+        //Run function when browser resizes
+        jQuery(window).resize( resizeCanvas );
+
+        function resizeCanvas() {
+            element.attr('width', $(container).width() ); //max width
+            //element.attr('height', $(container).height() ); //max height
+
+            blockLength = canvas.width / resolution;
+
+            //Call a function to redraw other content (texts, images etc)
+            render(canvas);
+        }
+
+        //Initial call - will also render
+        resizeCanvas();
 
 
 
@@ -209,6 +232,14 @@ function rhythm(): ng.IDirective {
                     basePattern.forEach(function(block) {
                         ctx.fillRect( block.start * blockLength + 1, 0, block.length * blockLength - 2, canvas.height );
                     });
+                    ctx.restore();
+                }
+
+                // Draw currently playing beat
+                if (scope.activeCell && scope.activeCell > 0 && scope.activeCell < resolution) {
+                    ctx.save();
+                    ctx.fillStyle = "#BCD4B4";
+                    ctx.fillRect( scope.activeCell * blockLength, 0, blockLength, canvas.height );
                     ctx.restore();
                 }
 
@@ -240,6 +271,8 @@ function rhythm(): ng.IDirective {
                     drawBlock(newBlock, newBlock.isValid?"rgba(64, 128, 180, 0.75)":"rgba(185, 40, 64, 0.5)");
                 }
 
+
+
             };
 
             function drawBlock(block:core.RhythmBlock, color:string) {
@@ -260,7 +293,8 @@ function rhythm(): ng.IDirective {
         scope: {
             pattern: "=",
             basePattern: "=",
-            callOnChange: "&"
+            callOnChange: "&",
+            activeCell: "="
         },
         link: link
     };

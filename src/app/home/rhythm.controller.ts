@@ -3,8 +3,9 @@
 
 class RhythmController {
     basePattern: Array<core.RhythmBlock> = [];
+    activeBeat: number = null;
+    isPlaying: boolean = false;
 
-    ignoreNextUpdate: boolean = false;
 
   /* @ngInject */
   constructor(
@@ -17,19 +18,32 @@ class RhythmController {
   }
 
     registerEvents() {
-        this.socket.on("update-base-pattern", (pattern) => {
-            if (!this.ignoreNextUpdate) {
-                console.log("Base pattern updated", pattern);
+        this.socket.on("beat", (activeBeat) => {
+            this.activeBeat = activeBeat;
+        });
+
+        this.socket.on("init-base-pattern", (pattern) => {
+            if (pattern && pattern.length > 0) {
+                console.log("Base pattern init", pattern, this);
                 this.basePattern = pattern;
-                this.ignoreNextUpdate = false;
             }
         });
     }
 
     patternChanged() {
-        console.log("Controller says: Pattern changed", this, this.basePattern);
+        console.log("Controller says: Pattern changed", this.basePattern);
         this.socket.emit("update-base-pattern", this.basePattern);
-        this.ignoreNextUpdate = true;
+
+    }
+
+    toggleBeat() {
+        if (this.isPlaying) {
+            this.socket.emit("stop-beat", true);
+            this.isPlaying = false;
+        } else {
+            this.socket.emit("start-beat", true);
+            this.isPlaying = true;
+        }
     }
 }
 

@@ -24,11 +24,10 @@ class ChordsController {
     }
 
     registerEvents() {
-        /*this.socket.forward('update-base-pattern', this.$scope);
-        this.$scope.$on('socket:update-base-pattern', (ev, data) => {
-            console.log("FORWARDED: Base pattern updated", data);
-            this.basePattern = data;
-        });*/
+        this.socket.on("init-base-pattern", (pattern) => {
+            console.log("Init base pattern", pattern, pattern.length);
+            this.basePattern = pattern;
+        });
         this.socket.on("update-base-pattern", (pattern) => {
            console.log("Base pattern updated", pattern);
             this.basePattern = pattern;

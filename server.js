@@ -5,6 +5,12 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
+var beatkeeper = require('./server/BeatKeeper')(),
+    connector = require('./server/TcpConnector')(7778),
+    rhythmController = require('./server/controllers/RhythmController')(io, beatkeeper),
+    bassController = require('./server/controllers/BassController')(io, beatkeeper, connector);
+
+
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
@@ -12,25 +18,13 @@ server.listen(port, function () {
 // Routing
 app.use(express.static(__dirname + '/build'));
 
-var basePattern = [];
+//beatkeeper.start();
 
 io.on('connection', function (socket) {
     console.log("New connection");
 
-    // Send initial state
-    socket.emit('update-base-pattern', basePattern);
-
-
-    // when the client emits 'new message', this listens and executes
-    socket.on('some-event', function (data) {
-        console.log("Some event", data)
-    });
-
-    socket.on('update-base-pattern', function(pattern) {
-        console.log("New pattern", pattern);
-        basePattern = pattern;
-        socket.broadcast.emit('update-base-pattern', pattern);
-    });
+    rhythmController.registerSocketEvents(socket);
+    bassController.registerSocketEvents(socket);
 
     // when the user disconnects.. perform this
     socket.on('disconnect', function () {
