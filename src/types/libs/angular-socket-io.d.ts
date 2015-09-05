@@ -8,6 +8,9 @@ declare module ng.socketIO {
         emit(message: string, data?:any, callback?: Function): void;
         forward(eventName: string, scope?: ng.IScope): void;
         forward(eventNames: Array<string>, scope?: ng.IScope): void;
+
+        removeListener(eventName: string, callback: Function): void;
+        removeAllListeners(eventName: string): void;
     }
 
 

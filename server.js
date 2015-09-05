@@ -9,7 +9,8 @@ var musicplayer = require('./server/MusicPlayer')(),
     connector = require('./server/TcpConnector')(7778),
     rhythmController = require('./server/controllers/RhythmController')(io, musicplayer),
     bassController = require('./server/controllers/BassController')(io, musicplayer, connector),
-    chordController = require('./server/controllers/ChordController')(io, musicplayer, connector);
+    chordController = require('./server/controllers/ChordController')(io, musicplayer, connector),
+    leadController = require('./server/controllers/LeadController')(io, musicplayer, connector);
 
 
 server.listen(port, function () {
@@ -27,6 +28,7 @@ io.on('connection', function (socket) {
     rhythmController.registerSocketEvents(socket);
     bassController.registerSocketEvents(socket);
     chordController.registerSocketEvents(socket);
+    leadController.registerSocketEvents(socket);
 
     // when the user disconnects.. perform this
     socket.on('disconnect', function () {

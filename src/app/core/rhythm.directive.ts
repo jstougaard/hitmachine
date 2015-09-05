@@ -34,13 +34,13 @@ function rhythm(): ng.IDirective {
         }, true);
 
         scope.$watch("basePattern", function (newValue, oldValue) {
-            console.log("Base pattern changed", "rendering", newValue);
+            //console.log("Base pattern changed", "rendering", newValue);
             basePattern = newValue;
             render(canvas);
         }, true);
 
         scope.$watch("pattern", function (newValue, oldValue) {
-            console.log("Pattern changed", "rendering", newValue);
+            //console.log("Pattern changed", "rendering", newValue);
             pattern = newValue;
             render(canvas);
         }, true);

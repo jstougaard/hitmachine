@@ -1,0 +1,5 @@
+<h1>Lead</h1>
+
+<div class="lead-notes">
+    <div class="note" ng-repeat="(key, note) in vm.noteKeyMap" ng-class="{'active': vm.keysDown.indexOf(1*key)!==-1}">{{note}}</div>
+</div>

@@ -10,3 +10,7 @@ module.exports.indexPattern = function(pattern) {
     });
     return indexedPattern;
 };
+
+module.exports.inArray = function(array, value) {
+    return array.indexOf(value) !== -1;
+}

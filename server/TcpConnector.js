@@ -22,10 +22,12 @@ TcpConnector.prototype.connect = function() {
         console.log("TcpConnector error! Make sure you have a server running on "+_this.host+":"+_this.port);
     });
     this.client.on('close', function() {
+        console.log("TcpConnector is not longer connected");
         _this.isConnected = false;
     });
     this.client.on('connect', function() {
-        console.log("Is connected");
+        console.log("TcpConnector is connected");
+        _this.isConnected = true;
     });
 
     this.client.connect(this.port, this.host);
@@ -34,11 +36,11 @@ TcpConnector.prototype.connect = function() {
 
 TcpConnector.prototype.send = function(message){
     if (!this.isConnected) {
-        //console.log("TcpConnector not connected");
+        console.log("TcpConnector not connected");
         return;
     }
 
-    //console.log("Write TCP message to "+this.host+":"+this.port+": "+message);
+    console.log("Write TCP message to "+this.host+":"+this.port+": "+message);
     this.client.write(message + ";\r\n");
 };
 

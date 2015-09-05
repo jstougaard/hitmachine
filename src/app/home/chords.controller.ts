@@ -25,14 +25,13 @@ class ChordsController {
     }
 
     registerEvents() {
-        this.socket.on("init-base-pattern", (pattern) => {
-            console.log("Init base pattern", pattern, pattern.length);
-            this.basePattern = pattern;
-        });
-        this.socket.on("update-base-pattern", (pattern) => {
-           console.log("Base pattern updated", pattern);
-            this.basePattern = pattern;
-        });
+        this.socket.on("init-base-pattern", this.onNewBasePattern.bind(this));
+        this.socket.on("update-base-pattern", this.onNewBasePattern.bind(this));
+    }
+
+    onNewBasePattern(pattern) {
+        console.log("THIS?", this);
+        this.basePattern = pattern;
     }
 }
 

@@ -18,6 +18,11 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
         controller: "ChordsController as vm",
         templateUrl: "home/chords.html"
     });
+    $stateProvider.state("lead", {
+        url: "/lead",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html"
+    });
 }
 
 angular

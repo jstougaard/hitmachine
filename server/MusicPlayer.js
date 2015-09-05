@@ -1,5 +1,6 @@
 var events = require('events').EventEmitter,
-    heartbeats = require('heartbeats');
+    heartbeats = require('heartbeats'),
+    utils = require('./music-utils');
 
 
 var defaultOptions = {
@@ -16,6 +17,7 @@ function MusicPlayer(options) {
     this._heart = null;
     this._beatCount = 0;
     this._basePattern = [];
+    this._indexedBasePattern = [];
 }
 
 // Extend EventEmitter
@@ -87,11 +89,20 @@ MusicPlayer.prototype.setBPM = function(bpm) {
 
 MusicPlayer.prototype.setBasePattern = function(pattern) {
     this._basePattern = pattern;
+    this._indexedBasePattern = utils.indexPattern(pattern);
     this.emit("new-base-pattern", pattern);
 };
 
 MusicPlayer.prototype.getBasePattern = function() {
     return this._basePattern;
+};
+
+MusicPlayer.prototype.getIndexedBasePattern = function() {
+    return this._indexedBasePattern;
+};
+
+MusicPlayer.prototype.getBaseBlockAt = function(beatNumber) {
+    return this._indexedBasePattern[beatNumber] || null;
 };
 
 MusicPlayer.prototype._getHeartBeatIntervalTime = function() {
