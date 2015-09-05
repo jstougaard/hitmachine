@@ -9,8 +9,8 @@ var defaultOptions = {
 };
 
 // Constructor
-function BeatKeeper(options) {
-    if (!(this instanceof BeatKeeper)) return new BeatKeeper(options);
+function MusicPlayer(options) {
+    if (!(this instanceof MusicPlayer)) return new MusicPlayer(options);
     this.setOptions(options);
 
     this._heart = null;
@@ -19,10 +19,10 @@ function BeatKeeper(options) {
 }
 
 // Extend EventEmitter
-BeatKeeper.prototype = Object.create(events.prototype);
+MusicPlayer.prototype = Object.create(events.prototype);
 
 
-BeatKeeper.prototype.setOptions = function(options){
+MusicPlayer.prototype.setOptions = function(options){
     if (!this.options)
         this.options = defaultOptions;
 
@@ -55,7 +55,7 @@ function onBeat() {
     }
 }
 
-BeatKeeper.prototype.start = function() {
+MusicPlayer.prototype.start = function() {
 
     // Create heart for keeping time
     this._heart = heartbeats.createHeart( this._getHeartBeatIntervalTime() );
@@ -65,12 +65,12 @@ BeatKeeper.prototype.start = function() {
 
 };
 
-BeatKeeper.prototype.isStarted = function() {
+MusicPlayer.prototype.isStarted = function() {
     return this._heart !== null;
 };
 
 
-BeatKeeper.prototype.stop = function() {
+MusicPlayer.prototype.stop = function() {
     if (!this.isStarted()) return;
 
     this._heart.killAllEvents();
@@ -79,23 +79,23 @@ BeatKeeper.prototype.stop = function() {
 };
 
 
-BeatKeeper.prototype.setBPM = function(bpm) {
+MusicPlayer.prototype.setBPM = function(bpm) {
     this.options.bpm = bpm;
     if (this.isStarted())
         this._heart.setHeartrate( this._getHeartBeatIntervalTime() );
 };
 
-BeatKeeper.prototype.setBasePattern = function(pattern) {
+MusicPlayer.prototype.setBasePattern = function(pattern) {
     this._basePattern = pattern;
     this.emit("new-base-pattern", pattern);
 };
 
-BeatKeeper.prototype.getBasePattern = function() {
+MusicPlayer.prototype.getBasePattern = function() {
     return this._basePattern;
 };
 
-BeatKeeper.prototype._getHeartBeatIntervalTime = function() {
+MusicPlayer.prototype._getHeartBeatIntervalTime = function() {
     return Math.round(60*1000 / this.options.bpm / (this.options.noteResolution/this.options.beatsPerBar) );
 };
 
-module.exports = BeatKeeper;
+module.exports = MusicPlayer;

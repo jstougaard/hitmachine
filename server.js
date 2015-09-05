@@ -5,10 +5,11 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
-var beatkeeper = require('./server/BeatKeeper')(),
+var musicplayer = require('./server/MusicPlayer')(),
     connector = require('./server/TcpConnector')(7778),
-    rhythmController = require('./server/controllers/RhythmController')(io, beatkeeper),
-    bassController = require('./server/controllers/BassController')(io, beatkeeper, connector);
+    rhythmController = require('./server/controllers/RhythmController')(io, musicplayer),
+    bassController = require('./server/controllers/BassController')(io, musicplayer, connector),
+    chordController = require('./server/controllers/ChordController')(io, musicplayer, connector);
 
 
 server.listen(port, function () {
@@ -25,9 +26,14 @@ io.on('connection', function (socket) {
 
     rhythmController.registerSocketEvents(socket);
     bassController.registerSocketEvents(socket);
+    chordController.registerSocketEvents(socket);
 
     // when the user disconnects.. perform this
     socket.on('disconnect', function () {
         console.log("Disconnected");
     });
+});
+
+process.on('uncaughtException', function (err) {
+    console.log(err);
 });

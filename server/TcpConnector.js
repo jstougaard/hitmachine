@@ -18,17 +18,23 @@ function TcpConnector(port, host) {
 TcpConnector.prototype.connect = function() {
     var _this = this;
 
-    this.client.connect(this.port, this.host, function() {
-        _this.isConnected = true;
+    this.client.on('error', function(err) {
+        console.log("TcpConnector error! Make sure you have a server running on "+_this.host+":"+_this.port);
     });
     this.client.on('close', function() {
         _this.isConnected = false;
     });
+    this.client.on('connect', function() {
+        console.log("Is connected");
+    });
+
+    this.client.connect(this.port, this.host);
+
 };
 
 TcpConnector.prototype.send = function(message){
     if (!this.isConnected) {
-        console.log("TcpConnector not connected");
+        //console.log("TcpConnector not connected");
         return;
     }
 

@@ -1,15 +1,16 @@
-var utils = require('../music-utils');
+var utils = require('../music-utils'),
+    state = require('../music-state');
 
 // Constructor
-function BassController(io, beatkeeper, connector) {
-    if (!(this instanceof BassController)) return new BassController(io, beatkeeper, connector);
+function BassController(io, musicplayer, connector) {
+    if (!(this instanceof BassController)) return new BassController(io, musicplayer, connector);
 
     this._io = io;
-    this._beatkeeper = beatkeeper;
+    this._musicplayer = musicplayer;
     this._connector = connector;
 
     this._notePlaying = null;
-    this._indexedPattern = utils.indexPattern(this._beatkeeper.getBasePattern());
+    this._indexedPattern = utils.indexPattern(this._musicplayer.getBasePattern());
 
     this.registerBeatEvents();
 }
@@ -28,12 +29,11 @@ BassController.prototype.registerSocketEvents = function(socket) {
 BassController.prototype.registerBeatEvents = function() {
     var _this = this;
 
-    this._beatkeeper.addListener("new-base-pattern", function(pattern) {
+    this._musicplayer.addListener("new-base-pattern", function(pattern) {
         _this._indexedPattern = utils.indexPattern(pattern);
+    });
 
-    })
-
-    this._beatkeeper.addListener("beat", function(beatCount) {
+    this._musicplayer.addListener("beat", function(beatCount) {
         if (_this._notePlaying && _this._notePlaying.start + _this._notePlaying.length == beatCount) {
             // Stop note
             _this._connector.send("bass 0.0");

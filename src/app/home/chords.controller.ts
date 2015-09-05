@@ -19,8 +19,9 @@ class ChordsController {
   }
 
     patternChanged() {
-        console.log("Controller says: Pattern changed", this, this.basePattern);
-        this.socket.emit("update-base-pattern", this.basePattern);
+        var pattern = [this.patternTone1, this.patternTone2, this.patternTone3];
+        console.log("Chord pattern changed", pattern);
+        this.socket.emit("update-chord-pattern", pattern);
     }
 
     registerEvents() {
