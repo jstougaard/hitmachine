@@ -40,7 +40,7 @@ TcpConnector.prototype.send = function(message){
         return;
     }
 
-    console.log("Write TCP message to "+this.host+":"+this.port+": "+message);
+    //console.log("Write TCP message to "+this.host+":"+this.port+": "+message);
     this.client.write(message + ";\r\n");
 };
 

@@ -1,5 +1,6 @@
 var utils = require('../music-utils'),
-    state = require('../music-state');
+    state = require('../music-state'),
+    rhythm = require('../rhythm-keeper');
 
 // TODO: Use correct note values + enable notes from chord
 var noteMap = [ 60, 61, 62, 63, 64 ];
@@ -14,6 +15,7 @@ function LeadController(io, musicplayer, connector) {
 
     this._noteStartQueue = [];
     this._noteStopQueue = [];
+    this._noteStopAfterStartedQueue = [];
 
     this.registerBeatEvents();
 }
@@ -37,7 +39,9 @@ LeadController.prototype.registerSocketEvents = function(socket) {
         var index = _this._noteStartQueue.indexOf(note);
         if (index >= 0) {
             // Do not start (stopped before it was ever started)
-            _this._noteStartQueue.splice(index, 1);
+            //_this._noteStartQueue.splice(index, 1);
+            // Delay stop - starting when ready
+            _this._noteStopAfterStartedQueue.push(note);
         } else if (!utils.inArray(_this._noteStopQueue, note)) {
             _this._noteStopQueue.push(note);
         }
@@ -50,11 +54,11 @@ LeadController.prototype.registerSocketEvents = function(socket) {
 LeadController.prototype.registerBeatEvents = function() {
     var _this = this;
 
-    this._musicplayer.addListener("beat", function(beatCount) {
+    this._musicplayer.addListener("beat", function(beatPosition) {
 
         // Stop notes
         // TODO: Check that it is a valid stopping point according to base pattern
-        if (_this._noteStopQueue.length > 0) {
+        if (_this._noteStopQueue.length > 0 && rhythm.isValidEndPoint(beatPosition)) {
             _this._noteStopQueue.forEach(function (note) {
                 console.log("Stop note", note);
                 _this._connector.send("bass 0.0"); // TODO
@@ -63,24 +67,17 @@ LeadController.prototype.registerBeatEvents = function() {
         }
 
         // Start notes
-        // TODO: Check that it is a valid starting point
-        if (_this._noteStartQueue.length > 0) {
+        // TODO: Should start be delayed if not immediately available?
+        if (_this._noteStartQueue.length > 0 && rhythm.isValidStartingPoint(beatPosition)) {
             _this._noteStartQueue.forEach(function (note) {
                 console.log("Start note", note);
                 _this._connector.send("bass 0.1"); // TODO
             });
             _this._noteStartQueue = [];
+            _this._noteStopQueue = _this._noteStopQueue.concat(_this._noteStopAfterStartedQueue);
+            _this._noteStopAfterStartedQueue = [];
         }
 
-        /*if (_this._notePlaying && _this._notePlaying.start + _this._notePlaying.length == beatCount) {
-            // Stop note
-            _this._connector.send("bass 0.0");
-            _this.notePlaying = null;
-        } else if (_this._musicplayer.getBaseBlockAt(beatCount)) {
-            // Play note
-            _this._connector.send("bass 0.1");
-            _this._notePlaying = _this._musicplayer.getBaseBlockAt(beatCount);
-        }*/
     });
 }
 

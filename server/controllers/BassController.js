@@ -1,5 +1,6 @@
 var utils = require('../music-utils'),
-    state = require('../music-state');
+    state = require('../music-state'),
+    rhythm = require('../rhythm-keeper');
 
 // Constructor
 function BassController(io, musicplayer, connector) {
@@ -10,6 +11,7 @@ function BassController(io, musicplayer, connector) {
     this._connector = connector;
 
     this._notePlaying = null;
+    this.muted = true;
 
     this.registerBeatEvents();
 }
@@ -29,14 +31,16 @@ BassController.prototype.registerBeatEvents = function() {
     var _this = this;
 
     this._musicplayer.addListener("beat", function(beatCount) {
+        if (_this.muted) return;
+
         if (_this._notePlaying && _this._notePlaying.start + _this._notePlaying.length == beatCount) {
             // Stop note
             _this._connector.send("bass 0.0");
             _this.notePlaying = null;
-        } else if (_this._musicplayer.getBaseBlockAt(beatCount)) {
+        } else if (rhythm.getBaseBlockAt(beatCount)) {
             // Play note
             _this._connector.send("bass 0.1");
-            _this._notePlaying = _this._musicplayer.getBaseBlockAt(beatCount);
+            _this._notePlaying = rhythm.getBaseBlockAt(beatCount);
         }
     });
 }

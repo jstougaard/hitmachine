@@ -1,5 +1,9 @@
 var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
+var $ = require('gulp-load-plugins')({
+    rename: {
+        'gulp-ruby-sass': 'sass'
+    }
+});
 var del = require('del');
 var karma = require('karma').server;
 var browserSync = require('browser-sync');
@@ -10,8 +14,13 @@ var spawn = require('child_process').spawn;
 var isDist = $.util.env.type === 'dist';
 var outputFolder = isDist ? 'dist' : 'build';
 var node; // Reference to running node server
+var config = {
+    bowerDir: "./vendor"
+};
 
 var globs = {
+  sassMainFile: 'main.scss',
+  sassDir: 'src/style',
   sass: 'src/style/**/*.scss',
   templates: 'src/templates/**/*.html',
   assets: 'src/assets/**/*.*',
@@ -27,6 +36,7 @@ var globs = {
 
 var destinations = {
   css: outputFolder + "/style",
+  fonts: outputFolder + "/fonts",
   js: outputFolder + "/src",
   libs: outputFolder + "/vendor",
   assets: outputFolder + "/assets",
@@ -36,11 +46,11 @@ var destinations = {
 // When adding a 3rd party we want to insert in the html, add it to
 // vendoredLibs, order matters
 var vendoredLibs = [
-  'vendor/angular/angular.js',
-  'vendor/ui-router/release/angular-ui-router.js',
-    'vendor/angular-socket-io/socket.js',
-    'vendor/underscore/underscore.js',
-    'vendor/jquery/dist/jquery.js'
+    config.bowerDir + '/angular/angular.js',
+    config.bowerDir + '/ui-router/release/angular-ui-router.js',
+    config.bowerDir + '/angular-socket-io/socket.js',
+    config.bowerDir + '/underscore/underscore.js',
+    config.bowerDir + '/jquery/dist/jquery.js'
 ];
 
 // Will be filled automatically
@@ -85,11 +95,25 @@ var tsProject = $.typescript.createProject({
 // TASKS ===========================================================
 
 gulp.task('sass', function () {
-  return gulp.src(globs.sass)
-    .pipe($.sass({style: 'compressed'}).on('error', $.sass.logError))
+  return $.sass(globs.sassDir + "/" + globs.sassMainFile, {
+          /*style: 'compressed',*/
+          sourcemap: true,
+          loadPath: [
+              globs.sassDir,
+              config.bowerDir + '/bootstrap-sass-official/assets/stylesheets',
+              config.bowerDir + '/fontawesome/scss'
+          ]
+      }).on('error', $.sass.logError)
+
     .pipe($.autoprefixer())  // defauls to > 1%, last 2 versions, Firefox ESR, Opera 12.1
-    .pipe(gulp.dest(destinations.css))
+      .pipe($.sourcemaps.write())
+      .pipe(gulp.dest(destinations.css))
     ; //.pipe(browserSync.reload({stream: true}));
+});
+
+gulp.task('icons', function() { 
+    return gulp.src(config.bowerDir + '/fontawesome/fonts/**.*') 
+    .pipe(gulp.dest(destinations.fonts)); 
 });
 
 gulp.task('ts-lint', function () {
@@ -195,7 +219,7 @@ gulp.task(
   'build',
   gulp.series(
     'clean',
-    gulp.parallel('sass', 'copy-assets', 'ts-compile', 'templates', 'copy-vendor'),
+    gulp.parallel('sass', 'icons', 'copy-assets', 'ts-compile', 'templates', 'copy-vendor'),
     'index'
   )
 );

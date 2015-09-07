@@ -42,9 +42,12 @@ class LeadController {
     deRegisterEvents() {
         this.$document.off("keydown", this.onKeyDown);
         this.$document.off("keyup", this.onKeyUp);
+        this.socket.removeListener("init-base-pattern", this.onNewBasePattern);
+        this.socket.removeListener("update-base-pattern", this.onNewBasePattern);
     }
 
     onNewBasePattern(pattern) {
+        console.log("Lead say new base pattern");
         this.basePattern = pattern;
     }
 

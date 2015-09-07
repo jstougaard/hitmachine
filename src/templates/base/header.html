@@ -1,0 +1,40 @@
+<div ng-controller="HeaderController as vm" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="../" class="navbar-brand">HITMACHINE</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+
+                <li>
+                    <a href="#/rhythm">Rhythm</a>
+                </li>
+                <li>
+                    <a href="#/chords">Chords</a>
+                </li>
+                <li>
+                    <a href="#/lead">Lead</a>
+                </li>
+
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#">Control</a>
+                </li>
+                <li class="play-control">
+                    <canvas rhythm id="beat-state" class="play-state" width="150" height="20" active-cell="vm.MusicService.activeBeat" base-pattern="vm.MusicService.basePattern" ></canvas>
+                </li>
+                <li class="play-control">
+                    <span ng-click="vm.togglePlay()" class="btn-play"><i class="fa" ng-class="vm.MusicService.isPlaying ? 'fa-pause' : 'fa-play'"></i></span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>

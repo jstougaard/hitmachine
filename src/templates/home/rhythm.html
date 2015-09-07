@@ -2,7 +2,7 @@
 <div class="canvas-container">
     <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.activeBeat" rhythm></canvas>
 </div>
-<button ng-click="vm.toggleBeat()">{{vm.isPlaying?'Stop':'Start'}}</button>
+<button class="btn btn-primary" ng-click="vm.toggleBeat()">{{vm.isPlaying?'Stop':'Start'}}</button>
 
 <h3>Base Pattern</h3>
 <pre>{{vm.basePattern}}</pre>

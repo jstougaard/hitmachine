@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+// Import your framework/app below
+body {
+  padding-top: 50px;
+}
+.btn-icon-round {
+  display: inline-block;
+  border-radius: 50%;
+  text-align: center;
+
+  height: 45px;
+  width: 45px;
+  line-height: 45px;
+}
+.btn-icon-round-sm {
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+}
+.btn-icon-round-lg {
+  height: 60px;
+  width: 60px;
+  line-height: 60px;
+}
+.play-control {
+  padding-top:10px;
+  padding-left:10px;
+
+  .play-state {
+    background:#fff;
+    margin-top:10px;
+  }
+
+  .btn-play {
+    display:inline-block;
+    border-radius: 50%;
+    text-align: center;
+    height: 40px;
+    width: 40px;
+    line-height: 34px;
+    padding-left: 2px;
+
+    border:3px solid $brand-success;
+    color:#fff;
+    font-size: 1.1em;
+    cursor:pointer;
+
+    &:hover {
+      color:$brand-success;
+    }
+  }
+
+}
+
+
+
+
+.canvas-container {
+  width:80%;
+  margin:15px auto;
+}
+canvas {
+  border: 1px solid #7b8a8b;
+}
+
+canvas.rhythm-pattern {
+  display: block;
+  cursor:pointer;
+}
+
+.lead-notes {
+  width:80%;
+  margin: 15px auto;
+  text-align:center;
+
+  .note {
+    display:inline-block;
+    box-sizing: border-box;
+    width: 100px;
+    max-width:20%;
+    height:100px;
+    border:1px solid #f1f1f1;
+    padding: 1em;
+    font-size:2em;
+    margin:10px;
+  }
+  .note.active {
+    background:#79FF7C;
+  }
+}

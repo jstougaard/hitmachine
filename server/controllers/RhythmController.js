@@ -1,4 +1,5 @@
-var state = require('../music-state');
+var state = require('../music-state'),
+    rhythm = require('../rhythm-keeper');
 
 // Constructor
 function RhythmController(io, musicplayer) {
@@ -20,14 +21,15 @@ RhythmController.prototype.registerSocketEvents = function(socket) {
 
     // Send initial state
     //console.log("Emitting base pattern", this._musicplayer.getBasePattern());
-    socket.emit('init-base-pattern', this._musicplayer.getBasePattern());
+    socket.emit('init-base-pattern', rhythm.getBasePattern());
 
 
     socket.on('update-base-pattern', function(pattern) {
         console.log("New base pattern", pattern);
-        _this._nextBasePattern = pattern;
 
-        _this._musicplayer.setBasePattern(_this._nextBasePattern); // TODO: Only do this at beginning of loop
+        // TODO: Only do this at beginning of loop
+        rhythm.setBasePattern(pattern);
+        // _this._nextBasePattern = pattern; //TODO: Use this?
 
         _this._io.emit('update-base-pattern', pattern); // Send to all clients
     });
@@ -59,7 +61,7 @@ RhythmController.prototype.registerBeatEvents = function() {
     this._musicplayer.addListener("loop", function() {
         if (_this._nextBasePattern) {
             console.log("Persist pattern", _this._nextBasePattern);
-            _this._musicplayer.setBasePattern(_this._nextBasePattern);
+            rhythm.setBasePattern(_this._nextBasePattern);
             _this._nextBasePattern = null;
         }
     });

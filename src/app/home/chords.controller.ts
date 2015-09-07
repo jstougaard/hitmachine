@@ -16,6 +16,7 @@ class ChordsController {
     $rootScope.pageTitle = "CHORDS";
 
     this.registerEvents();
+    $scope.$on('$destroy', this.deRegisterEvents.bind(this));
   }
 
     patternChanged() {
@@ -29,8 +30,14 @@ class ChordsController {
         this.socket.on("update-base-pattern", this.onNewBasePattern.bind(this));
     }
 
+    deRegisterEvents() {
+        console.log("Deregister chord events");
+        this.socket.removeListener("init-base-pattern", this.onNewBasePattern);
+        this.socket.removeListener("update-base-pattern", this.onNewBasePattern);
+    }
+
     onNewBasePattern(pattern) {
-        console.log("THIS?", this);
+        console.log("Chords say new base pattern!");
         this.basePattern = pattern;
     }
 }

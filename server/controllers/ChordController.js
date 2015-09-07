@@ -52,10 +52,6 @@ ChordController.prototype.registerSocketEvents = function(socket) {
 ChordController.prototype.registerBeatEvents = function() {
     var _this = this;
 
-    this._musicplayer.addListener("new-base-pattern", function(pattern) {
-        _this._indexedPattern = utils.indexPattern(pattern);
-    });
-
     // Track current chord
     var firstLoop = true;
     this._musicplayer.addListener("loop", function() {

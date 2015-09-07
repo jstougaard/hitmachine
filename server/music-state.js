@@ -3,4 +3,4 @@
  * @type {string}
  */
 
-module.exports.someValue = "TEST1";
+module.exports.noteResolution = "TEST";

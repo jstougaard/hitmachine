@@ -7,6 +7,13 @@ interface RhythmScope extends ng.IScope {
     activeCell?:number;
 }
 
+interface RhythmAttributes extends ng.IAttributes {
+    pattern: Array<core.RhythmBlock>;
+    basePattern?: Array<core.RhythmBlock>;
+    callOnChange?: Function;
+    activeCell?:number;
+}
+
 interface EditableRhythmBlock extends core.RhythmBlock {
     isValid?: boolean;
 }
@@ -15,36 +22,28 @@ function rhythm(): ng.IDirective {
 
     var resolution: number = 16; // How many blocks in total
 
+    var colors = {
+        base: "rgb(215, 220, 222)",
+        block: "rgba(52, 152, 219, 0.95)",
+        editBlock: "rgba(52, 152, 219, 0.5)",
+        invalidBlock: "rgba(231, 76, 60, 0.5)",
+        active: "#69D3BF",
+        lines: "#7b8a8b"
+    };
 
 
 
-
-    var link = function(scope: RhythmScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) {
+    var link = function(scope: RhythmScope, element: ng.IAugmentedJQuery, attrs: RhythmAttributes) {
 
         var basePattern: Array<core.RhythmBlock> = scope.basePattern;
-        var pattern: Array<core.RhythmBlock> = scope.pattern;
+        var pattern: Array<core.RhythmBlock> = scope.pattern || [];
 
         var newBlock: EditableRhythmBlock = null;
 
         var canvas = <HTMLCanvasElement> element[0];
         var blockLength: number = canvas.width / resolution;
 
-        scope.$watch("activeCell", function (newValue, oldValue) {
-            render(canvas);
-        }, true);
-
-        scope.$watch("basePattern", function (newValue, oldValue) {
-            //console.log("Base pattern changed", "rendering", newValue);
-            basePattern = newValue;
-            render(canvas);
-        }, true);
-
-        scope.$watch("pattern", function (newValue, oldValue) {
-            //console.log("Pattern changed", "rendering", newValue);
-            pattern = newValue;
-            render(canvas);
-        }, true);
-
+        // Helper functions // TODO: Refactor
         var getEventPosition = function(event:any): number {
             return Math.floor( event.offsetX / (canvas.width / resolution) );
         };
@@ -118,74 +117,102 @@ function rhythm(): ng.IDirective {
             return isValid;
         };
 
-        var isMouseDown = false;
-        canvas.addEventListener('mousedown', function(event:any) {
-            // TESTING
-            // console.log("BASE", scope.basePattern);
 
-            // Check if clicked existing
-            var position = getEventPosition(event);
-
-            if (isValidStartingPoint(position)) {
-                newBlock = getBlockAtPosition(position);
-                if (newBlock) {
-                    // Remove from pattern
-                    console.log("Block exists", pattern.indexOf(newBlock));
-                    pattern.splice(pattern.indexOf(newBlock), 1);
-                    newBlock.isValid = true;
-                } else {
-                    newBlock = {
-                        start: position,
-                        length: 1,
-                        isValid: true
-                    };
-                }
-                isMouseDown = true;
-            }
-
-            render(canvas);
-
-        }, false);
-        canvas.addEventListener('mouseup', function(event:any) {
-            if (newBlock && newBlock.length>0 && newBlock.isValid) {
-                delete newBlock.isValid;
-                pattern.push(newBlock);
-            }
-
-            // Pattern is changed
-            if (scope.callOnChange) {
-                scope.callOnChange();
-            }
-
-            newBlock = null;
-
-            // Update scope
-            scope.$apply();
-            isMouseDown = false;
-
-            render(canvas);
-        });
-        canvas.addEventListener('mousemove', function(event:any) {
-            // Set cursor
-            var position = getEventPosition(event);
-            var isValid = false;
-
-            // Define block
-            if (isMouseDown) {
-                isValid = isValidEndPoint(newBlock.start, position);
-                //if (isValid) {
-                newBlock.length = position - newBlock.start + 1;
-                //}
-                newBlock.isValid = isValid;
+        if (attrs.activeCell) {
+            scope.$watch("activeCell", function (newValue, oldValue) {
                 render(canvas);
-            } else {
-                isValid = isValidStartingPoint(position);
-            }
+            }, true);
+        }
 
-            element.css("cursor", isValid ? "pointer" : "not-allowed");
+        if (attrs.basePattern) {
+            scope.$watch("basePattern", function (newValue, oldValue) {
+                //console.log("Base pattern changed", "rendering", newValue);
+                basePattern = newValue;
+                render(canvas);
+            }, true);
+        }
+
+        if (attrs.pattern) {
+            scope.$watch("pattern", function (newValue, oldValue) {
+                //console.log("Pattern changed", "rendering", newValue);
+                pattern = newValue;
+                render(canvas);
+            }, true);
 
 
-        });
+            var isMouseDown = false;
+            canvas.addEventListener('mousedown', function (event:any) {
+                // TESTING
+                // console.log("BASE", scope.basePattern);
+
+                // Check if clicked existing
+                var position = getEventPosition(event);
+
+                if (isValidStartingPoint(position)) {
+                    newBlock = getBlockAtPosition(position);
+                    if (newBlock) {
+                        // Remove from pattern
+                        console.log("Block exists", pattern.indexOf(newBlock));
+                        pattern.splice(pattern.indexOf(newBlock), 1);
+                        newBlock.isValid = true;
+                    } else {
+                        newBlock = {
+                            start: position,
+                            length: 1,
+                            isValid: true
+                        };
+                    }
+                    isMouseDown = true;
+                }
+
+                render(canvas);
+
+            }, false);
+            canvas.addEventListener('mouseup', function (event:any) {
+                if (newBlock && newBlock.length > 0 && newBlock.isValid) {
+                    delete newBlock.isValid;
+                    pattern.push(newBlock);
+                }
+
+                // Pattern is changed
+                if (scope.callOnChange) {
+                    scope.callOnChange();
+                }
+
+                newBlock = null;
+
+                // Update scope
+                scope.$apply();
+                isMouseDown = false;
+
+                render(canvas);
+            });
+            canvas.addEventListener('mousemove', function (event:any) {
+                // Set cursor
+                var position = getEventPosition(event);
+                var isValid = false;
+
+                // Define block
+                if (isMouseDown) {
+                    isValid = isValidEndPoint(newBlock.start, position);
+                    //if (isValid) {
+                    newBlock.length = position - newBlock.start + 1;
+                    //}
+                    newBlock.isValid = isValid;
+                    render(canvas);
+                } else {
+                    isValid = isValidStartingPoint(position);
+                }
+
+                element.css("cursor", isValid ? "pointer" : "not-allowed");
+
+
+            });
+        }
+
+
+
+
 
 
         // Handle canvas size
@@ -228,9 +255,9 @@ function rhythm(): ng.IDirective {
                 // Draw base pattern
                 if (basePattern) {
                     ctx.save();
-                    ctx.fillStyle = "#ccc";
+                    ctx.fillStyle = colors.base;
                     basePattern.forEach(function(block) {
-                        ctx.fillRect( block.start * blockLength + 1, 0, block.length * blockLength - 2, canvas.height );
+                        ctx.fillRect( block.start * blockLength + 2, 0, block.length * blockLength - 4, canvas.height );
                     });
                     ctx.restore();
                 }
@@ -238,7 +265,7 @@ function rhythm(): ng.IDirective {
                 // Draw currently playing beat
                 if (scope.activeCell && scope.activeCell > 0 && scope.activeCell < resolution) {
                     ctx.save();
-                    ctx.fillStyle = "#BCD4B4";
+                    ctx.fillStyle = colors.active;
                     ctx.fillRect( scope.activeCell * blockLength, 0, blockLength, canvas.height );
                     ctx.restore();
                 }
@@ -254,6 +281,7 @@ function rhythm(): ng.IDirective {
                     ctx.beginPath();
                     ctx.moveTo(i * blockLength, 0);
                     ctx.lineTo(i * blockLength, canvas.height);
+                    ctx.strokeStyle = colors.lines;
                     ctx.stroke();
 
                     ctx.restore();
@@ -263,12 +291,12 @@ function rhythm(): ng.IDirective {
 
                 // Draw pattern
                 pattern.forEach(function(block) {
-                    drawBlock(block, "rgba(64, 128, 180, 0.95)");
+                    drawBlock(block, colors.block);
                 });
 
                 // Draw new block
                 if (newBlock && newBlock.length > 0) {
-                    drawBlock(newBlock, newBlock.isValid?"rgba(64, 128, 180, 0.75)":"rgba(185, 40, 64, 0.5)");
+                    drawBlock(newBlock, newBlock.isValid?colors.editBlock:colors.invalidBlock);
                 }
 
 

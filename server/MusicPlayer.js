@@ -87,24 +87,6 @@ MusicPlayer.prototype.setBPM = function(bpm) {
         this._heart.setHeartrate( this._getHeartBeatIntervalTime() );
 };
 
-MusicPlayer.prototype.setBasePattern = function(pattern) {
-    this._basePattern = pattern;
-    this._indexedBasePattern = utils.indexPattern(pattern);
-    this.emit("new-base-pattern", pattern);
-};
-
-MusicPlayer.prototype.getBasePattern = function() {
-    return this._basePattern;
-};
-
-MusicPlayer.prototype.getIndexedBasePattern = function() {
-    return this._indexedBasePattern;
-};
-
-MusicPlayer.prototype.getBaseBlockAt = function(beatNumber) {
-    return this._indexedBasePattern[beatNumber] || null;
-};
-
 MusicPlayer.prototype._getHeartBeatIntervalTime = function() {
     return Math.round(60*1000 / this.options.bpm / (this.options.noteResolution/this.options.beatsPerBar) );
 };
