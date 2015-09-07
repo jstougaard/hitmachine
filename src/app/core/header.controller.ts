@@ -6,8 +6,16 @@ class HeaderController {
     /* @ngInject */
     constructor(
         private socket: ng.socketIO.IWebSocket,
+        private $document: ng.IDocumentService,
         public MusicService: core.IMusicService
     ) {
+
+        this.$document.on("keypress", (event) => {
+            // Space key pressed
+            if (event.which === 32) {
+                this.togglePlay();
+            }
+        });
 
     }
 

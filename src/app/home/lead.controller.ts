@@ -57,14 +57,14 @@ class LeadController {
 
     noteOn(note) {
         // Start note
-        console.log("Key down", note);
+        //console.log("Key down", note);
         this.socket.emit("start-note", note);
         this.notesOn.push(parseInt(note,10));
     }
 
     noteOff(note) {
         // Stop note
-        console.log("Key up", note);
+        //console.log("Key up", note);
         this.socket.emit("stop-note", note);
         this.notesOn.splice(this.notesOn.indexOf(parseInt(note,10)), 1);
     }

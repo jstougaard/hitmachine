@@ -68,7 +68,6 @@ canvas {
 canvas.rhythm-pattern {
   display: block;
   background:#fff;
-  cursor:pointer;
 }
 
 .lead-notes {
@@ -91,8 +90,8 @@ canvas.rhythm-pattern {
   }
 }
 
-.chord-track-container {
-  .chord-track-number {
+.track-container {
+  .track-label {
     margin: 0;
     border: 2px solid $brand-success;
     color:$brand-success;
@@ -102,5 +101,23 @@ canvas.rhythm-pattern {
     font-size: 1.5em;
     height: 50px;
     width: 50px;
+    transition: background-color 0.2s ease;
+    background-color:transparent;
+    cursor:pointer;
+      background-position: center center;
+      background-repeat: no-repeat;
+
+    &.icon-snare {
+      background-image: url("../assets/snare.png");
+      background-size: 35px;
+    }
+    &.icon-hihat {
+      background-image: url("../assets/hihat.png");
+      background-size: 35px;
+    }
+    &:hover {
+      background-color:$brand-success;
+      color:white;
+    }
   }
 }

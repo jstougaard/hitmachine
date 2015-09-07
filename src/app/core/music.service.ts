@@ -25,6 +25,8 @@ class MusicService implements core.IMusicService {
     }
 
     registerEvents() {
+        this.socket.on("start-beat", this.onBeatStarted.bind(this));
+        this.socket.on("stop-beat", this.onBeatStopped.bind(this));
         this.socket.on("beat", this.onBeat.bind(this));
         this.socket.on("update-base-pattern", this.onNewBasePattern.bind(this));
     }
@@ -35,6 +37,14 @@ class MusicService implements core.IMusicService {
 
     onBeat(beatNumber) {
         this.activeBeat = beatNumber;
+    }
+
+    onBeatStarted() {
+        this.isPlaying = true;
+    }
+
+    onBeatStopped() {
+        this.isPlaying = false;
     }
 
     play() {

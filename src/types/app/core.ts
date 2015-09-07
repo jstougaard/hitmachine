@@ -7,15 +7,6 @@ declare module core {
         pageTitle: string;
     }
 
-    // Only add interfaces for the things shared or used in other modules
-    interface IGreeting {
-        greeting: string;
-    }
-
-    interface IHomeService {
-        getGreeting(greeting: string): IGreeting;
-    }
-
     interface RhythmBlock {
         start: number;
         length: number;

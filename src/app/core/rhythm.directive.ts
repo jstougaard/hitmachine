@@ -12,6 +12,7 @@ interface RhythmAttributes extends ng.IAttributes {
     basePattern?: Array<core.RhythmBlock>;
     callOnChange?: Function;
     activeCell?:number;
+    singleBeatPattern?: any;
 }
 
 interface EditableRhythmBlock extends core.RhythmBlock {
@@ -140,75 +141,121 @@ function rhythm(): ng.IDirective {
             }, true);
 
 
+
             var isMouseDown = false;
-            canvas.addEventListener('mousedown', function (event:any) {
-                // TESTING
-                // console.log("BASE", scope.basePattern);
+            if (typeof attrs.singleBeatPattern === 'undefined') {
 
-                // Check if clicked existing
-                var position = getEventPosition(event);
+                // Allow dragging
 
-                if (isValidStartingPoint(position)) {
-                    newBlock = getBlockAtPosition(position);
-                    if (newBlock) {
-                        // Remove from pattern
-                        console.log("Block exists", pattern.indexOf(newBlock));
-                        pattern.splice(pattern.indexOf(newBlock), 1);
-                        newBlock.isValid = true;
-                    } else {
-                        newBlock = {
-                            start: position,
-                            length: 1,
-                            isValid: true
-                        };
+                canvas.addEventListener('mousedown', function (event:any) {
+
+                    // Check if clicked existing
+                    var position = getEventPosition(event);
+
+                    if (isValidStartingPoint(position)) {
+                        newBlock = getBlockAtPosition(position);
+                        if (newBlock) {
+                            // Remove from pattern
+                            console.log("Block exists", pattern.indexOf(newBlock));
+                            pattern.splice(pattern.indexOf(newBlock), 1);
+                            newBlock.isValid = true;
+                        } else {
+                            newBlock = {
+                                start: position,
+                                length: 1,
+                                isValid: true
+                            };
+                        }
+                        isMouseDown = true;
                     }
-                    isMouseDown = true;
-                }
 
-                render(canvas);
-
-            }, false);
-            canvas.addEventListener('mouseup', function (event:any) {
-                if (newBlock && newBlock.length > 0 && newBlock.isValid) {
-                    delete newBlock.isValid;
-                    pattern.push(newBlock);
-                }
-
-                newBlock = null;
-
-                // Update scope
-                scope.pattern = pattern;
-                scope.$apply();
-                isMouseDown = false;
-
-                // Pattern is changed
-                if (scope.callOnChange) {
-                    scope.callOnChange();
-                }
-
-                render(canvas);
-            });
-            canvas.addEventListener('mousemove', function (event:any) {
-                // Set cursor
-                var position = getEventPosition(event);
-                var isValid = false;
-
-                // Define block
-                if (isMouseDown) {
-                    isValid = isValidEndPoint(newBlock.start, position);
-                    //if (isValid) {
-                    newBlock.length = position - newBlock.start + 1;
-                    //}
-                    newBlock.isValid = isValid;
                     render(canvas);
-                } else {
-                    isValid = isValidStartingPoint(position);
-                }
 
-                element.css("cursor", isValid ? "pointer" : "not-allowed");
+                }, false);
+                canvas.addEventListener('mouseup', function (event:any) {
+                    if (newBlock && newBlock.length > 0 && newBlock.isValid) {
+
+                        if (newBlock.length > 0) {
+                            delete newBlock.isValid;
+                            pattern.push(newBlock);
+                        }
+
+                        // Update scope
+                        scope.pattern = pattern;
+                        scope.$apply();
+                        isMouseDown = false;
+
+                        // Pattern is changed
+                        if (scope.callOnChange) {
+                            scope.callOnChange();
+                        }
+
+                    }
+
+                    newBlock = null;
+                    render(canvas);
+                });
+                canvas.addEventListener('mousemove', function (event:any) {
+                    // Set cursor
+                    var position = getEventPosition(event);
+                    var isValid = false;
+
+                    // Define block
+                    if (isMouseDown) {
+                        isValid = isValidEndPoint(newBlock.start, position);
+                        //if (isValid) {
+                        newBlock.length = position - newBlock.start + 1;
+                        //}
+                        newBlock.isValid = isValid;
+                        render(canvas);
+                    } else {
+                        isValid = isValidStartingPoint(position);
+                    }
+
+                    element.css("cursor", isValid ? "pointer" : "not-allowed");
+                });
+            } else {
+
+                // Single click interaction
+
+                canvas.addEventListener('mousemove', function (event:any) {
+                    // Set cursor
+                    var position = getEventPosition(event);
+                    element.css("cursor", isValidStartingPoint(position) ? "pointer" : "not-allowed");
+                });
+
+                canvas.addEventListener('click', function(event: any) {
+                    var position = getEventPosition(event);
+
+                    if (isValidStartingPoint(position)) {
+                        console.log("Add new");
+                        var existingBlock = getBlockAtPosition(position);
+
+                        if (existingBlock) {
+                            // Remove from pattern
+                            pattern.splice(pattern.indexOf(existingBlock), 1);
+                        } else {
+                            // Add to pattern
+                            pattern.push({start: position, length: 1});
+                        }
+
+                        // Update scope
+                        scope.pattern = pattern;
+                        scope.$apply();
+
+                        // Pattern is changed
+                        if (scope.callOnChange) {
+                            scope.callOnChange();
+                        }
+
+                        render(canvas);
+
+                    }
 
 
-            });
+
+                });
+            }
         }
 
 

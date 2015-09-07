@@ -14,8 +14,8 @@ class RhythmController {
     //console.log("Service", this.MusicService.basePattern, this.MusicService.basePattern.length);
   }
 
-    patternChanged(pattern) {
-        console.log("Controller says: Pattern changed", this.MusicService.basePattern, pattern);
+    patternChanged() {
+        console.log("Controller says: Pattern changed", this.MusicService.basePattern);
         this.socket.emit("update-base-pattern", this.MusicService.basePattern);
     }
 
