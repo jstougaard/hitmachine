@@ -174,16 +174,17 @@ function rhythm(): ng.IDirective {
                     pattern.push(newBlock);
                 }
 
+                newBlock = null;
+
+                // Update scope
+                scope.pattern = pattern;
+                scope.$apply();
+                isMouseDown = false;
+
                 // Pattern is changed
                 if (scope.callOnChange) {
                     scope.callOnChange();
                 }
-
-                newBlock = null;
-
-                // Update scope
-                scope.$apply();
-                isMouseDown = false;
 
                 render(canvas);
             });

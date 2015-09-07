@@ -2,13 +2,13 @@
     <div class="container">
         <div class="navbar-header">
             <a href="../" class="navbar-brand">HITMACHINE</a>
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <button class="navbar-toggle" type="button" ng-click="vm.showMenu = !vm.showMenu">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
         </div>
-        <div class="navbar-collapse collapse" id="navbar-main">
+        <div class="navbar-collapse" ng-class="{'collapse': !vm.showMenu}" id="navbar-main">
             <ul class="nav navbar-nav">
 
                 <li>
@@ -24,13 +24,12 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                <li class="hidden-xs">
                     <a href="#">Control</a>
                 </li>
                 <li class="play-control">
-                    <canvas rhythm id="beat-state" class="play-state" width="150" height="20" active-cell="vm.MusicService.activeBeat" base-pattern="vm.MusicService.basePattern" ></canvas>
-                </li>
-                <li class="play-control">
+                    <span class="play-state"><canvas rhythm id="beat-state" width="150" height="20" active-cell="vm.MusicService.activeBeat" base-pattern="vm.MusicService.basePattern" ></canvas></span>
+
                     <span ng-click="vm.togglePlay()" class="btn-play"><i class="fa" ng-class="vm.MusicService.isPlaying ? 'fa-pause' : 'fa-play'"></i></span>
                 </li>
             </ul>

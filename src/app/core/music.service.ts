@@ -26,7 +26,6 @@ class MusicService implements core.IMusicService {
 
     registerEvents() {
         this.socket.on("beat", this.onBeat.bind(this));
-        this.socket.on("init-base-pattern", this.onNewBasePattern.bind(this));
         this.socket.on("update-base-pattern", this.onNewBasePattern.bind(this));
     }
 

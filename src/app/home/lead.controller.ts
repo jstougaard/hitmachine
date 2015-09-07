@@ -2,76 +2,71 @@
 
 
 class LeadController {
-    basePattern: Array<core.RhythmBlock> = [];
 
     noteKeyMap = {
         49: 1,
         50: 2,
         51: 3,
         52: 4,
-        53: 5
+        53: 5,
+        54: 6,
+        55: 7,
+        56: 8
     };
 
-    keysDown = [];
+    notesOn = [];
 
     /* @ngInject */
     constructor(
         private $rootScope: core.IRootScope,
         private $scope: ng.IScope,
         private $document: ng.IDocumentService,
-        private socket: ng.socketIO.IWebSocket
+        private socket: ng.socketIO.IWebSocket,
+        public MusicService: core.IMusicService
     ) {
         $rootScope.pageTitle = "LEAD";
 
-        this.registerSocketEvents();
         this.registerKeyboardEvents();
-
-        $scope.$on('$destroy', this.deRegisterEvents.bind(this));
-    }
-
-    registerSocketEvents() {
-        this.socket.on("init-base-pattern", this.onNewBasePattern.bind(this));
-        this.socket.on("update-base-pattern", this.onNewBasePattern.bind(this));
     }
 
     registerKeyboardEvents() {
-        this.$document.on("keydown", this.onKeyDown.bind(this));
-        this.$document.on("keyup", this.onKeyUp.bind(this));
+        var onKeyDown = (event) => {
+                var note = this.noteKeyMap[event.which];
+                if (note && this.notesOn.indexOf(note) === -1) {
+                    this.noteOn(note);
+                    this.$scope.$apply();
+                }
+            },
+            onKeyUp = (event) => {
+                var note = this.noteKeyMap[event.which];
+                if (this.notesOn.indexOf(note) > -1) {
+                    this.noteOff(note);
+                    this.$scope.$apply();
+                }
+            };
+
+        this.$document.on("keydown", onKeyDown);
+        this.$document.on("keyup", onKeyUp);
+
+        // Remove event listeners on destroy
+        this.$scope.$on('$destroy', () => {
+            this.$document.off("keydown", onKeyDown);
+            this.$document.off("keyup", onKeyUp);
+        });
     }
 
-    deRegisterEvents() {
-        this.$document.off("keydown", this.onKeyDown);
-        this.$document.off("keyup", this.onKeyUp);
-        this.socket.removeListener("init-base-pattern", this.onNewBasePattern);
-        this.socket.removeListener("update-base-pattern", this.onNewBasePattern);
+    noteOn(note) {
+        // Start note
+        console.log("Key down", note);
+        this.socket.emit("start-note", note);
+        this.notesOn.push(parseInt(note,10));
     }
 
-    onNewBasePattern(pattern) {
-        console.log("Lead say new base pattern");
-        this.basePattern = pattern;
-    }
-
-    onKeyDown(event) {
-        var key = event.which;
-        if (key in this.noteKeyMap && this.keysDown.indexOf(key) === -1) {
-            // Start note
-            //console.log("Key down", key);
-            this.socket.emit("start-note", this.noteKeyMap[key]);
-            this.keysDown.push(key);
-            this.$scope.$apply();
-        }
-    }
-
-    onKeyUp(event) {
-        var key = parseInt(event.which, 10);
-        var index = this.keysDown.indexOf(key);
-        if (index > -1) {
-            // Stop note
-            //console.log("Key up", key);
-            this.socket.emit("stop-note", this.noteKeyMap[key]);
-            this.keysDown.splice(index, 1);
-            this.$scope.$apply();
-        }
+    noteOff(note) {
+        // Stop note
+        console.log("Key up", note);
+        this.socket.emit("stop-note", note);
+        this.notesOn.splice(this.notesOn.indexOf(parseInt(note,10)), 1);
     }
 }
 

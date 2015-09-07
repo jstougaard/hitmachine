@@ -1,5 +1,7 @@
-<h1>Lead</h1>
+<div class="page-header">
+    <h1>Lead</h1>
+</div>
 
-<div class="lead-notes">
-    <div class="note" ng-repeat="(key, note) in vm.noteKeyMap" ng-class="{'active': vm.keysDown.indexOf(1*key)!==-1}">{{note}}</div>
+<div class="row lead-notes">
+    <div class="well note col-sm-2 col-md-1" ng-repeat="(key, note) in vm.noteKeyMap" ng-mousedown="vm.noteOn(note)" ng-mouseup="vm.noteOff(note)" ng-class="{'active': vm.notesOn.indexOf(1*note)!==-1}">{{note}}</div>
 </div>

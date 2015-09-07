@@ -9,7 +9,6 @@ class HeaderController {
         public MusicService: core.IMusicService
     ) {
 
-        console.log("Not empty");
     }
 
     togglePlay() {

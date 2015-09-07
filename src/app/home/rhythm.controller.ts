@@ -2,59 +2,23 @@
 
 
 class RhythmController {
-    basePattern: Array<core.RhythmBlock> = [];
-    activeBeat: number = null;
-    isPlaying: boolean = false;
-
 
   /* @ngInject */
   constructor(
     private $rootScope: core.IRootScope,
     private $scope: ng.IScope,
-    private socket: ng.socketIO.IWebSocket
+    private socket: ng.socketIO.IWebSocket,
+    public MusicService: core.IMusicService
   ) {
     $rootScope.pageTitle = "RHYTHM";
-
-    this.registerEvents();
-    $scope.$on('$destroy', this.deRegisterEvents.bind(this));
+    //console.log("Service", this.MusicService.basePattern, this.MusicService.basePattern.length);
   }
 
-    registerEvents() {
-        this.socket.on("init-base-pattern", this.onNewBasePattern.bind(this));
-        this.socket.on("beat", this.onBeat.bind(this));
+    patternChanged(pattern) {
+        console.log("Controller says: Pattern changed", this.MusicService.basePattern, pattern);
+        this.socket.emit("update-base-pattern", this.MusicService.basePattern);
     }
 
-    deRegisterEvents() {
-        this.socket.removeListener("init-base-pattern", this.onNewBasePattern);
-        this.socket.removeListener("beat", this.onBeat);
-    }
-
-    onNewBasePattern(pattern) {
-        if (pattern && pattern.length > 0) {
-            console.log("Base pattern init", pattern, this);
-            this.basePattern = pattern;
-        }
-    }
-
-    onBeat(activeBeat) {
-        this.activeBeat = activeBeat;
-    }
-
-    patternChanged() {
-        console.log("Controller says: Pattern changed", this.basePattern);
-        this.socket.emit("update-base-pattern", this.basePattern);
-
-    }
-
-    toggleBeat() {
-        if (this.isPlaying) {
-            this.socket.emit("stop-beat", true);
-            this.isPlaying = false;
-        } else {
-            this.socket.emit("start-beat", true);
-            this.isPlaying = true;
-        }
-    }
 }
 
 angular

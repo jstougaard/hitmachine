@@ -21,7 +21,7 @@ RhythmController.prototype.registerSocketEvents = function(socket) {
 
     // Send initial state
     //console.log("Emitting base pattern", this._musicplayer.getBasePattern());
-    socket.emit('init-base-pattern', rhythm.getBasePattern());
+    socket.emit('update-base-pattern', rhythm.getBasePattern());
 
 
     socket.on('update-base-pattern', function(pattern) {

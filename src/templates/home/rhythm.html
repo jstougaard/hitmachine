@@ -1,10 +1,11 @@
-<h1>Main Rhythm</h1>
-<div class="canvas-container">
-    <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.activeBeat" rhythm></canvas>
+<div class="page-header">
+    <h1>Main Rhythm</h1>
 </div>
-<button class="btn btn-primary" ng-click="vm.toggleBeat()">{{vm.isPlaying?'Stop':'Start'}}</button>
+<div class="canvas-container">
+    <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.MusicService.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat" rhythm></canvas>
+</div>
 
 <h3>Base Pattern</h3>
-<pre>{{vm.basePattern}}</pre>
+<pre>{{vm.MusicService.basePattern}}</pre>
 
 
