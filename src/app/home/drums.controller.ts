@@ -3,8 +3,11 @@
 
 class DrumsController {
 
-    public snarePattern: any = [];
-    public hihatPattern: any = [];
+    public drumPatterns = {
+        "snare": [],
+        "hihat": [],
+        "kick": []
+    };
 
   /* @ngInject */
   constructor(
@@ -18,9 +21,9 @@ class DrumsController {
 
   }
 
-    patternChanged() {
-        console.log("Drums changed");
-        //this.socket.emit("update-base-pattern", this.MusicService.basePattern);
+    patternChanged(drumName: string) {
+        //console.log("Drums changed", drumName, this.MusicService.drumPatterns[drumName]);
+        this.socket.emit("update-drum-pattern", drumName, this.MusicService.drumPatterns[drumName]);
     }
 
 }

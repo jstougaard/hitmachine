@@ -8,6 +8,11 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
         controller: "RhythmController as vm",
         templateUrl: "home/rhythm.html"
     });
+    $stateProvider.state("bass", {
+        url: "/bass",
+        controller: "BassController as vm",
+        templateUrl: "home/bass.html"
+    });
     $stateProvider.state("chords", {
         url: "/chords",
         controller: "ChordsController as vm",

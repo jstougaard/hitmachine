@@ -2,24 +2,23 @@
     <h1>Drums</h1>
 </div>
 
-<div class="well track-container">
+<h4 class="pull-left">Volume</h4>
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-lg-4">
+        <slider class="volume-slider" floor="0" ceiling="100" step="1" precision="1" ng-model="vm.MusicService.drums.volume" change="vm.MusicService.adjustVolume('drums')"></slider>
+    </div>
+</div>
+
+<div class="well track-container" ng-repeat="(drumName, pattern) in vm.drumPatterns">
     <div class="row">
         <div class="col-md-1 col-xs-2">
-            <h2 class="track-label icon-snare"></h2>
+            <h2 class="track-label icon-{{drumName}}"></h2>
         </div>
         <div class="col-md-11 col-xs-10">
-            <canvas rhythm single-beat-pattern id="snare" class="rhythm-pattern" width="1200" height="50" base-pattern="vm.MusicService.basePattern" pattern="vm.snarePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat"></canvas>
+            <canvas rhythm single-beat-pattern id="{{drumName}}" class="rhythm-pattern" width="1200" height="50" base-pattern="drumName == 'hihat' ? vm.MusicService.basePattern : null" pattern="vm.MusicService.drumPatterns[drumName]" call-on-change="vm.patternChanged(drumName)" active-cell="vm.MusicService.activeBeat"></canvas>
         </div>
     </div>
 </div>
 
-<div class="well track-container">
-    <div class="row">
-        <div class="col-md-1 col-xs-2">
-            <h2 class="track-label icon-hihat"></h2>
-        </div>
-        <div class="col-md-11 col-xs-10">
-            <canvas rhythm single-beat-pattern id="hihat" class="rhythm-pattern" width="1200" height="50" base-pattern="vm.MusicService.basePattern" pattern="vm.hihatPattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat"></canvas>
-        </div>
-    </div>
-</div>
+<h3>Pattern</h3>
+<pre>{{vm.MusicService.drumPatterns}}</pre>

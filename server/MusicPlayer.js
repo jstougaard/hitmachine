@@ -10,14 +10,15 @@ var defaultOptions = {
 };
 
 // Constructor
-function MusicPlayer(options) {
-    if (!(this instanceof MusicPlayer)) return new MusicPlayer(options);
+function MusicPlayer(connector, options) {
+    if (!(this instanceof MusicPlayer)) return new MusicPlayer(connector, options);
     this.setOptions(options);
+
+    this._connector = connector;
 
     this._heart = null;
     this._beatCount = 0;
-    this._basePattern = [];
-    this._indexedBasePattern = [];
+    this._beatMessageQueue = [];
 }
 
 // Extend EventEmitter
@@ -36,26 +37,24 @@ MusicPlayer.prototype.setOptions = function(options){
 };
 
 
-// Event callback - only works if bind(this)
-function onBeat() {
 
-    if (this._beatCount === 0) {
-        this.emit("loop", true); // Beginning of new loop
-    }
+MusicPlayer.prototype.playNote = function(instrument, note, volume) {
+    if (!volume) volume = 100;
 
-    if (this._beatCount % this.beatsPerBar === 0) {
-        this.emit("bar"); // Beginning of new bar
-    }
+    this._sendMessageOnBeat(instrument + " note " + note  + " " + volume);
+};
 
-    // Emit event
-    this.emit('beat', this._beatCount);
+MusicPlayer.prototype.stopNote = function(instrument, note) {
+    this._sendMessageOnBeat(instrument + " note " + note + " 0"); // Zero volume = OFF
+};
 
-    // Increment count
-    this._beatCount++;
-    if (this._beatCount >= this.options.noteResolution) {
-        this._beatCount = 0;
-    }
-}
+MusicPlayer.prototype._sendMessageOnBeat = function(message) {
+    this._beatMessageQueue.push(message);
+};
+
+MusicPlayer.prototype.sendMessage = function(message) {
+    this._connector.send(message);
+};
 
 MusicPlayer.prototype.start = function() {
 
@@ -75,6 +74,8 @@ MusicPlayer.prototype.isStarted = function() {
 MusicPlayer.prototype.stop = function() {
     if (!this.isStarted()) return;
 
+    this.sendMessage("midiAllOff");
+
     this._heart.killAllEvents();
     this._heart.kill();
     this._heart = null;
@@ -90,5 +91,34 @@ MusicPlayer.prototype.setBPM = function(bpm) {
 MusicPlayer.prototype._getHeartBeatIntervalTime = function() {
     return Math.round(60*1000 / this.options.bpm / (this.options.noteResolution/this.options.beatsPerBar) );
 };
+
+
+// Event callback - only works if bind(this)
+function onBeat() {
+
+    if (this._beatCount === 0) {
+        this.emit("loop", true); // Beginning of new loop
+    }
+
+    if (this._beatCount % this.beatsPerBar === 0) {
+        this.emit("bar"); // Beginning of new bar
+    }
+
+    // Emit event
+    this.emit('beat', this._beatCount);
+
+    // Send beat queue messages
+    for(var i=0; i < this._beatMessageQueue.length; i++) {
+        this.sendMessage( this._beatMessageQueue[i] );
+    }
+    this._beatMessageQueue = [];
+
+
+    // Increment count
+    this._beatCount++;
+    if (this._beatCount >= this.options.noteResolution) {
+        this._beatCount = 0;
+    }
+}
 
 module.exports = MusicPlayer;

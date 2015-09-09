@@ -1,17 +1,20 @@
 var utils = require('../music-utils'),
-    state = require('../music-state'),
+    musicState = require('../music-state'),
+    config = require('../music-config'),
     rhythm = require('../rhythm-keeper');
 
 // Constructor
-function BassController(io, musicplayer, connector) {
-    if (!(this instanceof BassController)) return new BassController(io, musicplayer, connector);
+function BassController(io, musicplayer) {
+    if (!(this instanceof BassController)) return new BassController(io, musicplayer);
+
+    this.name = "bass";
 
     this._io = io;
     this._musicplayer = musicplayer;
-    this._connector = connector;
 
+    this._pattern = [];
+    this._indexedPattern = {};
     this._notePlaying = null;
-    this.muted = true;
 
     this.registerBeatEvents();
 }
@@ -21,7 +24,19 @@ function BassController(io, musicplayer, connector) {
  * @param socket
  */
 BassController.prototype.registerSocketEvents = function(socket) {
+    var _this = this;
 
+    // Send initial state
+    socket.emit('update-bass-pattern', this._pattern);
+
+    socket.on('update-bass-pattern', function(pattern) {
+        console.log("New bass pattern", pattern);
+
+        _this._pattern = pattern;
+        _this._indexedPattern = utils.indexPattern(pattern);
+
+        _this._io.emit('update-bass-pattern', pattern); // Send to all clients
+    });
 }
 
 /**
@@ -31,18 +46,27 @@ BassController.prototype.registerBeatEvents = function() {
     var _this = this;
 
     this._musicplayer.addListener("beat", function(beatCount) {
-        if (_this.muted) return;
+        if (_this.getConfig().volume <= 0) return;
 
-        if (_this._notePlaying && _this._notePlaying.start + _this._notePlaying.length == beatCount) {
+        if (_this._notePlaying && (_this._notePlaying.start + _this._notePlaying.length == beatCount || _this._notePlaying.start > beatCount)) {
             // Stop note
-            _this._connector.send("bass 0.0");
-            _this.notePlaying = null;
-        } else if (rhythm.getBaseBlockAt(beatCount)) {
+            _this._musicplayer.stopNote(_this.name, _this._notePlaying.note);
+            _this._notePlaying = null;
+        } else if (_this._indexedPattern[beatCount]) {
             // Play note
-            _this._connector.send("bass 0.1");
-            _this._notePlaying = rhythm.getBaseBlockAt(beatCount);
+            _this._musicplayer.playNote(_this.name, _this.getBaseNote(), _this.getConfig().volume);
+            _this._notePlaying = _this._indexedPattern[beatCount];
+            _this._notePlaying.note = _this.getBaseNote();
         }
     });
-}
+};
+
+BassController.prototype.getConfig = function() {
+    return config.instrumentConfig[this.name];
+};
+
+BassController.prototype.getBaseNote = function() {
+    return musicState.currentChord[0] || 60;
+};
 
 module.exports = BassController;

@@ -12,6 +12,7 @@ angular
     "core",
     "hitmachine.home",
     "ui.router.state",
+    'ui.slider',
     "btford.socket-io"
   ])
   .config(appConfig);

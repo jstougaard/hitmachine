@@ -2,9 +2,6 @@
 
 
 class ChordsController {
-    patternTone1: Array<core.RhythmBlock> = [];
-    patternTone2: Array<core.RhythmBlock> = [];
-    patternTone3: Array<core.RhythmBlock> = [];
 
   /* @ngInject */
   constructor(

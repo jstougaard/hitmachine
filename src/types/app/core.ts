@@ -14,11 +14,17 @@ declare module core {
 
     interface IMusicService {
         basePattern: Array<RhythmBlock>;
+        bassPattern: Array<RhythmBlock>;
         chordPatterns: Array<Array<RhythmBlock>>;
+        drumPatterns: {[drumName:string]:Array<RhythmBlock>;};
         isPlaying: boolean;
         activeBeat: number;
 
         play(): void;
         stop(): void;
+    }
+
+    interface IMusicComponentConfig {
+        volume: number;
     }
 }

@@ -3,4 +3,4 @@
  * @type {string}
  */
 
-module.exports.noteResolution = "TEST";
+module.exports.currentChord = null;

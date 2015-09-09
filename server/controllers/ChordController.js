@@ -1,5 +1,6 @@
 var utils = require('../music-utils'),
-    state = require('../music-state');
+    musicState = require('../music-state'),
+    config = require('../music-config');
 
 var chordProgressions = [
     [[ 72, 76, 79, 60, 48 ], [ 67, 71, 74, 55, 43 ], [ 69, 72, 76, 57, 45 ], [ 65,69,72, 53, 41 ]]
@@ -8,19 +9,20 @@ var chordProgressions = [
 
 
 // Constructor
-function ChordController(io, musicplayer, connector) {
-    if (!(this instanceof ChordController)) return new ChordController(io, musicplayer, connector);
+function ChordController(io, musicplayer) {
+    if (!(this instanceof ChordController)) return new ChordController(io, musicplayer);
+
+    this.name = "chords";
 
     this._io = io;
     this._musicplayer = musicplayer;
-    this._connector = connector;
 
     this._currentProgression = 0;
     this._currentChord = 0;
 
     this._notesPlaying = [];
 
-    this._chordPattern = [];
+    this._chordPattern = [ [], [], [] ];
     this._indexedChordPattern = {};
 
     this.registerBeatEvents();
@@ -32,6 +34,9 @@ function ChordController(io, musicplayer, connector) {
  */
 ChordController.prototype.registerSocketEvents = function(socket) {
     var _this = this;
+
+    // Init pattern
+    socket.emit('update-chord-pattern', _this._chordPattern);
 
     socket.on('update-chord-pattern', function(pattern) {
 
@@ -63,19 +68,24 @@ ChordController.prototype.registerBeatEvents = function() {
         } else {
             firstLoop = false;
         }
+
+        musicState.currentChord = chordProgressions[_this._currentProgression][_this._currentChord];
     });
 
     // Play notes
     this._musicplayer.addListener("beat", function(beatCount) {
         // Stop playing notes
         _this._notesPlaying = _this._notesPlaying.filter(function(block) {
-            var shouldKeepPlaying = (block.start + block.length < beatCount);
+            var shouldKeepPlaying = (block.start + block.length > beatCount && beatCount > block.start);
             if (!shouldKeepPlaying) {
                 // TODO: Stop note
-                console.log("Stop note", block.currentNote);
+                //console.log("Stop note", block.currentNote);
+                _this._musicplayer.stopNote(_this.name, block.currentNote);
             }
             return shouldKeepPlaying;
         });
+
+        if (_this.getConfig().volume <= 0) return; // Muted
 
         // Start notes
         if (_this._indexedChordPattern[beatCount]) {
@@ -83,14 +93,17 @@ ChordController.prototype.registerBeatEvents = function() {
                // Play note
                 block.currentNote = _this._getNoteAtIndex(block.noteIndex);
                 // DO PLAY
-                console.log("Play note", block.currentNote);
+                //console.log("Play note", block.currentNote);
+                _this._musicplayer.playNote(_this.name, block.currentNote, _this.getConfig().volume);
                 _this._notesPlaying.push(block);
             });
         }
 
-
-
     });
+};
+
+ChordController.prototype.getConfig = function() {
+    return config.instrumentConfig[this.name];
 };
 
 ChordController.prototype._getNoteAtIndex = function(noteIndex) {

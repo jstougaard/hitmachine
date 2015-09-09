@@ -1,21 +1,24 @@
 var utils = require('../music-utils'),
-    state = require('../music-state'),
+    config = require('../music-config'),
     rhythm = require('../rhythm-keeper');
 
 // TODO: Use correct note values + enable notes from chord
-var noteMap = [ 60, 61, 62, 63, 64 ];
+var noteMap = [ 60, 62, 64, 67, 69 ];
 
 // Constructor
-function LeadController(io, musicplayer, connector) {
-    if (!(this instanceof LeadController)) return new LeadController(io, musicplayer, connector);
+function LeadController(io, musicplayer) {
+    if (!(this instanceof LeadController)) return new LeadController(io, musicplayer);
+
+    this.name = "lead";
 
     this._io = io;
     this._musicplayer = musicplayer;
-    this._connector = connector;
 
     this._noteStartQueue = [];
     this._noteStopQueue = [];
     this._noteStopAfterStartedQueue = [];
+
+
 
     this.registerBeatEvents();
 }
@@ -26,6 +29,7 @@ function LeadController(io, musicplayer, connector) {
  */
 LeadController.prototype.registerSocketEvents = function(socket) {
     var _this = this;
+
 
     socket.on('start-note', function(note) {
         //console.log("Start note!", note);
@@ -46,6 +50,7 @@ LeadController.prototype.registerSocketEvents = function(socket) {
             _this._noteStopQueue.push(note);
         }
     });
+
 };
 
 /**
@@ -55,23 +60,24 @@ LeadController.prototype.registerBeatEvents = function() {
     var _this = this;
 
     this._musicplayer.addListener("beat", function(beatPosition) {
+        // TODO: Consider what happens if note index is changed!!
 
         // Stop notes
-        // TODO: Check that it is a valid stopping point according to base pattern
         if (_this._noteStopQueue.length > 0 && rhythm.isValidEndPoint(beatPosition)) {
             _this._noteStopQueue.forEach(function (note) {
-                console.log("Stop note", note);
-                _this._connector.send("bass 0.0"); // TODO
+                //console.log("Stop note", note);
+                _this._musicplayer.stopNote(_this.name, noteMap[note]);
             });
             _this._noteStopQueue = [];
         }
 
+        if (_this.getConfig().volume <= 0) return; // Muted
+
         // Start notes
-        // TODO: Should start be delayed if not immediately available?
         if (_this._noteStartQueue.length > 0 && rhythm.isValidStartingPoint(beatPosition)) {
             _this._noteStartQueue.forEach(function (note) {
-                console.log("Start note", note);
-                _this._connector.send("bass 0.1"); // TODO
+                //console.log("Start note", note);
+                _this._musicplayer.playNote(_this.name, noteMap[note], _this.getConfig().volume);
             });
             _this._noteStartQueue = [];
             _this._noteStopQueue = _this._noteStopQueue.concat(_this._noteStopAfterStartedQueue);
@@ -79,6 +85,10 @@ LeadController.prototype.registerBeatEvents = function() {
         }
 
     });
-}
+};
+
+LeadController.prototype.getConfig = function() {
+    return config.instrumentConfig[this.name];
+};
 
 module.exports = LeadController;

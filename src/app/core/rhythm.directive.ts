@@ -104,6 +104,10 @@ function rhythm(): ng.IDirective {
                 }
             });
 
+            if (isValid && position >= resolution - 1) {
+                return true;
+            }
+
             // Check against base pattern
             if (isValid && basePattern) {
                 isValid = false;
@@ -158,6 +162,8 @@ function rhythm(): ng.IDirective {
                             // Remove from pattern
                             console.log("Block exists", pattern.indexOf(newBlock));
                             pattern.splice(pattern.indexOf(newBlock), 1);
+
+                            scope.pattern = pattern;
                             newBlock.isValid = true;
                         } else {
                             newBlock = {
@@ -173,24 +179,25 @@ function rhythm(): ng.IDirective {
 
                 }, false);
                 canvas.addEventListener('mouseup', function (event:any) {
-                    if (newBlock && newBlock.length > 0 && newBlock.isValid) {
+                    var updated = newBlock && newBlock.isValid;
+                    if (updated && newBlock.length > 0) {
 
                         if (newBlock.length > 0) {
                             delete newBlock.isValid;
                             pattern.push(newBlock);
                         }
 
-                        // Update scope
-                        scope.pattern = pattern;
-                        scope.$apply();
-                        isMouseDown = false;
-
-                        // Pattern is changed
-                        if (scope.callOnChange) {
-                            scope.callOnChange();
-                        }
-
                     }
+
+                    // Update scope
+                    scope.pattern = pattern;
+                    scope.$apply();
+                    isMouseDown = false;
+
+                    if (scope.callOnChange && updated) {
+                        scope.callOnChange();
+                    }
+
 
                     newBlock = null;
                     render(canvas);
@@ -228,7 +235,7 @@ function rhythm(): ng.IDirective {
                     var position = getEventPosition(event);
 
                     if (isValidStartingPoint(position)) {
-                        console.log("Add new");
+
                         var existingBlock = getBlockAtPosition(position);
 
                         if (existingBlock) {
@@ -311,7 +318,7 @@ function rhythm(): ng.IDirective {
                 }
 
                 // Draw currently playing beat
-                if (scope.activeCell && scope.activeCell > 0 && scope.activeCell < resolution) {
+                if (typeof scope.activeCell !== "undefined" && scope.activeCell !== null && scope.activeCell >= 0 && scope.activeCell < resolution) {
                     ctx.save();
                     ctx.fillStyle = colors.active;
                     ctx.fillRect( scope.activeCell * blockLength, 0, blockLength, canvas.height );

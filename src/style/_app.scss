@@ -70,9 +70,11 @@ canvas.rhythm-pattern {
   background:#fff;
 }
 
+
 .lead-notes {
 
   text-align:center;
+  user-select: none;
 
   .note {
     display:inline-block;
@@ -113,6 +115,10 @@ canvas.rhythm-pattern {
     }
     &.icon-hihat {
       background-image: url("../assets/hihat.png");
+      background-size: 35px;
+    }
+    &.icon-kick {
+      background-image: url("../assets/kick.png");
       background-size: 35px;
     }
     &:hover {

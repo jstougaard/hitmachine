@@ -7,6 +7,13 @@
 </div>
 
 
+<h4 class="pull-left">Volume</h4>
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-lg-4">
+        <slider class="volume-slider" floor="0" ceiling="100" step="1" precision="1" ng-model="vm.MusicService.chords.volume" change="vm.MusicService.adjustVolume('chords')"></slider>
+    </div>
+</div>
+
 <div ng-repeat="(key, pattern) in vm.MusicService.chordPatterns" class="well track-container">
     <div class="row">
         <div class="col-md-1 col-xs-2">
