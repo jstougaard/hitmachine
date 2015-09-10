@@ -19,6 +19,7 @@ function ChordController(io, musicplayer) {
     this._musicplayer = musicplayer;
 
     this._currentProgression = Object.keys(config.chordProgressions)[0];
+    this._nextProgression = null;
     this._currentChordNumber = -1;
 
     this._notesPlaying = [];
@@ -54,8 +55,7 @@ ChordController.prototype.registerSocketEvents = function(socket) {
 
     socket.on('set-chord-progression', function(progressionName) {
         if (config.chordProgressions[_this._currentProgression]) {
-            _this._currentProgression = progressionName;
-            _this._currentChordNumber = -1; // Reset
+            _this._nextProgression = progressionName;
 
             _this._io.emit('set-chord-progression', progressionName);
         } else {
@@ -77,6 +77,11 @@ ChordController.prototype.registerBeatEvents = function() {
         _this._currentChordNumber++;
         if (_this._currentChordNumber >= config.chordProgressions[_this._currentProgression].length) {
             _this._currentChordNumber = 0;
+
+            if (_this._nextProgression) {
+                _this._currentProgression = _this._nextProgression;
+                _this._nextProgression = null;
+            }
         }
 
         musicState.setCurrentChord( config.chordProgressions[_this._currentProgression][_this._currentChordNumber] );
@@ -95,7 +100,7 @@ ChordController.prototype.registerBeatEvents = function() {
             return shouldKeepPlaying;
         });
 
-        if (_this.getConfig().volume <= 0) return; // Muted
+        if (_this.isMuted()) return; // Muted
 
         // Start notes
         if (_this._indexedChordPattern[beatCount]) {
@@ -114,6 +119,10 @@ ChordController.prototype.registerBeatEvents = function() {
 
 ChordController.prototype.getConfig = function() {
     return config.instrumentConfig[this.name];
+};
+
+ChordController.prototype.isMuted = function() {
+    return this.getConfig(this.name).volume === 0 || this.getConfig(this.name).muted;
 };
 
 ChordController.prototype._getNoteAtIndex = function(noteIndex) {

@@ -80,7 +80,7 @@ LeadController.prototype.registerBeatEvents = function() {
             _this._noteStopQueue = [];
         }
 
-        if (_this.getConfig().volume <= 0) return; // Muted
+        if (_this.isMuted()) return; // Muted
 
         // Start notes
         if (_this._noteStartQueue.length > 0 && rhythm.isValidStartingPoint(beatPosition)) {
@@ -105,6 +105,10 @@ LeadController.prototype.registerBeatEvents = function() {
 
 LeadController.prototype.getConfig = function() {
     return config.instrumentConfig[this.name];
+};
+
+LeadController.prototype.isMuted = function() {
+    return this.getConfig(this.name).volume === 0 || this.getConfig(this.name).muted;
 };
 
 LeadController.prototype.isWithinBeatDelay = function() {

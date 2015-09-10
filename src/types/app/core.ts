@@ -25,6 +25,7 @@ declare module core {
 
         play(): void;
         stop(): void;
+        volumeChanged(instrumentName: string, newVolume?: number): void;
     }
 
     interface IMusicComponentConfig {

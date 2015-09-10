@@ -78,11 +78,14 @@ DrumsController.prototype.registerBeatEvents = function() {
         });
         _this._drumsPlaying = [];
 
-        if (_this.getConfig().volume <= 0) return; // Muted
+        if (_this.isFullyMuted()) return; // Muted
 
         for (var drumName in _this._indexedPatterns) {
+
+            if (_this.isMuted(drumName)) continue;
+
             if (_this._indexedPatterns[drumName][beatCount]) {
-                _this._musicplayer.playNote(_this.name, drums[drumName], _this.getConfig().volume);
+                _this._musicplayer.playNote(_this.name, drums[drumName], _this.getConfig(drumName).volume);
                 _this._drumsPlaying.push(drumName);
             }
         }
@@ -90,8 +93,16 @@ DrumsController.prototype.registerBeatEvents = function() {
     });
 };
 
-DrumsController.prototype.getConfig = function() {
-    return config.instrumentConfig[this.name];
+DrumsController.prototype.getConfig = function(drumName) {
+    return config.instrumentConfig[drumName];
+};
+
+DrumsController.prototype.isFullyMuted = function() {
+    return this.isMuted("kick") && this.isMuted("snare") && this.isMuted("hihat");
+};
+
+DrumsController.prototype.isMuted = function(drumName) {
+    return this.getConfig(drumName).volume == 0 || this.getConfig(drumName).muted;
 };
 
 module.exports = DrumsController;

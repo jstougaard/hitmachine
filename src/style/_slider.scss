@@ -7,6 +7,10 @@ slider, [slider] {
   margin: 20px 5px 20px 5px;
   vertical-align: middle;
 
+  &.bg-darken .bar {
+    background: $gray-light;
+  }
+
   div {
     white-space: nowrap;
     position: absolute;

@@ -29,7 +29,7 @@ ConfigController.prototype.registerSocketEvents = function(socket) {
     });
 
     socket.on("adjust-volume", function(instrument, volume) {
-        //console.log("Adjust volume", instrument, volume);
+        console.log("Adjust volume", instrument, volume);
         if (volume < 5) volume = 0; // Cutoff
         config.instrumentConfig[instrument].volume = volume;
         _this._io.emit("adjust-volume", instrument, volume);

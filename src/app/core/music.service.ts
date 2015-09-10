@@ -36,7 +36,15 @@ class MusicService implements core.IMusicService {
         volume: 100
     };
 
-    public drums: core.IMusicComponentConfig = {
+    public kick: core.IMusicComponentConfig = {
+        volume: 100
+    };
+
+    public snare: core.IMusicComponentConfig = {
+        volume: 100
+    };
+
+    public hihat: core.IMusicComponentConfig = {
         volume: 100
     };
 
@@ -91,7 +99,9 @@ class MusicService implements core.IMusicService {
     }
 
     onAdjustVolume(instrument, volume) {
-        this[instrument].volume = volume;
+        if (this[instrument]) {
+            this[instrument].volume = volume;
+        }
     }
 
     onBeat(beatNumber) {
@@ -129,9 +139,12 @@ class MusicService implements core.IMusicService {
         this.socket.emit("adjust-bpm", this.bpm);
     }
 
-    volumeChanged(instrument) {
-        //console.log("Adjust volume", instrument, this[instrument].volume);
-        this.socket.emit("adjust-volume", instrument, this[instrument].volume);
+    volumeChanged(instrument, newVolume) {
+        if (!newVolume) {
+            newVolume = this[instrument].volume;
+        }
+        console.log("Adjust volume", instrument, this[instrument].volume, newVolume);
+        this.socket.emit("adjust-volume", instrument, newVolume);
     }
 
 }

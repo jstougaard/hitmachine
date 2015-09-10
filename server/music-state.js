@@ -59,4 +59,6 @@ module.exports.getLeadNoteMap = function(newChord) {
 
     // Limit array size
     return leadNoteMap.slice(Math.max(leadNoteMap.length - config.maxLeadTones, 1));
-}
+};
+
+

@@ -11,7 +11,8 @@ class LeadController {
         53: 5,
         54: 6,
         55: 7,
-        56: 8
+        56: 8,
+        57: 9
     };
 
     notesOn = [];

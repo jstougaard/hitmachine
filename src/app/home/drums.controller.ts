@@ -3,12 +3,6 @@
 
 class DrumsController {
 
-    public drumPatterns = {
-        "snare": [],
-        "hihat": [],
-        "kick": []
-    };
-
   /* @ngInject */
   constructor(
     private $rootScope: core.IRootScope,
@@ -20,6 +14,13 @@ class DrumsController {
     $rootScope.pageTitle = "DRUMS";
 
   }
+
+    volumeChanged(volume) {
+        console.log("Volume changed", volume);
+        this.MusicService.volumeChanged('snare', volume);
+        this.MusicService.volumeChanged('hihat', volume);
+        this.MusicService.volumeChanged('kick', volume);
+    }
 
     patternChanged(drumName: string) {
         //console.log("Drums changed", drumName, this.MusicService.drumPatterns[drumName]);

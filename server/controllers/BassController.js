@@ -46,7 +46,7 @@ BassController.prototype.registerBeatEvents = function() {
     var _this = this;
 
     this._musicplayer.addListener("beat", function(beatCount) {
-        if (_this.getConfig().volume <= 0) return;
+        if (_this.isMuted()) return;
 
         if (_this._notePlaying && (_this._notePlaying.start + _this._notePlaying.length == beatCount || _this._notePlaying.start > beatCount)) {
             // Stop note
@@ -66,7 +66,11 @@ BassController.prototype.getConfig = function() {
 };
 
 BassController.prototype.getBaseNote = function() {
-    return musicState.getCurrentChord()[0] || 60;
+    return (musicState.getCurrentChord()[0] || 60) - 12;
+};
+
+BassController.prototype.isMuted = function() {
+    return this.getConfig(this.name).volume === 0 || this.getConfig(this.name).muted;
 };
 
 module.exports = BassController;
