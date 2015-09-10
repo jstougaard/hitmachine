@@ -14,6 +14,8 @@ function MusicPlayer(connector, options) {
     if (!(this instanceof MusicPlayer)) return new MusicPlayer(connector, options);
     this.setOptions(options);
 
+    this.lastBeatTime = 0;
+
     this._connector = connector;
 
     this._heart = null;
@@ -46,6 +48,12 @@ MusicPlayer.prototype.playNote = function(instrument, note, volume) {
 
 MusicPlayer.prototype.stopNote = function(instrument, note) {
     this._sendMessageOnBeat(instrument + " note " + note + " 0"); // Zero volume = OFF
+};
+
+MusicPlayer.prototype.playNoteNow = function(instrument, note, volume) {
+    if (!volume) volume = 100;
+
+    this.sendMessage(instrument + " note " + note  + " " + volume);
 };
 
 MusicPlayer.prototype._sendMessageOnBeat = function(message) {
@@ -113,6 +121,7 @@ function onBeat() {
     }
     this._beatMessageQueue = [];
 
+    this.lastBeatTime = Date.now();
 
     // Increment count
     this._beatCount++;
