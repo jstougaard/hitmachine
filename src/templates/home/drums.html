@@ -5,7 +5,7 @@
 <h4 class="pull-left">Volume</h4>
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-lg-4">
-        <slider class="volume-slider" floor="0" ceiling="100" step="1" precision="1" ng-model="vm.MusicService.drums.volume" change="vm.MusicService.adjustVolume('drums')"></slider>
+        <slider class="volume-slider" floor="0" ceiling="100" step="1" precision="1" ng-model="vm.MusicService.drums.volume" change="vm.MusicService.volumeChanged('drums')"></slider>
     </div>
 </div>
 

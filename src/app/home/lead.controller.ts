@@ -22,10 +22,11 @@ class LeadController {
         private $scope: ng.IScope,
         private $document: ng.IDocumentService,
         private socket: ng.socketIO.IWebSocket,
+        public name: string,
         public MusicService: core.IMusicService
     ) {
-        $rootScope.pageTitle = "LEAD";
-
+        $rootScope.pageTitle = name.toUpperCase();
+        console.log("Lead controller", name);
         this.registerKeyboardEvents();
     }
 
@@ -58,15 +59,19 @@ class LeadController {
     noteOn(note) {
         // Start note
         //console.log("Key down", note);
-        this.socket.emit("start-note", note - 1);
+        this.socket.emit(this.name + "/start-note", note - 1);
         this.notesOn.push(parseInt(note,10));
     }
 
     noteOff(note) {
         // Stop note
         //console.log("Key up", note);
-        this.socket.emit("stop-note", note - 1);
+        this.socket.emit(this.name + "/stop-note", note - 1);
         this.notesOn.splice(this.notesOn.indexOf(parseInt(note,10)), 1);
+    }
+
+    isTouchDevice() {
+        return !!('ontouchstart' in window);
     }
 }
 

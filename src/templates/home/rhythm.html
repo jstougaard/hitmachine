@@ -1,9 +1,19 @@
 <div class="page-header">
     <h1>Main Rhythm</h1>
 </div>
+
+<h4 class="pull-left">BPM</h4>
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-lg-4">
+        <slider class="bpm-slider" floor="30" ceiling="240" step="2" precision="1" ng-model="vm.MusicService.bpm" change="vm.MusicService.bpmChanged()"></slider>
+    </div>
+</div>
+
 <div class="canvas-container">
     <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.MusicService.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat" rhythm></canvas>
 </div>
+
+
 
 <h3>Base Pattern</h3>
 <pre>{{vm.MusicService.basePattern}}</pre>

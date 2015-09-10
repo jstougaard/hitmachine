@@ -22,7 +22,7 @@ function ChordController(io, musicplayer) {
 
     this._notesPlaying = [];
 
-    this._chordPattern = [ [], [], [] ];
+    this._chordPattern = [ [], [], [], [], [] ];
     this._indexedChordPattern = {};
 
     this.registerBeatEvents();
@@ -69,7 +69,7 @@ ChordController.prototype.registerBeatEvents = function() {
             firstLoop = false;
         }
 
-        musicState.currentChord = chordProgressions[_this._currentProgression][_this._currentChord];
+        musicState.setCurrentChord( chordProgressions[_this._currentProgression][_this._currentChord] );
     });
 
     // Play notes

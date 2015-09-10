@@ -4,6 +4,7 @@ class MusicService implements core.IMusicService {
 
     public activeBeat: number = null;
     public isPlaying: boolean = false;
+    public bpm: number = 120;
 
     public basePattern: Array<core.RhythmBlock> = [];
     public chordPatterns: Array<Array<core.RhythmBlock>> = [];
@@ -17,6 +18,10 @@ class MusicService implements core.IMusicService {
     };
 
     public lead: core.IMusicComponentConfig = {
+        volume: 100
+    };
+
+    public lead2: core.IMusicComponentConfig = {
         volume: 100
     };
 
@@ -56,6 +61,7 @@ class MusicService implements core.IMusicService {
         this.socket.on("update-chord-pattern", this.onNewChordPattern.bind(this));
         this.socket.on("update-bass-pattern", this.onNewBassPattern.bind(this));
         this.socket.on("update-drum-pattern", this.onNewDrumPattern.bind(this));
+        this.socket.on("adjust-bpm", this.onAdjustBPM.bind(this));
         this.socket.on("adjust-volume", this.onAdjustVolume.bind(this));
     }
 
@@ -73,6 +79,10 @@ class MusicService implements core.IMusicService {
 
     onNewBassPattern(pattern) {
         this.bassPattern = pattern;
+    }
+
+    onAdjustBPM(bpm) {
+        this.bpm = bpm;
     }
 
     onAdjustVolume(instrument, volume) {
@@ -101,7 +111,12 @@ class MusicService implements core.IMusicService {
         this.isPlaying = false;
     }
 
-    adjustVolume(instrument) {
+    bpmChanged() {
+        // TODO: Add some event timeout, so it's not changed immediately after each other
+        this.socket.emit("adjust-bpm", this.bpm);
+    }
+
+    volumeChanged(instrument) {
         //console.log("Adjust volume", instrument, this[instrument].volume);
         this.socket.emit("adjust-volume", instrument, this[instrument].volume);
     }

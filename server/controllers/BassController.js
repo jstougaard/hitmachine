@@ -66,7 +66,7 @@ BassController.prototype.getConfig = function() {
 };
 
 BassController.prototype.getBaseNote = function() {
-    return musicState.currentChord[0] || 60;
+    return musicState.getCurrentChord()[0] || 60;
 };
 
 module.exports = BassController;

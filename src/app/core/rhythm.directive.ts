@@ -122,6 +122,15 @@ function rhythm(): ng.IDirective {
             return isValid;
         };
 
+        var applyPatternChanges = function() {
+            scope.pattern = pattern;
+            scope.$apply();
+
+            if (scope.callOnChange) {
+                scope.callOnChange();
+            }
+        };
+
 
         if (attrs.activeCell) {
             scope.$watch("activeCell", function (newValue, oldValue) {
@@ -179,6 +188,10 @@ function rhythm(): ng.IDirective {
 
                 }, false);
                 canvas.addEventListener('mouseup', function (event:any) {
+                    if (!isMouseDown) {
+                        return;
+                    }
+
                     var updated = newBlock && newBlock.isValid;
                     if (updated && newBlock.length > 0) {
 
@@ -190,18 +203,14 @@ function rhythm(): ng.IDirective {
                     }
 
                     // Update scope
-                    scope.pattern = pattern;
-                    scope.$apply();
-                    isMouseDown = false;
-
-                    if (scope.callOnChange && updated) {
-                        scope.callOnChange();
+                    if (updated) {
+                        applyPatternChanges();
                     }
 
-
+                    isMouseDown = false;
                     newBlock = null;
                     render(canvas);
-                });
+                }, false);
                 canvas.addEventListener('mousemove', function (event:any) {
                     // Set cursor
                     var position = getEventPosition(event);
@@ -220,7 +229,22 @@ function rhythm(): ng.IDirective {
                     }
 
                     element.css("cursor", isValid ? "pointer" : "not-allowed");
-                });
+                }, false);
+
+                document.addEventListener("keydown", function(event: any) {
+                    if (isMouseDown && event.which === 27) {
+                        // Pressed ESC
+                        console.log("Rhythm keypress", event.which);
+
+                        // Update scope
+                        applyPatternChanges();
+
+                        isMouseDown = false;
+                        newBlock = null;
+                        render(canvas);
+                    }
+
+                }, false);
             } else {
 
                 // Single click interaction

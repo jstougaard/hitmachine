@@ -4,25 +4,7 @@
 body {
   padding-top: 50px;
 }
-.btn-icon-round {
-  display: inline-block;
-  border-radius: 50%;
-  text-align: center;
 
-  height: 45px;
-  width: 45px;
-  line-height: 45px;
-}
-.btn-icon-round-sm {
-  height: 30px;
-  width: 30px;
-  line-height: 30px;
-}
-.btn-icon-round-lg {
-  height: 60px;
-  width: 60px;
-  line-height: 60px;
-}
 .play-control {
   padding-top:10px;
   padding-left:10px;
@@ -60,6 +42,9 @@ body {
 
 }
 
+.page-header > h1 {
+  text-transform: capitalize;
+}
 
 canvas {
   border: 1px solid #7b8a8b;
@@ -93,6 +78,9 @@ canvas.rhythm-pattern {
 }
 
 .track-container {
+
+  margin: 20px 0 0 0;
+
   .track-label {
     margin: 0;
     border: 2px solid $brand-success;

@@ -14,7 +14,8 @@ var musicplayer = require('./server/MusicPlayer')(connector),
     bassController = require('./server/controllers/BassController')(io, musicplayer),
     drumsController = require('./server/controllers/DrumsController')(io, musicplayer),
     chordController = require('./server/controllers/ChordController')(io, musicplayer),
-    leadController = require('./server/controllers/LeadController')(io, musicplayer),
+    leadController = require('./server/controllers/LeadController')("lead", io, musicplayer),
+    lead2Controller = require('./server/controllers/LeadController')("lead2", io, musicplayer),
     configController = require('./server/controllers/ConfigController')(io, musicplayer);
 
 
@@ -35,6 +36,7 @@ io.on('connection', function (socket) {
     drumsController.registerSocketEvents(socket);
     chordController.registerSocketEvents(socket);
     leadController.registerSocketEvents(socket);
+    lead2Controller.registerSocketEvents(socket);
     configController.registerSocketEvents(socket);
 
     // when the user disconnects.. perform this

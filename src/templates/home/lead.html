@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1>Lead
+    <h1>{{vm.name}}
         <button type="button" class="btn btn-info btn-sm"><span class="fa fa-music"></span> New sound!</button>
     </h1>
 </div>
@@ -7,12 +7,12 @@
 <h4 class="pull-left">Volume</h4>
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-lg-4">
-        <slider class="volume-slider" floor="0" ceiling="100" step="1" precision="1" ng-model="vm.MusicService.lead.volume" change="vm.MusicService.adjustVolume('lead')"></slider>
+        <slider class="volume-slider" floor="0" ceiling="100" step="1" precision="1" ng-model="vm.MusicService.lead.volume" change="vm.MusicService.volumeChanged(vm.name)"></slider>
     </div>
 </div>
 
 <p class="text-muted">Use keyboard or press node areas</p>
 
 <div class="row lead-notes">
-    <div class="well note col-sm-2 col-md-1" ng-repeat="(key, note) in vm.noteKeyMap" ng-mousedown="vm.noteOn(note)" ng-mouseup="vm.noteOff(note)" ng-class="{'active': vm.notesOn.indexOf(1*note)!==-1}">{{note}}</div>
+    <div class="well note col-sm-2 col-md-1" ng-repeat="(key, note) in vm.noteKeyMap"  my-touchstart="vm.noteOn(note)" my-touchend="vm.noteOff(note)" ng-class="{'active': vm.notesOn.indexOf(1*note)!==-1}">{{note}}</div>
 </div>

@@ -26,7 +26,22 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
     $stateProvider.state("lead", {
         url: "/lead",
         controller: "LeadController as vm",
-        templateUrl: "home/lead.html"
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead";
+            }
+        }
+    });
+    $stateProvider.state("lead2", {
+        url: "/lead2",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead2";
+            }
+        }
     });
 }
 
