@@ -2,9 +2,10 @@ var utils = require('../music-utils'),
     musicState = require('../music-state'),
     config = require('../music-config');
 
-var chordProgressions = [
-    [[ 72, 76, 79, 60, 48 ], [ 67, 71, 74, 55, 43 ], [ 69, 72, 76, 57, 45 ], [ 65,69,72, 53, 41 ]]
-];
+/*var chordProgressions = {
+    "Chords 1": [[72, 76, 79, 60, 48], [67, 71, 74, 55, 43], [69, 72, 76, 57, 45], [65, 69, 72, 53, 41]],
+    "Chords 2": []
+};*/
 
 
 
@@ -17,8 +18,8 @@ function ChordController(io, musicplayer) {
     this._io = io;
     this._musicplayer = musicplayer;
 
-    this._currentProgression = 0;
-    this._currentChord = 0;
+    this._currentProgression = Object.keys(config.chordProgressions)[0];
+    this._currentChordNumber = -1;
 
     this._notesPlaying = [];
 
@@ -37,6 +38,8 @@ ChordController.prototype.registerSocketEvents = function(socket) {
 
     // Init pattern
     socket.emit('update-chord-pattern', _this._chordPattern);
+    socket.emit('define-chord-progressions', Object.keys(config.chordProgressions));
+    socket.emit('set-chord-progression', _this._currentProgression);
 
     socket.on('update-chord-pattern', function(pattern) {
 
@@ -49,6 +52,17 @@ ChordController.prototype.registerSocketEvents = function(socket) {
         _this._io.emit('update-chord-pattern', pattern); // Send to all clients
     });
 
+    socket.on('set-chord-progression', function(progressionName) {
+        if (config.chordProgressions[_this._currentProgression]) {
+            _this._currentProgression = progressionName;
+            _this._currentChordNumber = -1; // Reset
+
+            _this._io.emit('set-chord-progression', progressionName);
+        } else {
+            console.log("Chord progression not found", progressionName);
+        }
+    });
+
 };
 
 /**
@@ -58,18 +72,14 @@ ChordController.prototype.registerBeatEvents = function() {
     var _this = this;
 
     // Track current chord
-    var firstLoop = true;
     this._musicplayer.addListener("loop", function() {
-        if (!firstLoop) {
-            _this._currentChord++;
-            if (_this._currentChord >= chordProgressions[_this._currentProgression].length) {
-                _this._currentChord = 0;
-            }
-        } else {
-            firstLoop = false;
+
+        _this._currentChordNumber++;
+        if (_this._currentChordNumber >= config.chordProgressions[_this._currentProgression].length) {
+            _this._currentChordNumber = 0;
         }
 
-        musicState.setCurrentChord( chordProgressions[_this._currentProgression][_this._currentChord] );
+        musicState.setCurrentChord( config.chordProgressions[_this._currentProgression][_this._currentChordNumber] );
     });
 
     // Play notes
@@ -107,8 +117,7 @@ ChordController.prototype.getConfig = function() {
 };
 
 ChordController.prototype._getNoteAtIndex = function(noteIndex) {
-  //console.log("Get note", chordProgressions[this._currentProgression][this._currentChord]);
-    return   chordProgressions[this._currentProgression][this._currentChord][noteIndex]; // TODO: Add sanity check
+    return   musicState.getCurrentChord()[noteIndex];
 };
 
 function indexChordPatterns(patterns) {

@@ -14,6 +14,11 @@ class ChordsController {
 
   }
 
+    progressionChanged() {
+        console.log("Chord progression changed", this.MusicService.currentProgressionName);
+        this.socket.emit("set-chord-progression", this.MusicService.currentProgressionName);
+    }
+
     patternChanged() {
         var pattern = this.MusicService.chordPatterns; //[this.patternTone1, this.patternTone2, this.patternTone3];
         console.log("Chord pattern changed", pattern);
