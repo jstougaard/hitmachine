@@ -10,6 +10,9 @@ class MusicService implements core.IMusicService {
     public chordPatterns: Array<Array<core.RhythmBlock>> = [];
     public bassPattern: Array<core.RhythmBlock> = [];
 
+    public chordProgressionNames: Array<string> = [];
+    public currentProgressionName: string = null;
+
 
     public drumPatterns: {[drumName:string]:Array<core.RhythmBlock>;} = {
         "snare": [],
@@ -37,7 +40,7 @@ class MusicService implements core.IMusicService {
         volume: 100
     };
 
-    private chordTracks: number = 3;  // Define number of chords tracks
+    private chordTracks: number = 5;  // Define number of chords tracks
 
     /* @ngInject */
     constructor(
@@ -57,6 +60,8 @@ class MusicService implements core.IMusicService {
         this.socket.on("start-beat", this.onBeatStarted.bind(this));
         this.socket.on("stop-beat", this.onBeatStopped.bind(this));
         this.socket.on("beat", this.onBeat.bind(this));
+        this.socket.on("define-chord-progressions", this.setChordProgressions.bind(this));
+        this.socket.on("set-chord-progression", this.setCurrentChordProgression.bind(this));
         this.socket.on("update-base-pattern", this.onNewBasePattern.bind(this));
         this.socket.on("update-chord-pattern", this.onNewChordPattern.bind(this));
         this.socket.on("update-bass-pattern", this.onNewBassPattern.bind(this));
@@ -99,6 +104,14 @@ class MusicService implements core.IMusicService {
 
     onBeatStopped() {
         this.isPlaying = false;
+    }
+
+    setChordProgressions(progressions: Array<string>) {
+        this.chordProgressionNames = progressions;
+    }
+
+    setCurrentChordProgression(progressionName: string) {
+        this.currentProgressionName = progressionName;
     }
 
     play() {

@@ -18,13 +18,11 @@
 <div class="row">
     <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Progression</h4></div>
     <div class="col-xs-8 col-sm-6 col-lg-4">
-        <select class="form-control">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select>
+
+        <select name="progressionSelect" id="progressionSelect" class="form-control"
+                ng-options="name for name in vm.MusicService.chordProgressionNames"
+                ng-model="vm.MusicService.currentProgressionName"
+                ng-change="vm.progressionChanged()"></select>
     </div>
 </div>
 

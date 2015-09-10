@@ -20,6 +20,9 @@ declare module core {
         isPlaying: boolean;
         activeBeat: number;
 
+        chordProgressionNames: Array<string>;
+        currentProgressionName: string;
+
         play(): void;
         stop(): void;
     }

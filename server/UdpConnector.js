@@ -42,7 +42,7 @@ UdpConnector.prototype.send = function(messageString){
 
     this.client.send(message, 0, message.length, port, host, function(err, bytes) {
         if (err) throw err;
-        console.log('UDP message sent to ' + host +':'+ port, messageString);
+        //console.log('UDP message sent to ' + host +':'+ port, messageString);
         //client.close(); // Do not close yet
     });
 };

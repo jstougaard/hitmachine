@@ -35,7 +35,14 @@ LeadController.prototype.registerSocketEvents = function(socket) {
     socket.on(this.name + '/start-note', function(note) {
         //console.log("Start note!", note);
         if (!utils.inArray(_this._noteStartQueue, note)) {
-            _this._noteStartQueue.push(note);
+            // Check whether to play now or later
+            if (_this.isWithinBeatDelay()) {
+                console.log("Play note now", note);
+                _this._musicplayer.playNoteNow(_this.name, musicState.getLeadNote(note), _this.getConfig().volume);
+                _this._notesPlaying[note] = musicState.getLeadNote(note);
+            } else {
+                _this._noteStartQueue.push(note);
+            }
         }
     });
 
@@ -83,7 +90,7 @@ LeadController.prototype.registerBeatEvents = function() {
                     _this._musicplayer.stopNote(_this.name, _this._notesPlaying[note]);
                 }
                 _this._notesPlaying[note] = musicState.getLeadNote(note);
-                console.log("Play note", note, musicState.getLeadNote(note), _this._notesPlaying);
+                console.log("Play note queue", note, musicState.getLeadNote(note), _this._notesPlaying);
                 _this._musicplayer.playNote(_this.name, musicState.getLeadNote(note), _this.getConfig().volume);
 
 
@@ -99,5 +106,11 @@ LeadController.prototype.registerBeatEvents = function() {
 LeadController.prototype.getConfig = function() {
     return config.instrumentConfig[this.name];
 };
+
+LeadController.prototype.isWithinBeatDelay = function() {
+    var now = Date.now();
+    var margin = Math.round(60 * 1000 / config.bpm / config.notesPerBar * (config.leadDelayMarginPercent / 100) )
+    return this._musicplayer.lastBeatTime >= now - margin;
+}
 
 module.exports = LeadController;
