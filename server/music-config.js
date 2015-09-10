@@ -1,9 +1,9 @@
 module.exports = {
     noteResolution: 16,
     notesPerBar: 4,
-    leadNoteMap: [ 52, 55, 57, 60, 62, 64, 67, 69 ],
     leadNotePattern: [ 1, 3, 5, 8, 10 ],
     leadBaseNote: 60,
+    leadDelayMarginPercent: 10,
     maxLeadTones: 8,
     bpm: 120,
     instrumentConfig: {
