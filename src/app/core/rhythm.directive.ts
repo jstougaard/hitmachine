@@ -355,12 +355,16 @@ function rhythm(): ng.IDirective {
 
                     if (i % 4 !== 0) {
                         ctx.setLineDash([5, 10]);
+                        ctx.strokeStyle = colors.lines;
+                    } else {
+                        ctx.lineWidth=3;
+                        ctx.strokeStyle = "#444";
                     }
 
                     ctx.beginPath();
                     ctx.moveTo(i * blockLength, 0);
                     ctx.lineTo(i * blockLength, canvas.height);
-                    ctx.strokeStyle = colors.lines;
+                    //ctx.strokeStyle = colors.lines;
                     ctx.stroke();
 
                     ctx.restore();
