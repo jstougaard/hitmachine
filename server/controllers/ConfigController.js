@@ -7,6 +7,8 @@ function ConfigController(io, musicplayer) {
     this._io = io;
     this._musicplayer = musicplayer;
 
+    this._filterValue = 100;
+    this.sendFilter();
 }
 
 /**
@@ -20,6 +22,7 @@ ConfigController.prototype.registerSocketEvents = function(socket) {
     for (var instrument in config.instrumentConfig) {
         socket.emit("adjust-volume", instrument, config.instrumentConfig[instrument].volume);
     }
+    socket.emit("adjust-filter-value", this._filterValue);
 
 
     socket.on("adjust-bpm", function(bpm) {
@@ -34,6 +37,17 @@ ConfigController.prototype.registerSocketEvents = function(socket) {
         config.instrumentConfig[instrument].volume = volume;
         _this._io.emit("adjust-volume", instrument, volume);
     });
-}
+
+    socket.on("adjust-filter-value", function(value) {
+        console.log("Adjust filter", value);
+        _this._filterValue = value;
+        _this.sendFilter();
+        _this._io.emit("adjust-filter-value", value);
+    });
+};
+
+ConfigController.prototype.sendFilter = function() {
+    this._musicplayer.sendMessage("efx filter "+ (this._filterValue/100.0) );
+};
 
 module.exports = ConfigController;

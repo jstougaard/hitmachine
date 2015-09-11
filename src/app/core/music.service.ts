@@ -51,6 +51,8 @@ class MusicService implements core.IMusicService {
         volume: 100
     };
 
+    public filterValue: number = null;
+
     private chordTracks: number = 5;  // Define number of chords tracks
 
     /* @ngInject */
@@ -81,6 +83,7 @@ class MusicService implements core.IMusicService {
         this.socket.on("update-drum-pattern", this.onNewDrumPattern.bind(this));
         this.socket.on("adjust-bpm", this.onAdjustBPM.bind(this));
         this.socket.on("adjust-volume", this.onAdjustVolume.bind(this));
+        this.socket.on("adjust-filter-value", this.onAdjustFilter.bind(this));
     }
 
     onNewBasePattern(pattern) {
@@ -107,6 +110,10 @@ class MusicService implements core.IMusicService {
         if (this[instrument]) {
             this[instrument].volume = volume;
         }
+    }
+
+    onAdjustFilter(filterValue) {
+        this.filterValue = filterValue;
     }
 
     onBeat(beatNumber) {
@@ -159,6 +166,10 @@ class MusicService implements core.IMusicService {
         }
         console.log("Adjust volume", instrument, this[instrument].volume, newVolume);
         this.socket.emit("adjust-volume", instrument, newVolume);
+    }
+
+    filterChanged() {
+        this.socket.emit("adjust-filter-value", this.filterValue);
     }
 
 }

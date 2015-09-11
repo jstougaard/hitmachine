@@ -54,9 +54,9 @@ module.exports = {
     },
     progressionElements: {
         "verse": [ "kick", "snare", "bass", "lead", "lead2", "pads" /*, "chords"*/],
-        "verse-bridge": [ "kick", "snare", "hihat", "bass", "lead", "lead2"],
+        "verse-bridge": [ "kick", "snare", "hihat", "bass", "pads", "lead", "lead2"],
         "chorus-buildup": [ "chords", "lead", "lead2" ],
-        "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads", "lead", "lead2" ] //TODO: pads, crash
+        "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads", "lead", "lead2" ] //TODO: crash
     },
     songProgression: [ "verse", "verse", "verse-bridge", "verse-bridge", "chorus-buildup", "chorus-buildup", "chorus", "chorus" ]
 

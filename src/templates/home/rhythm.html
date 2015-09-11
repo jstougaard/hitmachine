@@ -2,10 +2,17 @@
     <h1>Main Rhythm</h1>
 </div>
 
-<h4 class="pull-left">BPM</h4>
 <div class="row">
-    <div class="col-xs-12 col-sm-8 col-lg-4">
+    <div class="col-xs-4 col-sm-2 col-lg-2"><h4>BPM</h4></div>
+    <div class="col-xs-8 col-sm-6 col-lg-4">
         <slider class="bpm-slider" floor="30" ceiling="240" step="2" precision="1" ng-model="vm.MusicService.bpm" change="vm.MusicService.bpmChanged()"></slider>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Filter</h4></div>
+    <div class="col-xs-8 col-sm-6 col-lg-4">
+        <slider class="effects-slider" floor="50" ceiling="100" step="1" precision="1" ng-model="vm.MusicService.filterValue" change="vm.MusicService.filterChanged()"></slider>
     </div>
 </div>
 
