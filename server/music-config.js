@@ -53,7 +53,7 @@ module.exports = {
         "DeepHouse": [ [69, 71, 76, 57, 45], [67, 71, 74, 55, 43], [70, 74, 77, 58, 46], [72 , 76 ,79, 60, 48] ]
     },
     progressionElements: {
-        "verse": [ "kick", "snare", "bass", "lead", "lead2" /*, "chords"*/],
+        "verse": [ "kick", "snare", "bass", "lead", "lead2", "pads" /*, "chords"*/],
         "verse-bridge": [ "kick", "snare", "hihat", "bass", "lead", "lead2"],
         "chorus-buildup": [ "chords", "lead", "lead2" ],
         "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads", "lead", "lead2" ] //TODO: pads, crash

@@ -6,6 +6,9 @@ class MusicService implements core.IMusicService {
     public isPlaying: boolean = false;
     public bpm: number = 120;
 
+    public currentProgressionIndex: number = 0;
+    public songProgression: Array<string> = [];
+
     public basePattern: Array<core.RhythmBlock> = [];
     public chordPatterns: Array<Array<core.RhythmBlock>> = [];
     public bassPattern: Array<core.RhythmBlock> = [];
@@ -68,6 +71,8 @@ class MusicService implements core.IMusicService {
         this.socket.on("start-beat", this.onBeatStarted.bind(this));
         this.socket.on("stop-beat", this.onBeatStopped.bind(this));
         this.socket.on("beat", this.onBeat.bind(this));
+        this.socket.on("define-song-progression", this.setSongProgression.bind(this));
+        this.socket.on("set-progression-index", this.setCurrentProgressionIndex.bind(this));
         this.socket.on("define-chord-progressions", this.setChordProgressions.bind(this));
         this.socket.on("set-chord-progression", this.setCurrentChordProgression.bind(this));
         this.socket.on("update-base-pattern", this.onNewBasePattern.bind(this));
@@ -114,6 +119,15 @@ class MusicService implements core.IMusicService {
 
     onBeatStopped() {
         this.isPlaying = false;
+    }
+
+    setSongProgression(progression: Array<string>) {
+        console.log("Set progression", progression);
+        this.songProgression = progression;
+    }
+
+    setCurrentProgressionIndex(progressionIndex: number) {
+        this.currentProgressionIndex = progressionIndex;
     }
 
     setChordProgressions(progressions: Array<string>) {

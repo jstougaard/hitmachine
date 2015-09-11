@@ -3,6 +3,8 @@
 
 class RhythmController {
 
+    public nextProgression: number = null;
+
   /* @ngInject */
   constructor(
     private $rootScope: core.IRootScope,
@@ -12,11 +14,22 @@ class RhythmController {
   ) {
     $rootScope.pageTitle = "RHYTHM";
     //console.log("Service", this.MusicService.basePattern, this.MusicService.basePattern.length);
+    var _this = this;
+    this.socket.on("set-progression-index", function() {
+      _this.nextProgression = null;
+    });
+
   }
 
     patternChanged() {
         console.log("Controller says: Pattern changed", this.MusicService.basePattern);
         this.socket.emit("update-base-pattern", this.MusicService.basePattern);
+    }
+
+    gotoProgression(index) {
+        //console.log("Goto progression", index);
+        this.nextProgression = index;
+        this.socket.emit("goto-song-progression", index);
     }
 
 }

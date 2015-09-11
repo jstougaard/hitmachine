@@ -9,8 +9,19 @@
     </div>
 </div>
 
-<div class="canvas-container">
-    <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.MusicService.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat" rhythm></canvas>
+<div class="well">
+    <div class="canvas-container">
+        <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.MusicService.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat" rhythm></canvas>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Progression</h4></div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="btn btn-default btn-progression" ng-repeat="name in vm.MusicService.songProgression track by $index" ng-click="vm.gotoProgression($index)" ng-class="{'btn-success': $index == vm.MusicService.currentProgressionIndex, 'btn-info': $index == vm.nextProgression}">{{name}}</div>
+    </div>
 </div>
 
 

@@ -40,8 +40,9 @@ PadsController.prototype.registerBeatEvents = function() {
     this._musicplayer.addListener("loop", function() {
         // Stop playing notes
         _this._notesPlaying.forEach(function(note) {
-            _this._musicplayer.stopNote(_this.name, block.currentNote);
+            _this._musicplayer.stopNote(_this.name, note);
         });
+        _this._notesPlaying = [];
 
 
         // Start notes
@@ -50,6 +51,7 @@ PadsController.prototype.registerBeatEvents = function() {
             var chord = musicState.getCurrentChord();
             for (var i=0; i < 3; i++) {
                 _this._musicplayer.playNote(_this.name, chord[i], _this.getConfig().volume);
+                _this._notesPlaying.push(chord[i]);
             }
         }
 
