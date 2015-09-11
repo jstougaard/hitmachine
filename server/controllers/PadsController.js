@@ -46,7 +46,7 @@ PadsController.prototype.registerBeatEvents = function() {
 
 
         // Start notes
-        if (!_this.isMuted() && (loopCount === 0 || loopCount === 2)) {
+        if (!_this.isMuted()) {
             //console.log("Play pads");
             var chord = musicState.getCurrentChord();
             for (var i=0; i < 3; i++) {
