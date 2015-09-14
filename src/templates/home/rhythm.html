@@ -30,10 +30,3 @@
         <div class="btn btn-default btn-progression" ng-repeat="name in vm.MusicService.songProgression track by $index" ng-click="vm.gotoProgression($index)" ng-class="{'btn-success': $index == vm.MusicService.currentProgressionIndex, 'btn-info': $index == vm.nextProgression}">{{name}}</div>
     </div>
 </div>
-
-
-
-<h3>Base Pattern</h3>
-<pre>{{vm.MusicService.basePattern}}</pre>
-
-
