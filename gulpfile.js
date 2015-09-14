@@ -227,7 +227,7 @@ gulp.task(
 
 gulp.task(
   'default',
-  gulp.series('build', gulp.parallel(/*'browser-sync',*/ 'server', 'watch', 'karma-watch'))
+  gulp.series('build', gulp.parallel(/*'browser-sync',*/ 'server', 'watch' /*, 'karma-watch'*/))
 );
 
 

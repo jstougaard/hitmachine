@@ -1,8 +1,8 @@
 {
-  "author": "Vincent Prouillet",
-  "name": "ng-boilerplate",
-  "version": "1.1.0",
-  "homepage": "http://vincent.is",
+  "author": "Jeppe Stougaard",
+  "name": "hitmachine",
+  "version": "0.1.0",
+  "homepage": "",
   "scripts": {
     "gulp": "./node_modules/gulp/bin/gulp.js"
   },
