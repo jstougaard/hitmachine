@@ -48,6 +48,7 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
 angular
   .module("hitmachine.home", [
     "core.directives",
+        "dndLists",
     "ui.router.state"
   ])
   .config(homeConfig);

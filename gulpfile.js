@@ -49,6 +49,7 @@ var vendoredLibs = [
     config.bowerDir + '/angular/angular.js',
     config.bowerDir + '/ui-router/release/angular-ui-router.js',
     config.bowerDir + '/angular-slider/slider.js',
+    config.bowerDir + '/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
     config.bowerDir + '/angular-socket-io/socket.js',
     config.bowerDir + '/underscore/underscore.js',
     config.bowerDir + '/jquery/dist/jquery.js'

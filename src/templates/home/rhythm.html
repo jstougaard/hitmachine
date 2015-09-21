@@ -26,7 +26,37 @@
     <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Progression</h4></div>
 </div>
 <div class="row">
-    <div class="col-xs-12">
-        <div class="btn btn-default btn-progression" ng-repeat="name in vm.MusicService.songProgression track by $index" ng-click="vm.gotoProgression($index)" ng-class="{'btn-success': $index == vm.MusicService.currentProgressionIndex, 'btn-info': $index == vm.nextProgression}">{{name}}</div>
+    <div class="col-xs-4 col-sm-2 col-lg-2">
+        <div class="btn btn-primary btn-progression"
+             ng-repeat="name in vm.MusicService.songProgression track by $index"
+             dnd-draggable="name"
+             dnd-effect-allowed="copy"
+                ><i class="fa fa-plus"></i> {{name}}</div>
+
+    </div>
+
+    <div class="col-xs-8 col-sm-10 col-lg-10">
+        <ul class="progression-list"
+            dnd-list="vm.progression"
+            dnd-horizontal-list="true">
+
+            <li ng-repeat="item in vm.progression track by $index"
+                dnd-draggable="item"
+                dnd-moved="vm.progression.splice($index, 1)"
+                dnd-effect-allowed="move"
+                dnd-selected="vm.nextProgression = $index"
+                class="btn btn-default btn-progression"
+                ng-class="{'selected': $index == vm.nextProgression, 'btn-success': $index == vm.MusicService.currentProgressionIndex}"
+                    >
+                {{item}}
+            </li>
+
+            <li class="dndPlaceholder"></li>
+        </ul>
     </div>
 </div>
+
+<!--
+ng-click="vm.gotoProgression($index)"
+             ng-class="{'btn-success': $index == vm.MusicService.currentProgressionIndex, 'btn-info': $index == vm.nextProgression}"
+             -->

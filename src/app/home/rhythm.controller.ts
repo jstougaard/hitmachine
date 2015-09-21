@@ -5,6 +5,9 @@ class RhythmController {
 
     public nextProgression: number = null;
 
+
+    public progression = ["test1", "test2"];
+
   /* @ngInject */
   constructor(
     private $rootScope: core.IRootScope,

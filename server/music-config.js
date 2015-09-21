@@ -52,13 +52,14 @@ module.exports = {
         "4-1(6)-2-2": [ [65,69,72, 53, 41], [72, 76, 81, 60, 48], [74, 77, 81, 62, 50], [74, 77, 81, 62, 50] ],
         "DeepHouse": [ [69, 71, 76, 57, 45], [67, 71, 74, 55, 43], [70, 74, 77, 58, 46], [72 , 76 ,79, 60, 48] ]
     },
+    chordProgressionsPerElement: 2,
     progressionElements: {
         "verse": [ "kick", "snare", "bass", "lead", "lead2", "pads" /*, "chords"*/],
         "verse-bridge": [ "kick", "snare", "hihat", "bass", "pads", "lead", "lead2"],
         "chorus-buildup": [ "chords", "lead", "lead2" ],
         "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads", "lead", "lead2" ] //TODO: crash
     },
-    songProgression: [ "verse", "verse", "verse-bridge", "verse-bridge", "chorus-buildup", "chorus-buildup", "chorus", "chorus" ]
+    songProgression: [ "verse", "verse-bridge", "chorus-buildup", "chorus" ]
 
 };
 

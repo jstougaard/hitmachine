@@ -3,6 +3,8 @@ var utils = require('../music-utils'),
     config = require('../music-config'),
     rhythm = require('../rhythm-keeper');
 
+var loopsPerChordProgression = 4;
+
 // Constructor
 function ProgressionController(io, musicplayer) {
     if (!(this instanceof ProgressionController)) return new ProgressionController(io, musicplayer);
@@ -41,7 +43,7 @@ ProgressionController.prototype.registerBeatEvents = function() {
     this._musicplayer.addListener("loop", function() {
         _this._loopCount++;
 
-        if (_this._loopCount >= 4) {
+        if (_this._loopCount >= loopsPerChordProgression * config.chordProgressionsPerElement) {
             _this._loopCount = 0;
         }
 
