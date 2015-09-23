@@ -12,6 +12,11 @@ class BassController extends PlayController {
         this.socket.emit("update-bass-pattern", this.MusicService.bassPattern);
     }
 
+    resetPattern() {
+        this.MusicService.bassPattern = [];
+        this.patternChanged();
+    }
+
 }
 
 angular

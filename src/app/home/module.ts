@@ -64,6 +64,7 @@ angular
   .module("hitmachine.home", [
     "core",
         "core.directives",
-    "ui.router.state"
+    "ui.router.state",
+        'angularScreenfull'
   ])
   .config(homeConfig);

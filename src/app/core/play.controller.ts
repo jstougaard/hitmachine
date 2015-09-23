@@ -37,19 +37,17 @@ class PlayController {
     }
 
     onKeyDown(event) {
-        var note = this.noteKeyMap[event.which],
-            noteString = "" + note;
-        if (note && this.notesOn.indexOf(noteString) === -1) {
-            this.noteOn(noteString);
+        var note = this.noteKeyMap[event.which];
+        if (note && this.notesOn.indexOf(note) === -1) {
+            this.noteOn(note);
             this.$scope.$apply();
         }
     }
 
     onKeyUp(event) {
-        var note = this.noteKeyMap[event.which],
-            noteString = "" + note;
-        if (this.notesOn.indexOf(noteString) > -1) {
-            this.noteOff(noteString);
+        var note = this.noteKeyMap[event.which];
+        if (this.notesOn.indexOf(note) > -1) {
+            this.noteOff(note);
             this.$scope.$apply();
         }
     }

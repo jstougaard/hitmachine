@@ -20,6 +20,8 @@
     <div class="canvas-container">
         <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.MusicService.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat" rhythm></canvas>
     </div>
+
+    <button class="btn btn-danger" ng-click="vm.resetPattern();"><i class="fa fa-trash-o"></i> Reset pattern</button>
 </div>
 
 <div class="row">

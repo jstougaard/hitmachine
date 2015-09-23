@@ -22,6 +22,11 @@ class ChordsController extends PlayController {
         this.socket.emit("update-chord-pattern", pattern);
     }
 
+    resetPattern(patternIndex) {
+        this.MusicService.chordPatterns[patternIndex] = [];
+        this.patternChanged();
+    }
+
 }
 
 angular

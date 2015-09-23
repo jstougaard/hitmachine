@@ -21,6 +21,11 @@ class DrumsController extends PlayController {
         this.socket.emit("update-drum-pattern", drumName, this.MusicService.drumPatterns[drumName]);
     }
 
+    resetPattern(drumName: string) {
+        this.MusicService.drumPatterns[drumName] = [];
+        this.patternChanged(drumName);
+    }
+
 }
 
 angular

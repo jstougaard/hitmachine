@@ -51,7 +51,9 @@ var vendoredLibs = [
     config.bowerDir + '/angular-slider/slider.js',
     config.bowerDir + '/angular-socket-io/socket.js',
     config.bowerDir + '/underscore/underscore.js',
-    config.bowerDir + '/jquery/dist/jquery.js'
+    config.bowerDir + '/jquery/dist/jquery.js',
+    config.bowerDir + '/screenfull/dist/screenfull.js',
+    config.bowerDir + '/angular-screenfull/dist/angular-screenfull.js'
 ];
 
 // Will be filled automatically

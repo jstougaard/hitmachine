@@ -1,6 +1,10 @@
 <div class="page-header">
-    <h1>{{vm.name}}
-        <button type="button" class="btn btn-info btn-sm"><span class="fa fa-music"></span> New sound!</button>
+    <h1>
+        <button type="button" class="btn btn-success btn-sm" ng-click="fullscreenCtrl.toggleFullscreen()"><i class="fa fa-arrows-alt"></i></button>
+        {{vm.name}}
+        <!--<button type="button" class="btn btn-info btn-sm"><span class="fa fa-music"></span> New sound!</button>-->
+
+
     </h1>
 </div>
 
@@ -13,6 +17,17 @@
 
 <p class="text-muted">Use keyboard or press node areas</p>
 
-<div class="row lead-notes">
-    <div class="well note col-sm-2 col-md-1" ng-repeat="(key, note) in vm.noteKeyMap"  my-touchstart="vm.noteOn(note)" my-touchend="vm.noteOff(note)" ng-class="{'active': vm.notesOn.indexOf(''+note)!==-1}">{{note}}</div>
+<div ngsf-fullscreen="fullscreenCtrl">
+
+    <h1 class="fullscreen-header">{{vm.name}}</h1>
+
+    <div class="row lead-notes">
+        <div class="col-xs-4 col-sm-2 col-md-2" ng-repeat="(key, note) in vm.noteKeyMap">
+            <div class="well note"  my-touchstart="vm.noteOn(note)" my-touchend="vm.noteOff(note)" ng-class="{'active': vm.notesOn.indexOf(note)!==-1}">{{note}}</div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary fullscreen-close" ng-click="fullscreenCtrl.toggleFullscreen()"><span class="fa fa-times"></span> Exit instrument mode</button>
+
+
 </div>

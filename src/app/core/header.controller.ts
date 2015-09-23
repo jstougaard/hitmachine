@@ -3,8 +3,11 @@
 
 class HeaderController {
 
+    public showMenu = false;
+
     /* @ngInject */
     constructor(
+        private $rootScope:core.IRootScope,
         private socket: ng.socketIO.IWebSocket,
         private $document: ng.IDocumentService,
         public MusicService: core.IMusicService
@@ -15,6 +18,10 @@ class HeaderController {
             if (event.which === 32) {
                 this.togglePlay();
             }
+        });
+
+        this.$rootScope.$on( "$locationChangeStart", () => {
+            this.showMenu = false;
         });
 
     }
