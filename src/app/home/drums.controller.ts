@@ -1,19 +1,13 @@
 /// <reference path="../../types/types.ts"/>
 
 
-class DrumsController {
+class DrumsController extends PlayController {
 
-  /* @ngInject */
-  constructor(
-    private $rootScope: core.IRootScope,
-    private $scope: ng.IScope,
-    private socket: ng.socketIO.IWebSocket,
-    public MusicService: core.IMusicService
-  ) {
-
-    $rootScope.pageTitle = "DRUMS";
-
-  }
+    noteKeyMap = {
+        49: "kick",
+        50: "snare",
+        51: "hihat"
+    };
 
     volumeChanged(volume) {
         console.log("Volume changed", volume);

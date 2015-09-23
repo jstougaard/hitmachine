@@ -1,18 +1,15 @@
 /// <reference path="../../types/types.ts"/>
 
 
-class ChordsController {
+class ChordsController extends PlayController {
 
-  /* @ngInject */
-  constructor(
-    private $rootScope: core.IRootScope,
-    private $scope: ng.IScope,
-    private socket: ng.socketIO.IWebSocket,
-    public MusicService: core.IMusicService
-  ) {
-    $rootScope.pageTitle = "CHORDS";
-
-  }
+    public noteKeyMap = {
+        49: 1,
+        50: 2,
+        51: 3,
+        52: 4,
+        53: 5
+    };
 
     progressionChanged() {
         console.log("Chord progression changed", this.MusicService.currentProgressionName);

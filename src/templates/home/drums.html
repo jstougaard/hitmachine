@@ -2,6 +2,10 @@
     <h1>Drums</h1>
 </div>
 
+<div class="row lead-notes">
+    <div class="well note col-sm-2 col-md-1" ng-repeat="(key, note) in vm.noteKeyMap"  my-touchstart="vm.noteOn(note)" my-touchend="vm.noteOff(note)" ng-class="{'active': vm.notesOn.indexOf(note)!==-1}">{{note}}</div>
+</div>
+
 <div class="well track-container" ng-repeat="(drumName, pattern) in vm.MusicService.drumPatterns">
     <div class="row">
         <div class="col-md-1 col-xs-2">

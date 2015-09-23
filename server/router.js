@@ -9,8 +9,11 @@ var controllers = [
     "DrumsController",
     "ChordController",
     "PadsController",
-    ["LeadController", "lead"],
-    ["LeadController", "lead2"],
+    ["PlayController", "lead"],
+    ["PlayController", "lead2"],
+    ["PlayController", "chords"],
+    ["PlayController", "bass"],
+    ["PlayController", "drums"],
 ];
 
 // Constructor

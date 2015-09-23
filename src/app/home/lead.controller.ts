@@ -1,9 +1,9 @@
 /// <reference path="../../types/types.ts"/>
 
 
-class LeadController {
+class LeadController extends PlayController {
 
-    noteKeyMap = {
+    public noteKeyMap = {
         49: 1,
         50: 2,
         51: 3,
@@ -15,65 +15,7 @@ class LeadController {
         57: 9
     };
 
-    notesOn = [];
 
-    /* @ngInject */
-    constructor(
-        private $rootScope: core.IRootScope,
-        private $scope: ng.IScope,
-        private $document: ng.IDocumentService,
-        private socket: ng.socketIO.IWebSocket,
-        public name: string,
-        public MusicService: core.IMusicService
-    ) {
-        $rootScope.pageTitle = name.toUpperCase();
-        console.log("Lead controller", name);
-        this.registerKeyboardEvents();
-    }
-
-    registerKeyboardEvents() {
-        var onKeyDown = (event) => {
-                var note = this.noteKeyMap[event.which];
-                if (note && this.notesOn.indexOf(note) === -1) {
-                    this.noteOn(note);
-                    this.$scope.$apply();
-                }
-            },
-            onKeyUp = (event) => {
-                var note = this.noteKeyMap[event.which];
-                if (this.notesOn.indexOf(note) > -1) {
-                    this.noteOff(note);
-                    this.$scope.$apply();
-                }
-            };
-
-        this.$document.on("keydown", onKeyDown);
-        this.$document.on("keyup", onKeyUp);
-
-        // Remove event listeners on destroy
-        this.$scope.$on('$destroy', () => {
-            this.$document.off("keydown", onKeyDown);
-            this.$document.off("keyup", onKeyUp);
-        });
-    }
-
-    noteOn(note) {
-        // Start note
-        //console.log("Key down", note);
-        this.socket.emit(this.name + "/start-note", note - 1);
-        this.notesOn.push(parseInt(note,10));
-    }
-
-    noteOff(note) {
-        // Stop note
-        //console.log("Key up", note);
-        this.socket.emit(this.name + "/stop-note", note - 1);
-        this.notesOn.splice(this.notesOn.indexOf(parseInt(note,10)), 1);
-    }
-
-    isTouchDevice() {
-        return !!('ontouchstart' in window);
-    }
 }
 
 angular

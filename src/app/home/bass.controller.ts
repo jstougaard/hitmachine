@@ -1,17 +1,11 @@
 /// <reference path="../../types/types.ts"/>
 
 
-class BassController {
+class BassController extends PlayController {
 
-  /* @ngInject */
-  constructor(
-    private $rootScope: core.IRootScope,
-    private socket: ng.socketIO.IWebSocket,
-    public MusicService: core.IMusicService
-  ) {
-    $rootScope.pageTitle = "BASS";
-
-  }
+    noteKeyMap = {
+        49: 1
+    };
 
     patternChanged() {
         console.log("Controller says: Pattern changed", this.MusicService.bassPattern);

@@ -10,6 +10,12 @@
 </div>
 
 
+<div class="row lead-notes">
+    <div class="well note col-sm-2 col-md-1" ng-repeat="(key, note) in vm.noteKeyMap"  my-touchstart="vm.noteOn(note)" my-touchend="vm.noteOff(note)" ng-class="{'active': vm.notesOn.indexOf(''+note)!==-1}">{{note}}</div>
+</div>
+
+
 <div class="canvas-container">
     <canvas id="bass_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.MusicService.bassPattern" base-pattern="vm.MusicService.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat" rhythm></canvas>
 </div>
+

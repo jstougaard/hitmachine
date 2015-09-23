@@ -11,17 +11,32 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
     $stateProvider.state("bass", {
         url: "/bass",
         controller: "BassController as vm",
-        templateUrl: "home/bass.html"
+        templateUrl: "home/bass.html",
+        resolve: {
+            name: function() {
+                return "bass";
+            }
+        }
     });
     $stateProvider.state("chords", {
         url: "/chords",
         controller: "ChordsController as vm",
-        templateUrl: "home/chords.html"
+        templateUrl: "home/chords.html",
+        resolve: {
+            name: function() {
+                return "chords";
+            }
+        }
     });
     $stateProvider.state("drums", {
         url: "/drums",
         controller: "DrumsController as vm",
-        templateUrl: "home/drums.html"
+        templateUrl: "home/drums.html",
+        resolve: {
+            name: function() {
+                return "drums";
+            }
+        }
     });
     $stateProvider.state("lead", {
         url: "/lead",
@@ -47,7 +62,8 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
 
 angular
   .module("hitmachine.home", [
-    "core.directives",
+    "core",
+        "core.directives",
     "ui.router.state"
   ])
   .config(homeConfig);
