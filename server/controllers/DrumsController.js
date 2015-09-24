@@ -5,13 +5,6 @@ var utils = require('../music-utils'),
 var kickPattern = [ {"start": 0, "length": 1}, {"start": 4, "length": 1}, {"start": 8, "length": 1}, {"start": 12, "length": 1} ];
 var snarePattern = [ {"start": 4, "length": 1}, {"start": 12, "length": 1} ];
 
-// Notes for available drums
-var drums = {
-    "kick": 60,
-    "snare": 62,
-    "hihat": 65
-};
-
 // Constructor
 function DrumsController(io, musicplayer) {
     if (!(this instanceof DrumsController)) return new DrumsController(io, musicplayer);
@@ -52,7 +45,7 @@ DrumsController.prototype.registerSocketEvents = function(socket) {
     }
 
     socket.on('update-drum-pattern', function(drumName, pattern) {
-        if (!drums[drumName]) {
+        if (!_this.doesDrumExist(drumName)) {
             console.log("Drum not found", drumName);
             return;
         }
@@ -74,7 +67,7 @@ DrumsController.prototype.registerBeatEvents = function() {
 
         _this._drumsPlaying.forEach(function(drumName) {
             // Always stop - Drums do not have length
-            _this._musicplayer.stopNote(_this.name, drums[drumName]);
+            _this._musicplayer.stopNote(_this.name, _this.getDrumNote(drumName));
         });
         _this._drumsPlaying = [];
 
@@ -85,7 +78,7 @@ DrumsController.prototype.registerBeatEvents = function() {
             if (_this.isMuted(drumName)) continue;
 
             if (_this._indexedPatterns[drumName][beatCount]) {
-                _this._musicplayer.playNote(_this.name, drums[drumName], _this.getConfig(drumName).volume);
+                _this._musicplayer.playNote(_this.name, _this.getDrumNote(drumName), _this.getConfig(drumName).volume);
                 _this._drumsPlaying.push(drumName);
             }
         }
@@ -95,6 +88,14 @@ DrumsController.prototype.registerBeatEvents = function() {
 
 DrumsController.prototype.getConfig = function(drumName) {
     return config.instrumentConfig[drumName];
+};
+
+DrumsController.prototype.getDrumNote = function(drumName) {
+    return this.getConfig(drumName).note;
+};
+
+DrumsController.prototype.doesDrumExist = function(drumName) {
+    return this.getConfig(drumName) && this.getDrumNote(drumName);
 };
 
 DrumsController.prototype.isFullyMuted = function() {

@@ -29,28 +29,7 @@ function getNotePatternFromNotes(notes) {
 };
 
 
-var currentChord = null;
-var leadNoteMap = config.leadNoteMap;
-
-module.exports.setCurrentChord = function(chord) {
-    currentChord = chord;
-
-    leadNoteMap = this.getLeadNoteMap(chord);
-};
-
-module.exports.getCurrentChord = function() {
-    return currentChord;
-};
-
-module.exports.getCurrentNoteMap = function() {
-    return leadNoteMap;
-};
-
-module.exports.getLeadNote = function(index) {
-    return leadNoteMap[index];
-};
-
-module.exports.getLeadNoteMap = function(newChord) {
+function generateLeadNoteMap(newChord) {
     // Update current note map
     var leadNotePattern = arrayUnique(config.leadNotePattern.concat( getNotePatternFromNotes(newChord) )).sort();
 
@@ -60,5 +39,24 @@ module.exports.getLeadNoteMap = function(newChord) {
     // Limit array size
     return leadNoteMap.slice(Math.max(leadNoteMap.length - config.maxLeadTones, 1));
 };
+
+
+var currentChord = null;
+var leadNoteMap = config.leadNoteMap;
+
+module.exports.setCurrentChord = function(chord) {
+    currentChord = chord;
+
+    leadNoteMap = generateLeadNoteMap(chord);
+};
+
+module.exports.getCurrentChord = function() {
+    return currentChord;
+};
+
+module.exports.getCurrentLeadNoteMap = function() {
+    return leadNoteMap;
+};
+
 
 

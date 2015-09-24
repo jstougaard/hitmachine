@@ -25,15 +25,18 @@ module.exports = {
         },
         kick: {
             volume: 100,
-            muted: false
+            muted: false,
+            note: 60
         },
         snare: {
             volume: 100,
-            muted: false
+            muted: false,
+            note: 62
         },
         hihat: {
             volume: 100,
-            muted: false
+            muted: false,
+            note: 65
         },
         pads: {
             volume: 100,

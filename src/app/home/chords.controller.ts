@@ -1,18 +1,15 @@
 /// <reference path="../../types/types.ts"/>
 
 
-class ChordsController {
+class ChordsController extends PlayController {
 
-  /* @ngInject */
-  constructor(
-    private $rootScope: core.IRootScope,
-    private $scope: ng.IScope,
-    private socket: ng.socketIO.IWebSocket,
-    public MusicService: core.IMusicService
-  ) {
-    $rootScope.pageTitle = "CHORDS";
-
-  }
+    public noteKeyMap = {
+        49: 1,
+        50: 2,
+        51: 3,
+        52: 4,
+        53: 5
+    };
 
     progressionChanged() {
         console.log("Chord progression changed", this.MusicService.currentProgressionName);
@@ -23,6 +20,11 @@ class ChordsController {
         var pattern = this.MusicService.chordPatterns; //[this.patternTone1, this.patternTone2, this.patternTone3];
         console.log("Chord pattern changed", pattern);
         this.socket.emit("update-chord-pattern", pattern);
+    }
+
+    resetPattern(patternIndex) {
+        this.MusicService.chordPatterns[patternIndex] = [];
+        this.patternChanged();
     }
 
 }

@@ -52,7 +52,9 @@ var vendoredLibs = [
     config.bowerDir + '/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
     config.bowerDir + '/angular-socket-io/socket.js',
     config.bowerDir + '/underscore/underscore.js',
-    config.bowerDir + '/jquery/dist/jquery.js'
+    config.bowerDir + '/jquery/dist/jquery.js',
+    config.bowerDir + '/screenfull/dist/screenfull.js',
+    config.bowerDir + '/angular-screenfull/dist/angular-screenfull.js'
 ];
 
 // Will be filled automatically
@@ -131,7 +133,7 @@ gulp.task('ts-compile', function () {
   return tsResult.js.pipe(isDist ? $.concat('app.js') : $.util.noop())
     .pipe($.ngAnnotate({gulpWarnings: false}))
     .pipe(isDist ? $.uglify() : $.util.noop())
-    .pipe($.wrap({ src: './iife.txt'}))
+    .pipe(isDist ? $.wrap({ src: './iife.txt'}) : $.util.noop())
     .pipe(gulp.dest(destinations.js))
     ; //.pipe(browserSync.reload({stream: true}));
 });

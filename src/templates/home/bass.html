@@ -1,5 +1,8 @@
 <div class="page-header">
-    <h1>Bass</h1>
+    <h1>
+        <button type="button" class="btn btn-success btn-sm" ng-click="fullscreenCtrl.toggleFullscreen()"><i class="fa fa-music"></i></button>
+        Bass
+    </h1>
 </div>
 
 <h4 class="pull-left">Volume</h4>
@@ -9,7 +12,22 @@
     </div>
 </div>
 
+<div class="well">
+    <div class="canvas-container">
+        <canvas id="bass_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.MusicService.bassPattern" base-pattern="vm.MusicService.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat" rhythm></canvas>
+    </div>
 
-<div class="canvas-container">
-    <canvas id="bass_rhythm" class="rhythm-pattern" width="1200" height="100" pattern="vm.MusicService.bassPattern" base-pattern="vm.MusicService.basePattern" call-on-change="vm.patternChanged()" active-cell="vm.MusicService.activeBeat" rhythm></canvas>
+    <button class="btn btn-danger" ng-click="vm.resetPattern();"><i class="fa fa-trash-o"></i> Reset pattern</button>
+</div>
+
+<div class="instrument-player bass-player" ngsf-fullscreen="fullscreenCtrl">
+    <h1 class="fullscreen-header">Bass</h1>
+
+    <div class="row lead-notes">
+        <div class="col-xs-12" ng-repeat="(key, note) in vm.noteKeyMap">
+            <div class="well note"  my-touchstart="vm.noteOn(note)" my-touchend="vm.noteOff(note)" ng-class="{'active': vm.notesOn.indexOf(note)!==-1}">{{note}}</div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary fullscreen-close" ng-click="fullscreenCtrl.toggleFullscreen()"><span class="fa fa-times"></span> Exit instrument mode</button>
 </div>
