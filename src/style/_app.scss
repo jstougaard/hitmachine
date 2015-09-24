@@ -151,6 +151,7 @@ canvas.rhythm-pattern {
     font-size: 1.5em;
     height: 50px;
     width: 50px;
+    overflow: hidden;
     transition: background-color 0.2s ease;
     background-color:transparent;
     cursor:pointer;
@@ -160,7 +161,14 @@ canvas.rhythm-pattern {
     &[class^="icon-"], &[class*=" icon-"] {
       background-size: 35px;
     }
-
+    &:after {
+      position:relative;
+      top:10px;
+      font-family: "FontAwesome";
+      content:"\f014";
+      opacity:0;
+      transition: all 0.2s ease;
+    }
     &:hover {
       background:$brand-success;
       color:transparent;
@@ -173,6 +181,8 @@ canvas.rhythm-pattern {
         font-family: "FontAwesome";
         content:"\f014";
         color:white;
+        opacity:1;
+        top: 0;
       }
     }
   }
