@@ -58,5 +58,32 @@ module.exports.getCurrentLeadNoteMap = function() {
     return leadNoteMap;
 };
 
+var songProgression = [];
+module.exports.setCurrentSongProgression = function(progression) {
+    var maxId = 0;
+    // Create objects and find max id
+    songProgression = progression.map(function(elem) {
+        if (typeof elem.id === "undefined") {
+            return { name: elem, id: null };
+        } else {
+            maxId = Math.max(maxId, elem.id);
+            return elem;
+        }
+    });
+
+    // Set ids
+    var nextId = maxId + 1;
+    songProgression = songProgression.map(function(elem) {
+        if (elem.id === null) {
+            elem.id = nextId;
+            nextId++;
+        }
+        return elem;
+    });
+};
+module.exports.getCurrentSongProgression = function() {
+    return songProgression;
+}
+
 
 

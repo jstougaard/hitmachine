@@ -3,10 +3,8 @@
 
 class RhythmController {
 
-    public nextProgression: number = null;
+    public nextProgressionId: number = null;
 
-
-    public progression = ["test1", "test2"];
 
   /* @ngInject */
   constructor(
@@ -18,8 +16,8 @@ class RhythmController {
     $rootScope.pageTitle = "RHYTHM";
     //console.log("Service", this.MusicService.basePattern, this.MusicService.basePattern.length);
     var _this = this;
-    this.socket.on("set-progression-index", function() {
-      _this.nextProgression = null;
+    this.socket.on("set-current-progression-id", function() {
+      _this.nextProgressionId = null;
     });
 
   }
@@ -29,10 +27,38 @@ class RhythmController {
         this.socket.emit("update-base-pattern", this.MusicService.basePattern);
     }
 
-    gotoProgression(index) {
+    setNextProgression(id) {
         //console.log("Goto progression", index);
-        this.nextProgression = index;
-        this.socket.emit("goto-song-progression", index);
+        this.nextProgressionId = id;
+        this.socket.emit("set-next-progression-id", id);
+    }
+
+    getProgressionObjectFromName(name) {
+        return {
+            name: name,
+            id: null
+        };
+    }
+
+    itemMoved(oldIndex) {
+        //console.log("Was moved", oldIndex);
+        this.MusicService.songProgression.splice(oldIndex, 1);
+        this.progressionChanged();
+    }
+
+    itemAdded(event) {
+        //console.log("New item", event);
+        this.progressionChanged();
+    }
+
+    removeItem(index) {
+        this.MusicService.songProgression.splice(index, 1);
+        this.progressionChanged();
+    }
+
+    progressionChanged() {
+        //console.log("Changed", this.MusicService.songProgression);
+        this.socket.emit("update-song-progression", this.MusicService.songProgression);
     }
 
 }

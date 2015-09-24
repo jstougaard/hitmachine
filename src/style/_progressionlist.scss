@@ -11,11 +11,32 @@ ul.progression-list > li {
  * The dnd-list should always have a min-height,
  * otherwise you can't drop to it once it's empty
  */
+$progression-arrow-size: 15px;
 ul.progression-list {
   min-height: 42px;
-  padding: 0.5em;
+  padding: 0 10px 10px ($progression-arrow-size + 10px);
   border: 2px dashed $gray-light;
   border-radius: $btn-border-radius-base;
+  margin-top:-12px;
+}
+$progression-arrow-size: 15px;
+ul.progression-list:before{
+  content:"";
+  display:inline-block;
+  position:absolute;
+  border:$progression-arrow-size dashed $gray-light;
+  border-color:transparent transparent transparent $gray-light;
+  top:calc(50% - #{$progression-arrow-size});
+  left:0px;
+}
+ul.progression-list:after{
+  content:"";
+  display:inline-block;
+  position:absolute;
+  border:($progression-arrow-size - 1) solid white;
+  border-color:transparent transparent transparent white;
+  top:calc(50% - #{$progression-arrow-size - 1});
+  left:-2px;
 }
 
 /**
@@ -40,7 +61,7 @@ ul.progression-list .dndPlaceholder {
   min-width: 50px;
   position: relative;
   vertical-align: middle;
-  margin-right: 0.5em;
+  margin-right: 10px;
   border-radius: $btn-border-radius-base;
 }
 
@@ -52,7 +73,7 @@ ul.progression-list .dndPlaceholder {
  * browsers we can use event.offsetY for this.
  */
 ul.progression-list li {
-  margin-bottom: -1px;
+  margin:10px 10px 0 0;
 }
 
 /**
@@ -61,4 +82,35 @@ ul.progression-list li {
 ul.progression-list li.selected {
   background-color: #dff0d8;
   color: #3c763d;
+}
+ul.progression-list button:focus {
+  outline:none;
+
+  &.btn-default {
+    color: $btn-default-color;
+    background-color: $btn-default-bg;
+    border-color: $btn-default-border;
+  }
+  &.btn-info {
+    color: $btn-info-color;
+    background-color: $btn-info-bg;
+    border-color: $btn-info-border;
+  }
+  &.btn-success {
+    color: $btn-success-color;
+    background-color: $btn-success-bg;
+    border-color: $btn-success-border;
+  }
+}
+ul.progression-list .btn-success {
+  border-radius:$btn-border-radius-base !important;
+}
+.progression-items .btn-progression {
+  width:100%;
+  margin-bottom:0.5em;
+  text-align: left;
+  text-transform: capitalize;
+  .fa {
+    margin-right:0.5em;
+  }
 }

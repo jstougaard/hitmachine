@@ -6,7 +6,9 @@ class MusicService implements core.IMusicService {
     public isPlaying: boolean = false;
     public bpm: number = 120;
 
-    public currentProgressionIndex: number = 0;
+    public currentProgressionId: number = null;
+
+    public songProgressionElements: Array<string> = [];
     public songProgression: Array<string> = [];
 
     public basePattern: Array<core.RhythmBlock> = [];
@@ -73,8 +75,9 @@ class MusicService implements core.IMusicService {
         this.socket.on("start-beat", this.onBeatStarted.bind(this));
         this.socket.on("stop-beat", this.onBeatStopped.bind(this));
         this.socket.on("beat", this.onBeat.bind(this));
-        this.socket.on("define-song-progression", this.setSongProgression.bind(this));
-        this.socket.on("set-progression-index", this.setCurrentProgressionIndex.bind(this));
+        this.socket.on("define-song-progression-elements", this.setSongProgressionElements.bind(this));
+        this.socket.on("update-song-progression", this.setSongProgression.bind(this));
+        this.socket.on("set-current-progression-id", this.setCurrentProgressionId.bind(this));
         this.socket.on("define-chord-progressions", this.setChordProgressions.bind(this));
         this.socket.on("set-chord-progression", this.setCurrentChordProgression.bind(this));
         this.socket.on("update-base-pattern", this.onNewBasePattern.bind(this));
@@ -128,13 +131,16 @@ class MusicService implements core.IMusicService {
         this.isPlaying = false;
     }
 
+    setSongProgressionElements(elements: Array<string>) {
+        this.songProgressionElements = elements;
+    }
+
     setSongProgression(progression: Array<string>) {
-        console.log("Set progression", progression);
         this.songProgression = progression;
     }
 
-    setCurrentProgressionIndex(progressionIndex: number) {
-        this.currentProgressionIndex = progressionIndex;
+    setCurrentProgressionId(progressionId: number) {
+        this.currentProgressionId = progressionId;
     }
 
     setChordProgressions(progressions: Array<string>) {

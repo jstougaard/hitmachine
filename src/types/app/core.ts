@@ -13,7 +13,8 @@ declare module core {
     }
 
     interface IMusicService {
-        currentProgressionIndex: number;
+        currentProgressionId: number;
+        songProgressionElements: Array<string>;
         songProgression: Array<string>;
         basePattern: Array<RhythmBlock>;
         bassPattern: Array<RhythmBlock>;

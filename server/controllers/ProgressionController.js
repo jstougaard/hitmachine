@@ -13,8 +13,9 @@ function ProgressionController(io, musicplayer) {
     this._io = io;
 
     this._loopCount = -1;
-    this._progressionCount = -1;
-    this.nextProgressionIndex = null;
+    this._currentProgressionElement = null;
+    this.nextProgressionId = null;
+    musicState.setCurrentSongProgression(config.songProgression);
 
     this.registerBeatEvents();
 }
@@ -26,11 +27,18 @@ function ProgressionController(io, musicplayer) {
 ProgressionController.prototype.registerSocketEvents = function(socket) {
     var _this = this;
 
-    socket.emit('define-song-progression', config.songProgression);
-    socket.emit('set-progression-index', this._progressionCount);
+    socket.emit('define-song-progression-elements', Object.keys(config.progressionElements));
+    this.emitProgressionId(socket);
+    this.emitProgression(socket);
 
-    socket.on('goto-song-progression', function(index) {
-        _this.nextProgressionIndex = index;
+
+    socket.on('update-song-progression', function(progression) {
+        musicState.setCurrentSongProgression(progression);
+        _this._io.emit("update-song-progression", musicState.getCurrentSongProgression());
+    });
+
+    socket.on('set-next-progression-id', function(progressionId) {
+        _this.nextProgressionId = progressionId;
     });
 }
 
@@ -55,22 +63,61 @@ ProgressionController.prototype.registerBeatEvents = function() {
 
 ProgressionController.prototype.advanceProgression = function() {
     // Increment
-    var next = this.nextProgressionIndex || (this._progressionCount + 1);
-    this._progressionCount = next % config.songProgression.length;
-    this.nextProgressionIndex = null;
+    var nextIndex = this.getNextProgressionIndex();
 
     // Find elements
-    var currentElement = config.songProgression[this._progressionCount];
-    var progressionElements = config.progressionElements[currentElement];
-
-    //console.log("Run progression element", progressionElements);
+    this._currentProgressionElement = musicState.getCurrentSongProgression()[nextIndex];
+    var progressionElements = config.progressionElements[this._currentProgressionElement.name];
 
     // Set volumes
     Object.keys(config.instrumentConfig).forEach(function(instrument) {
         config.instrumentConfig[instrument].muted = progressionElements.indexOf(instrument) >= 0 ? false : true;
     });
 
-    this._io.emit('set-progression-index', this._progressionCount);
+    this.emitProgressionId();
+};
+
+ProgressionController.prototype.getNextProgressionIndex = function() {
+    var next = null;
+
+
+    if (this.nextProgressionId !== null) {
+        // Use next as requested
+
+        musicState.getCurrentSongProgression().forEach(function(item, index) {
+            if (item.id === this.nextProgressionId) {
+                next = index;
+            }
+        }, this);
+
+        this.nextProgressionId = null;
+    }
+
+    if (next === null && this._currentProgressionElement !== null) {
+        // Determine my index and increment
+        musicState.getCurrentSongProgression().forEach(function(item, index) {
+            if (item.id === this._currentProgressionElement.id) {
+                next = index + 1;
+            }
+        }, this);
+
+        next = next % musicState.getCurrentSongProgression().length;
+    }
+
+    return next || 0;
+}
+
+ProgressionController.prototype.emitProgression = function(socket) {
+    var channel = socket || this._io;
+    channel.emit('update-song-progression', musicState.getCurrentSongProgression());
+};
+
+ProgressionController.prototype.emitProgressionId = function(socket) {
+    if (!this._currentProgressionElement) return;
+
+    var channel = socket || this._io;
+    channel.emit('set-current-progression-id', this._currentProgressionElement.id);
+
 };
 
 

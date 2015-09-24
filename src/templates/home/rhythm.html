@@ -28,29 +28,29 @@
     <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Progression</h4></div>
 </div>
 <div class="row">
-    <div class="col-xs-4 col-sm-2 col-lg-2">
+    <div class="col-xs-4 col-sm-2 col-lg-2 progression-items">
         <div class="btn btn-primary btn-progression"
-             ng-repeat="name in vm.MusicService.songProgression track by $index"
-             dnd-draggable="name"
+             ng-repeat="name in vm.MusicService.songProgressionElements track by $index"
+             dnd-draggable="vm.getProgressionObjectFromName(name)"
+             dnd-copied="vm.itemAdded(event)"
              dnd-effect-allowed="copy"
-                ><i class="fa fa-plus"></i> {{name}}</div>
+                ><i class="fa fa-arrows"></i> {{name}}</div>
 
     </div>
 
     <div class="col-xs-8 col-sm-10 col-lg-10">
         <ul class="progression-list"
-            dnd-list="vm.progression"
+            dnd-list="vm.MusicService.songProgression"
             dnd-horizontal-list="true">
 
-            <li ng-repeat="item in vm.progression track by $index"
+            <li ng-repeat="item in vm.MusicService.songProgression track by item.id"
                 dnd-draggable="item"
-                dnd-moved="vm.progression.splice($index, 1)"
+                dnd-moved="vm.itemMoved($index)"
                 dnd-effect-allowed="move"
-                dnd-selected="vm.nextProgression = $index"
-                class="btn btn-default btn-progression"
-                ng-class="{'selected': $index == vm.nextProgression, 'btn-success': $index == vm.MusicService.currentProgressionIndex}"
+                class="btn-group"
                     >
-                {{item}}
+                        <button class="btn btn-default" ng-click="vm.setNextProgression(item.id)" ng-class="{'btn-info': item.id == vm.nextProgressionId, 'btn-success': item.id == vm.MusicService.currentProgressionId}">{{item.name}}</button>
+                        <button class="btn btn-default" ng-click="vm.removeItem($index)" ng-hide="item.id == vm.MusicService.currentProgressionId" ng-class="{'btn-info': item.id == vm.nextProgressionId}"><i class="fa fa-times"></i></button>
             </li>
 
             <li class="dndPlaceholder"></li>
