@@ -62,7 +62,7 @@ module.exports = {
         "chorus-buildup": [ "chords", "lead", "lead2" ],
         "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads", "lead", "lead2" ] //TODO: crash
     },
-    songProgression: [ "verse", "verse-bridge", "chorus-buildup", "chorus" ]
+    songProgression: [ "chorus" ]
 
 };
 
