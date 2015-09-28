@@ -37,7 +37,8 @@ function generateLeadNoteMap(newChord) {
     var leadNoteMap = noteMapBelow.concat(generateNoteMapFromPattern(config.leadBaseNote, leadNotePattern)).sort();
 
     // Limit array size
-    return leadNoteMap.slice(Math.max(leadNoteMap.length - config.maxLeadTones, 1));
+    //return leadNoteMap.slice(Math.max(leadNoteMap.length - config.maxLeadTones, 1));
+    return leadNoteMap.slice(0, 9);
 };
 
 
