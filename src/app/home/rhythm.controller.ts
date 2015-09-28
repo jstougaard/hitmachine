@@ -27,6 +27,11 @@ class RhythmController {
         this.socket.emit("update-base-pattern", this.MusicService.basePattern);
     }
 
+    resetPattern() {
+        this.MusicService.basePattern = [];
+        this.patternChanged();
+    }
+
     setNextProgression(id) {
         //console.log("Goto progression", index);
         this.nextProgressionId = id;
@@ -60,6 +65,8 @@ class RhythmController {
         //console.log("Changed", this.MusicService.songProgression);
         this.socket.emit("update-song-progression", this.MusicService.songProgression);
     }
+
+
 
 }
 

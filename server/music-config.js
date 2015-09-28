@@ -1,7 +1,7 @@
 module.exports = {
     noteResolution: 16,
     notesPerBar: 4,
-    leadNotePattern: [ 1, 3, 5, 8, 10 ],
+    leadNotePattern: [ 1, 3, 4, 5, 8, 10 ],
     leadBaseNote: 72,
     leadDelayMarginPercent: 10,
     maxLeadTones: 9,

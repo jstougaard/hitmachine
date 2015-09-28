@@ -163,8 +163,9 @@ canvas.rhythm-pattern {
       position:relative;
       top:10px;
       font-family: "FontAwesome";
-      content:"\f014";
+      content:"";
       opacity:0;
+      color:white;
       transition: all 0.2s ease;
     }
     &:hover {
@@ -176,9 +177,8 @@ canvas.rhythm-pattern {
       }
 
       &:after {
-        font-family: "FontAwesome";
         content:"\f014";
-        color:white;
+
         opacity:1;
         top: 0;
       }
