@@ -13,6 +13,7 @@ angular
     "hitmachine.home",
     "ui.router.state",
     'ui.slider',
+    'ui.bootstrap',
     "btford.socket-io"
   ])
   .config(appConfig);

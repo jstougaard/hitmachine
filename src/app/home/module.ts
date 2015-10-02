@@ -39,7 +39,7 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
         }
     });
     $stateProvider.state("lead", {
-        url: "/lead",
+        url: "/lead1",
         controller: "LeadController as vm",
         templateUrl: "home/lead.html",
         resolve: {
@@ -55,6 +55,86 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
         resolve: {
             name: function() {
                 return "lead2";
+            }
+        }
+    });
+    $stateProvider.state("lead3", {
+        url: "/lead3",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead3";
+            }
+        }
+    });
+    $stateProvider.state("lead4", {
+        url: "/lead4",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead4";
+            }
+        }
+    });
+    $stateProvider.state("lead5", {
+        url: "/lead5",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead5";
+            }
+        }
+    });
+    $stateProvider.state("lead6", {
+        url: "/lead6",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead6";
+            }
+        }
+    });
+    $stateProvider.state("lead7", {
+        url: "/lead7",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead7";
+            }
+        }
+    });
+    $stateProvider.state("lead8", {
+        url: "/lead8",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead8";
+            }
+        }
+    });
+    $stateProvider.state("lead9", {
+        url: "/lead9",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead9";
+            }
+        }
+    });
+    $stateProvider.state("lead10", {
+        url: "/lead10",
+        controller: "LeadController as vm",
+        templateUrl: "home/lead.html",
+        resolve: {
+            name: function() {
+                return "lead10";
             }
         }
     });

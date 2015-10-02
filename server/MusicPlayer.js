@@ -21,6 +21,8 @@ function MusicPlayer(connector, options) {
     this._heart = null;
     this._beatCount = 0;
     this._beatMessageQueue = [];
+
+    this.setMaxListeners(20);
 }
 
 // Extend EventEmitter
