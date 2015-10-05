@@ -136,7 +136,13 @@ PlayController.prototype.isNotePlaying = function(noteName) {
 }
 
 PlayController.prototype.getConfig = function() {
-    return config.instrumentConfig[this.name] || {};
+    if (!config.instrumentConfig[this.name]) {
+        config.instrumentConfig[this.name] = {
+            muted: false,
+            volume: 100
+        };
+    }
+    return config.instrumentConfig[this.name];
 };
 
 PlayController.prototype.isMuted = function() {
