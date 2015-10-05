@@ -84,12 +84,18 @@ vendoredLibs.forEach(function(lib) {
 });
 
 ['dev', 'dist'].forEach(function (env) {
-  injectPaths[env] = injectLibsPaths[env].concat([
-    destinations.js + "/app/**/module.js",
-    isDist ? destinations.js + '/app.js' : destinations.js + "/app/**/*.js",
-    destinations.js + "/templates.js",
-    destinations.css + "/*.css"
-  ]);
+    var paths = [destinations.js + "/app/**/module.js"];
+    if (isDist) {
+        paths.push(destinations.js + '/app.js');
+    } else {
+        paths.push(destinations.js + "/app/app.js");
+        paths.push(destinations.js + "/app/core/*.js");
+        paths.push(destinations.js + "/app/**/*.js");
+    }
+    paths.push(destinations.js + "/templates.js");
+    paths.push(destinations.css + "/*.css");
+
+    injectPaths[env] = injectLibsPaths[env].concat(paths);
 });
 
 var tsProject = $.typescript.createProject({
