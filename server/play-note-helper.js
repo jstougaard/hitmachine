@@ -24,7 +24,6 @@ var getDrumNote = function(drumName) {
 
 var noteStrategies = {
     "lead": getLeadNote,
-    "lead2": getLeadNote,
     "chords": getChordNote,
     "bass": getBassNote,
     "drums": getDrumNote
@@ -32,6 +31,10 @@ var noteStrategies = {
 
 
 module.exports.getNoteToPlay = function(name, noteName) {
+    if (name.indexOf("lead") === 0) {
+        name = "lead";
+    }
+
     if (typeof noteStrategies[name] !== "undefined") {
         return noteStrategies[name](noteName);
     }

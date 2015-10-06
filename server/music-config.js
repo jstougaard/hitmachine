@@ -52,10 +52,10 @@ module.exports = {
     },
     chordProgressionsPerElement: 2,
     progressionElements: {
-        "verse": [ "kick", "snare", "bass", "lead", "lead2", "pads" /*, "chords"*/],
-        "verse-bridge": [ "kick", "snare", "hihat", "bass", "pads", "lead", "lead2"],
-        "chorus-buildup": [ "chords", "lead", "lead2" ],
-        "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads", "lead", "lead2" ] //TODO: crash
+        "verse": [ "kick", "snare", "bass", "pads" /*, "chords"*/],
+        "verse-bridge": [ "kick", "snare", "hihat", "bass", "pads"],
+        "chorus-buildup": [ "chords"],
+        "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads"] //TODO: crash
     },
     songProgression: [ "chorus" ]
 

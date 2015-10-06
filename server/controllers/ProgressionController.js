@@ -71,6 +71,8 @@ ProgressionController.prototype.advanceProgression = function() {
 
     // Set volumes
     Object.keys(config.instrumentConfig).forEach(function(instrument) {
+        if (instrument.indexOf("lead") === 0) return; // Do not mute leads
+
         config.instrumentConfig[instrument].muted = progressionElements.indexOf(instrument) >= 0 ? false : true;
     });
 
