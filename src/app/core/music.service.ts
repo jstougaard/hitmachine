@@ -25,14 +25,6 @@ class MusicService implements core.IMusicService {
         "kick": []
     };
 
-    public lead: core.IMusicComponentConfig = {
-        volume: 100
-    };
-
-    public lead2: core.IMusicComponentConfig = {
-        volume: 100
-    };
-
     public bass: core.IMusicComponentConfig = {
         volume: 100
     };
@@ -55,12 +47,21 @@ class MusicService implements core.IMusicService {
 
     public filterValue: number = null;
 
+    private numberOfLeads: number = 10;
+    private numberOfSounds: number = 20;
+
     private chordTracks: number = 5;  // Define number of chords tracks
 
     /* @ngInject */
     constructor(
         private socket: ng.socketIO.IWebSocket
     ) {
+
+        // Init leads
+        for(var j=1;j<=this.numberOfLeads;j++) {
+            this["lead" + j] = this.getBaseLeadInstrumentConfig();
+            //this["lead" + j].sound = Math.floor(this.numberOfSounds / this.numberOfLeads ) * (j - 1);
+        }
 
         // Init chord pattern tracks
         for(var i=0;i<this.chordTracks;i++) {
@@ -69,6 +70,13 @@ class MusicService implements core.IMusicService {
 
         this.registerEvents();
         //$scope.$on('$destroy', this.deRegisterEvents.bind(this));
+    }
+
+    getBaseLeadInstrumentConfig() :core.IMusicComponentConfig {
+        return {
+            volume: 100,
+            sound: 0
+        };
     }
 
     registerEvents() {
@@ -87,6 +95,7 @@ class MusicService implements core.IMusicService {
         this.socket.on("adjust-bpm", this.onAdjustBPM.bind(this));
         this.socket.on("adjust-volume", this.onAdjustVolume.bind(this));
         this.socket.on("adjust-filter-value", this.onAdjustFilter.bind(this));
+        this.socket.on("change-sound", this.onInstrumentSoundChanged.bind(this));
     }
 
     onNewBasePattern(pattern) {
@@ -117,6 +126,12 @@ class MusicService implements core.IMusicService {
 
     onAdjustFilter(filterValue) {
         this.filterValue = filterValue;
+    }
+
+    onInstrumentSoundChanged(instrument, sound) {
+        if (this[instrument]) {
+            this[instrument].sound = sound;
+        }
     }
 
     onBeat(beatNumber) {
@@ -176,6 +191,28 @@ class MusicService implements core.IMusicService {
 
     filterChanged() {
         this.socket.emit("adjust-filter-value", this.filterValue);
+    }
+
+    prevInstrumentSound(instrumentName:string) {
+        console.log("Prev", instrumentName);
+        this[instrumentName].sound--;
+        if (this[instrumentName].sound < 0) {
+            this[instrumentName].sound = this.numberOfSounds;
+        }
+        this.updateInstrumentSound(instrumentName);
+    }
+
+    nextInstrumentSound(instrumentName:string) {
+        console.log("Next", instrumentName);
+        this[instrumentName].sound++;
+        if (this[instrumentName].sound > this.numberOfSounds) {
+            this[instrumentName].sound = 0;
+        }
+        this.updateInstrumentSound(instrumentName);
+    }
+
+    updateInstrumentSound(instrument) {
+        this.socket.emit("change-sound", instrument, this[instrument].sound);
     }
 
 }

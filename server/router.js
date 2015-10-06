@@ -9,7 +9,7 @@ var controllers = [
     "DrumsController",
     "ChordController",
     "PadsController",
-    ["PlayController", "lead"],
+    ["PlayController", "lead1"],
     ["PlayController", "lead2"],
     ["PlayController", "lead3"],
     ["PlayController", "lead4"],

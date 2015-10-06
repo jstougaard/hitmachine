@@ -5,16 +5,11 @@ module.exports = {
     leadBaseNote: 72,
     leadDelayMarginPercent: 10,
     maxLeadTones: 9,
+    numberOfLeads: 10,
+    numberOfLeadSounds: 20,
     bpm: 120,
     instrumentConfig: {
-        lead: {
-            volume: 100,
-            muted: false
-        },
-        lead2: {
-            volume: 100,
-            muted: false
-        },
+
         bass: {
             volume: 100,
             muted: false

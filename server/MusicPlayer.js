@@ -58,6 +58,10 @@ MusicPlayer.prototype.playNoteNow = function(instrument, note, volume) {
     this.sendMessage(instrument + " note " + note  + " " + volume);
 };
 
+MusicPlayer.prototype.changeSound = function(instrument, newSound) {
+  this.sendMessage(instrument + " changeProgram " + newSound);
+};
+
 MusicPlayer.prototype._sendMessageOnBeat = function(message) {
     this._beatMessageQueue.push(message);
 };

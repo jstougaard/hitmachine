@@ -32,6 +32,7 @@ declare module core {
     }
 
     interface IMusicComponentConfig {
-        volume: number;
+        volume?: number;
+        sound?: number;
     }
 }

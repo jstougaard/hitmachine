@@ -44,7 +44,7 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
         templateUrl: "home/lead.html",
         resolve: {
             name: function() {
-                return "lead";
+                return "lead1";
             }
         }
     });
