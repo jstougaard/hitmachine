@@ -1,5 +1,6 @@
 var utils = require('../music-utils'),
-    musicState = require('../music-state'),
+    //musicState = require('../music-state'),
+    noteHelper = require('../play-note-helper'),
     config = require('../music-config'),
     rhythm = require('../rhythm-keeper');
 
@@ -66,7 +67,8 @@ BassController.prototype.getConfig = function() {
 };
 
 BassController.prototype.getBaseNote = function() {
-    return (musicState.getCurrentChord()[0] || 60) - 12;
+    //return (musicState.getCurrentChord()[0] || 60) - 12;
+    return noteHelper.getNoteToPlay(this.name, 1);
 };
 
 BassController.prototype.isMuted = function() {
