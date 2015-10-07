@@ -15,7 +15,7 @@ var getChordNote = function(noteName) {
 };
 
 var getBassNote = function(noteName) {
-    return musicState.getCurrentChord()[getNoteIndexFromName(noteName)];
+    return musicState.getCurrentChord()[getNoteIndexFromName(noteName)] - 12; // Lower 1 octave
 };
 
 var getDrumNote = function(drumName) {
