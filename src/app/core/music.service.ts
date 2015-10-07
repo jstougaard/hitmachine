@@ -48,7 +48,7 @@ class MusicService implements core.IMusicService {
     public filterValue: number = null;
 
     private numberOfLeads: number = 10;
-    private numberOfSounds: number = 20;
+    private numberOfSounds: number = 127;
 
     private chordTracks: number = 5;  // Define number of chords tracks
 
@@ -196,7 +196,7 @@ class MusicService implements core.IMusicService {
     prevInstrumentSound(instrumentName:string) {
         console.log("Prev", instrumentName);
         this[instrumentName].sound--;
-        if (this[instrumentName].sound < 0) {
+        if (this[instrumentName].sound <= 0) {
             this[instrumentName].sound = this.numberOfSounds;
         }
         this.updateInstrumentSound(instrumentName);
@@ -206,7 +206,7 @@ class MusicService implements core.IMusicService {
         console.log("Next", instrumentName);
         this[instrumentName].sound++;
         if (this[instrumentName].sound > this.numberOfSounds) {
-            this[instrumentName].sound = 0;
+            this[instrumentName].sound = 1;
         }
         this.updateInstrumentSound(instrumentName);
     }
