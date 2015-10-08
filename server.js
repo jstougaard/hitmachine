@@ -27,6 +27,10 @@ app.use(express.static(__dirname + '/build'));
 io.on('connection', function (socket) {
     console.log("New connection");
 
+    socket.on('is-web', function() {
+       socket.join("web");
+    });
+
     router.registerSocketEvents(socket);
 
     // when the user disconnects.. perform this

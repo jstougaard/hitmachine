@@ -56,7 +56,7 @@ RhythmController.prototype.registerBeatEvents = function() {
     var _this = this;
 
     this._musicplayer.addListener("beat", function(beatCount) {
-        _this._io.emit("beat", beatCount);
+        _this._io.to("web").emit("beat", beatCount);
     });
 
     this._musicplayer.addListener("loop", function() {

@@ -6,7 +6,7 @@ module.exports = {
     leadDelayMarginPercent: 10,
     maxLeadTones: 9,
     numberOfLeads: 10,
-    numberOfLeadSounds: 127,
+    numberOfLeadSounds: 10,
     bpm: 120,
     instrumentConfig: {
 

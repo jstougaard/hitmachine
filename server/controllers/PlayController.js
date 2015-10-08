@@ -29,9 +29,14 @@ function PlayController(name, io, musicplayer) {
  */
 PlayController.prototype.registerSocketEvents = function(socket) {
 
+    socket.emit(this.name + '/init-lead', this.getConfig().sound, config.numberOfLeadSounds);
+
     socket.on(this.name + '/start-note', this._onStartNoteRequest.bind(this));
+    socket.on(this.name + '/start-notes', this._onStartMultipleNotes.bind(this));
 
     socket.on(this.name + '/stop-note', this._onStopNoteRequest.bind(this));
+    socket.on(this.name + '/stop-notes', this._onStopMultipleNotes.bind(this));
+
 
 };
 
@@ -41,6 +46,18 @@ PlayController.prototype.registerSocketEvents = function(socket) {
 PlayController.prototype.registerBeatEvents = function() {
 
     this._musicplayer.addListener("beat", this._onBeat.bind(this));
+};
+
+PlayController.prototype._onStartMultipleNotes = function(notes) {
+    if (notes && Array.isArray(notes)) {
+        notes.forEach(this._onStartNoteRequest, this);
+    }
+};
+
+PlayController.prototype._onStopMultipleNotes = function(notes) {
+    if (notes && Array.isArray(notes)) {
+        notes.forEach(this._onStopNoteRequest, this);
+    }
 };
 
 PlayController.prototype._onStartNoteRequest = function(noteName) {
@@ -139,7 +156,8 @@ PlayController.prototype.getConfig = function() {
     if (!config.instrumentConfig[this.name]) {
         config.instrumentConfig[this.name] = {
             muted: false,
-            volume: 100
+            volume: 100,
+            sound: 1
         };
     }
     return config.instrumentConfig[this.name];

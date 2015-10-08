@@ -68,6 +68,8 @@ class MusicService implements core.IMusicService {
             this.chordPatterns.push([]);
         }
 
+        socket.emit("is-web");
+
         this.registerEvents();
         //$scope.$on('$destroy', this.deRegisterEvents.bind(this));
     }
