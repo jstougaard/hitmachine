@@ -8,8 +8,7 @@ function HealthController(io, musicplayer) {
     this._musicplayer = musicplayer;
 
     this.pingInterval = 1000;
-
-    this.startPinging();
+    this.intervalTimer = null;
 }
 
 /**
@@ -17,15 +16,26 @@ function HealthController(io, musicplayer) {
  * @param socket
  */
 HealthController.prototype.registerSocketEvents = function(socket) {
-
+    if (!this.isPinging()) {
+        this.startPinging();
+    }
 };
 
 HealthController.prototype.startPinging = function() {
-    return setInterval(this.doPing, this.pingInterval);
+    this.intervalTimer = setInterval(this.doPing, this.pingInterval);
 };
 
 HealthController.prototype.doPing = function() {
   this._io.emit("ping");
+};
+
+HealthController.prototype.stopPinging = function() {
+    clearInterval(this.intervalTimer);
+    this.intervalTimer = null;
+};
+
+HealthController.prototype.isPinging = function() {
+    return this.intervalTimer !== null;
 };
 
 module.exports = HealthController;
