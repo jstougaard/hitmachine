@@ -52,6 +52,8 @@ class MusicService implements core.IMusicService {
 
     private chordTracks: number = 5;  // Define number of chords tracks
 
+    private currentlyStaged = {};
+
     /* @ngInject */
     constructor(
         private socket: ng.socketIO.IWebSocket
@@ -77,7 +79,8 @@ class MusicService implements core.IMusicService {
     getBaseLeadInstrumentConfig() :core.IMusicComponentConfig {
         return {
             volume: 100,
-            sound: 0
+            sound: 0,
+            onStage: false
         };
     }
 
@@ -98,6 +101,7 @@ class MusicService implements core.IMusicService {
         this.socket.on("adjust-volume", this.onAdjustVolume.bind(this));
         this.socket.on("adjust-filter-value", this.onAdjustFilter.bind(this));
         this.socket.on("change-sound", this.onInstrumentSoundChanged.bind(this));
+        this.socket.on("selected-for-stage", this.onSelectedForStage.bind(this));
     }
 
     onNewBasePattern(pattern) {
@@ -134,6 +138,10 @@ class MusicService implements core.IMusicService {
         if (this[instrument]) {
             this[instrument].sound = sound;
         }
+    }
+
+    onSelectedForStage(playerId, instrumentId) {
+        this.currentlyStaged[playerId] = instrumentId;
     }
 
     onBeat(beatNumber) {
@@ -215,6 +223,15 @@ class MusicService implements core.IMusicService {
 
     updateInstrumentSound(instrument) {
         this.socket.emit("change-sound", instrument, this[instrument].sound);
+    }
+
+    isOnStage(instrument) {
+        for (var index in this.currentlyStaged) {
+            if (this.currentlyStaged[index] === instrument) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -1,5 +1,6 @@
 var utils = require('../music-utils'),
     config = require('../music-config'),
+    musicState = require('../music-state'),
     noteHelper = require('../play-note-helper'),
     rhythm = require('../rhythm-keeper');
 
@@ -66,17 +67,17 @@ PlayController.prototype._onStartNoteRequest = function(noteName) {
 
 
     if (this.isWithinBeatDelay()) {
-        console.log("["+this.name+"] Play note now", noteName);
+        this.logMessage("Play note now! " + noteName);
         this.playNote(noteName, true);
     } else {
-        console.log("["+this.name+"] Play note on beat!", noteName);
+        this.logMessage("Play note on beat! " + noteName);
         this._noteStartQueue.push(noteName);
     }
 
 };
 
 PlayController.prototype._onStopNoteRequest = function(noteName) {
-    console.log("["+this.name+"] Stop note!", noteName);
+    this.logMessage("Stop note! " + noteName);
     if (this.isNoteInStartQueue(noteName)) {
         // Delay stop - starting when ready
         this._noteStopAfterStartedQueue.push(noteName);
@@ -87,14 +88,14 @@ PlayController.prototype._onStopNoteRequest = function(noteName) {
 
 PlayController.prototype._onBeat = function(beatPosition) {
     // Stop notes
-    if (this._noteStopQueue.length > 0 && rhythm.isValidEndPoint(beatPosition)) {
+    if (this._noteStopQueue.length > 0 && (this.isInBuildMode() || rhythm.isValidEndPoint(beatPosition))) {
         this.runStopQueue();
     }
 
     if (this.isMuted()) return; // Muted
 
     // Start notes
-    if (this._noteStartQueue.length > 0 && rhythm.isValidStartingPoint(beatPosition)) {
+    if (this._noteStartQueue.length > 0 && (this.isInBuildMode() || rhythm.isValidStartingPoint(beatPosition))) {
         this.runStartQueue();
     }
 };
@@ -167,6 +168,10 @@ PlayController.prototype.isMuted = function() {
     return this.getConfig(this.name).volume === 0 || this.getConfig(this.name).muted;
 };
 
+PlayController.prototype.isInBuildMode= function() {
+    return musicState.isInstrumentInBuildMode(this.name);
+};
+
 PlayController.prototype.isWithinBeatDelay = function() {
     var now = Date.now();
     var margin = Math.round(60 * 1000 / config.bpm / config.notesPerBar * (config.leadDelayMarginPercent / 100) )
@@ -176,5 +181,9 @@ PlayController.prototype.isWithinBeatDelay = function() {
 PlayController.prototype.getNote = function(noteName) {
   return noteHelper.getNoteToPlay(this.name, noteName);
 };
+
+PlayController.prototype.logMessage = function(message) {
+    console.log("["+(this.isInBuildMode()?'build':'stage')+"]["+this.name+"] " + message);
+}
 
 module.exports = PlayController;

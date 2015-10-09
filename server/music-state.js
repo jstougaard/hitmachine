@@ -84,6 +84,15 @@ module.exports.setCurrentSongProgression = function(progression) {
 };
 module.exports.getCurrentSongProgression = function() {
     return songProgression;
+};
+
+/**
+ * Determine whether the instrument is in build mode - default is false
+ * @param instrumentName
+ * @returns {boolean}
+ */
+module.exports.isInstrumentInBuildMode = function(instrumentName) {
+    return config.instrumentConfig[instrumentName] && config.instrumentConfig[instrumentName].buildMode ? true : false;
 }
 
 

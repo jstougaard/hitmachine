@@ -9,6 +9,13 @@
 </div>
 
 <div class="row">
+    <div class="col-xs-4 col-sm-2 col-lg-2"><h4>On stage</h4></div>
+    <div class="col-xs-8 col-sm-6 col-lg-4">
+        <button class="btn disabled btn-default" ng-class="{'btn-success': vm.MusicService.isOnStage(vm.name)}"><i class="fa" ng-class="vm.MusicService.isOnStage(vm.name) ? 'fa-check' : 'fa-ban'"></i></button>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Volume</h4></div>
     <div class="col-xs-8 col-sm-6 col-lg-4">
         <slider class="volume-slider" floor="0" ceiling="100" step="1" precision="1" ng-model="vm.MusicService[vm.name].volume" change="vm.MusicService.volumeChanged(vm.name)"></slider>

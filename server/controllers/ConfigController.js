@@ -66,7 +66,8 @@ ConfigController.prototype.initLeadConfigs = function() {
         config.instrumentConfig["lead" + i] = {
             volume: 100,
             muted: false,
-            sound: Math.floor(config.numberOfLeadSounds / config.numberOfLeads ) * (i - 1) + 1
+            sound: Math.floor(config.numberOfLeadSounds / config.numberOfLeads ) * (i - 1) + 1,
+            buildMode: true
         };
     }
 }

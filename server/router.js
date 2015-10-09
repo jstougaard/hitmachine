@@ -3,6 +3,7 @@
 var controllerBasePath = "./controllers";
 var controllers = [
     "ConfigController",
+    "StagingController",
     "HealthController",
     "ProgressionController",
     "RhythmController",

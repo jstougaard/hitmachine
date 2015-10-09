@@ -1,6 +1,7 @@
 var events = require('events').EventEmitter,
     heartbeats = require('heartbeats'),
-    utils = require('./music-utils');
+    utils = require('./music-utils'),
+    musicState = require('./music-state');
 
 
 var defaultOptions = {
@@ -10,13 +11,14 @@ var defaultOptions = {
 };
 
 // Constructor
-function MusicPlayer(connector, options) {
-    if (!(this instanceof MusicPlayer)) return new MusicPlayer(connector, options);
+function MusicPlayer(stageConnector, buildConnector, options) {
+    if (!(this instanceof MusicPlayer)) return new MusicPlayer(stageConnector, buildConnector, options);
     this.setOptions(options);
 
     this.lastBeatTime = 0;
 
-    this._connector = connector;
+    this._stageConnector = stageConnector;
+    this._buildConnector = buildConnector;
 
     this._heart = null;
     this._beatCount = 0;
@@ -67,8 +69,29 @@ MusicPlayer.prototype._sendMessageOnBeat = function(message) {
 };
 
 MusicPlayer.prototype.sendMessage = function(message) {
-    this._connector.send(message);
+    var instrument = this._getInstrumentFromMessage(message);
+    if (this._buildConnector && musicState.isInstrumentInBuildMode(instrument)) {
+        this.sendBuildMessage(message);
+    } else {
+        this.sendStageMessage(message);
+    }
 };
+
+MusicPlayer.prototype.sendBuildMessage = function(message) {
+    this._buildConnector.send(message);
+};
+
+MusicPlayer.prototype.sendStageMessage = function(message) {
+    this._stageConnector.send(message);
+};
+
+MusicPlayer.prototype._getInstrumentFromMessage = function(message) {
+    var i = message.indexOf(' ');
+    if (i !== -1) {
+        return message.substring(0, i);
+    }
+    return message;
+}
 
 MusicPlayer.prototype.start = function() {
 

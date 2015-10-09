@@ -22,7 +22,7 @@ HealthController.prototype.registerSocketEvents = function(socket) {
 };
 
 HealthController.prototype.startPinging = function() {
-    this.intervalTimer = setInterval(this.doPing, this.pingInterval);
+    this.intervalTimer = setInterval(this.doPing.bind(this), this.pingInterval);
 };
 
 HealthController.prototype.doPing = function() {

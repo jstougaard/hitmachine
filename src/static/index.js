@@ -11,7 +11,7 @@ $(function () {
 
         var socket = io();
         var selectedId = null;
-        var remoteSelectedId = -1;
+        var selectedRemote = {};
 
         function setSelected(id) {
           $('.brick').removeClass('selected');
@@ -24,7 +24,7 @@ $(function () {
           selectedId = null;
         }
 
-        socket.on('selected', function(_playerId, id){
+        socket.on('selected-for-stage', function(_playerId, id){
           
           if (_playerId == playerId) {
             
@@ -35,13 +35,16 @@ $(function () {
             }
             
           } else {
+              // Remove existing selected
+              if (selectedRemote[_playerId]) {
+                  $('#' + id).addClass('selected-remote');
+              }
 
-            $('#' + remoteSelectedId).removeClass('selected-remote');
-            if (id) {
-              $('#' + id).addClass('selected-remote');
-            }
-            remoteSelectedId = id;
+              if (id) {
+                  $('#' + id).addClass('selected-remote');
+              }
 
+              selectedRemote[_playerId] = id;
           }
           
         });
@@ -57,7 +60,7 @@ $(function () {
               removeSelected();
             }
 
-            socket.emit('selected', playerId, selectedId);        
+            socket.emit('selected-for-stage', playerId, selectedId);
             
             return false;
 

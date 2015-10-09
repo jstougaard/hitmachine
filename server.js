@@ -7,9 +7,10 @@ var port = process.env.PORT || 3000;
 
 //var connector = require('./server/DummyConnector')();
 //var connector = require('./server/TcpConnector')(7778);
-var connector = require('./server/UdpConnector')(8051);
+var stageConnector = require('./server/UdpConnector')(8051, "10.11.98.8");
+var buildConnector = require('./server/UdpConnector')(8051, "10.11.98.6"); //require('./server/DummyConnector')();
 
-var musicplayer = require('./server/MusicPlayer')(connector);
+var musicplayer = require('./server/MusicPlayer')(stageConnector, buildConnector);
 var router = require('./server/router')(io, musicplayer);
 
 
