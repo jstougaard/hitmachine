@@ -4,6 +4,8 @@ class PlayController {
 
     public noteKeyMap = {};
 
+    public pitchShift: number = 0;
+
     public notesOn = [];
 
     /* @ngInject */
@@ -55,15 +57,19 @@ class PlayController {
     noteOn(note) {
         // Start note
         //console.log("Key down", note);
-        this.socket.emit(this.name + "/start-note", note);
+        this.socket.emit(this.name + "/start-note", this.getPitchShiftedNote(note) );
         this.notesOn.push(note);
     }
 
     noteOff(note) {
         // Stop note
         //console.log("Key up", note);
-        this.socket.emit(this.name + "/stop-note", note);
+        this.socket.emit(this.name + "/stop-note", this.getPitchShiftedNote(note) );
         this.notesOn.splice(this.notesOn.indexOf(note), 1);
+    }
+
+    getPitchShiftedNote(note) {
+        return parseInt(note, 10) + this.pitchShift;
     }
 
     isTouchDevice() {

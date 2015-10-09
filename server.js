@@ -5,10 +5,14 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
+var stageIP = "10.11.98.8";
+var buildIP = "10.11.98.8";
+
 //var connector = require('./server/DummyConnector')();
 //var connector = require('./server/TcpConnector')(7778);
-var stageConnector = require('./server/UdpConnector')(8051, "10.11.98.8");
-var buildConnector = require('./server/UdpConnector')(8051, "10.11.98.6"); //require('./server/DummyConnector')();
+var stageConnector = require('./server/UdpConnector')(8051, stageIP);
+var buildConnector = require('./server/UdpConnector')(8051, buildIP);
+//var buildConnector = require('./server/DummyConnector')();
 
 var musicplayer = require('./server/MusicPlayer')(stageConnector, buildConnector);
 var router = require('./server/router')(io, musicplayer);

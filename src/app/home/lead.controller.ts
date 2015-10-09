@@ -15,6 +15,8 @@ class LeadController extends PlayController {
         57: 9
     };
 
+    public pitchShift:number = 0;
+
 
 }
 

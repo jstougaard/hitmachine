@@ -36,7 +36,7 @@ StagingController.prototype._onLeadSelected = function(playerId, instrumentId) {
     }
 
     this.currentlyStaged[playerId] = instrumentId;
-    
+
     this.broadcastSelected(playerId, instrumentId);
 };
 

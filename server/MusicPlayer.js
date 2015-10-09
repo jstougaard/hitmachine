@@ -61,7 +61,8 @@ MusicPlayer.prototype.playNoteNow = function(instrument, note, volume) {
 };
 
 MusicPlayer.prototype.changeSound = function(instrument, newSound) {
-  this.sendMessage(instrument + " changeProgram " + newSound);
+    this.sendMessage(instrument + " midiOff");
+    this.sendMessage(instrument + " changeProgram " + newSound);
 };
 
 MusicPlayer.prototype._sendMessageOnBeat = function(message) {
@@ -111,7 +112,8 @@ MusicPlayer.prototype.isStarted = function() {
 MusicPlayer.prototype.stop = function() {
     if (!this.isStarted()) return;
 
-    this.sendMessage("midiAllOff");
+    this.sendBuildMessage("midiAllOff");
+    this.sendStageMessage("midiAllOff");
 
     this._heart.killAllEvents();
     this._heart.kill();

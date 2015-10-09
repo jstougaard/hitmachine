@@ -28,22 +28,31 @@ function getNotePatternFromNotes(notes) {
   }));
 };
 
+function sortNumber(a,b) {
+    return a - b;
+};
 
 function generateLeadNoteMap(newChord) {
     // Update current note map
-    var leadNotePattern = arrayUnique(config.leadNotePattern.concat( getNotePatternFromNotes(newChord) )).sort();
+    var leadNotePattern = arrayUnique(config.leadNotePattern.concat( getNotePatternFromNotes(newChord) )).sort(sortNumber);
 
     var noteMapBelow = generateNoteMapFromPattern(config.leadBaseNote - 12, leadNotePattern);
-    var leadNoteMap = noteMapBelow.concat(generateNoteMapFromPattern(config.leadBaseNote, leadNotePattern)).sort();
+    var noteMap = generateNoteMapFromPattern(config.leadBaseNote, leadNotePattern);
+    var noteMapAbove = generateNoteMapFromPattern(config.leadBaseNote + 12, leadNotePattern);
+    var noteMapTwoAbove = generateNoteMapFromPattern(config.leadBaseNote + 24, leadNotePattern);
+
+    var leadNoteMap = noteMapBelow.concat(noteMap, noteMapAbove, noteMapTwoAbove);
+
+    console.log(leadNoteMap);
 
     // Limit array size
     //return leadNoteMap.slice(Math.max(leadNoteMap.length - config.maxLeadTones, 1));
-    return leadNoteMap.slice(0, 9);
+    return leadNoteMap.slice(0, 18);
 };
 
 
 var currentChord = null;
-var leadNoteMap = config.leadNoteMap;
+var leadNoteMap = generateLeadNoteMap([]);
 
 module.exports.setCurrentChord = function(chord) {
     currentChord = chord;
