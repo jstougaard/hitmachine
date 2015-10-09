@@ -1,12 +1,13 @@
 // Setup basic express server
+require('dotenv').load();
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
-var stageIP = "10.11.98.6";
-var buildIP = "10.11.98.6";
+var stageIP = process.env.STAGE_IP || "127.0.0.1";
+var buildIP = process.env.BUILD_IP || "127.0.0.1";
 
 //var connector = require('./server/DummyConnector')();
 //var connector = require('./server/TcpConnector')(7778);

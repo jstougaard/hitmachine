@@ -43,8 +43,6 @@ function generateLeadNoteMap(newChord) {
 
     var leadNoteMap = noteMapBelow.concat(noteMap, noteMapAbove, noteMapTwoAbove);
 
-    console.log(leadNoteMap);
-
     // Limit array size
     //return leadNoteMap.slice(Math.max(leadNoteMap.length - config.maxLeadTones, 1));
     return leadNoteMap.slice(0, 18);
