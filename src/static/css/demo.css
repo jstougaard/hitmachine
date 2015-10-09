@@ -1,0 +1,153 @@
+html, body {
+	background-color: #000000;
+	color:#FFF;
+	height:100%;
+}
+body {
+
+}
+.container {
+	height:100%;
+	padding-top:8%;
+}
+.row {
+	margin-top:5%;
+}
+h1 {
+	text-align: center;
+    color: #FFF;
+    text-transform: uppercase;
+    font-weight: normal;
+    margin: 10px 0 0 0;
+}
+h1 span {
+	font-size: 2em;
+    display: block;
+    line-height: 1em;
+}
+.brick {
+	cursor: pointer;
+	
+	height: 120px;
+
+	-webkit-perspective: 10000px;
+	perspective: 10000px;
+
+	transition: all 250ms ease;
+
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.brick .default-state, .brick .active-state {
+	height:120px;
+}
+
+
+/* Position the faces */
+.brick .default-state {
+  border-top: 15px dashed #000;
+  
+  -webkit-transform: translateZ(50px);
+  transform: translateZ(50px);
+  transition: all 250ms ease;
+}
+.brick .active-state {
+	font-size: 4em;
+    line-height: 2em;
+    text-align: center;
+    border:4px solid #000;
+    background:#222;
+    text-shadow: 2px 2px 2px #000;
+  	-webkit-transform: rotateX(-90deg) translateZ(-60px);
+  	transform: rotateX(-90deg) translateZ(-60px);
+	transition: all 250ms ease;
+    transition-delay: 0;
+}
+.brick.selected .active-state {
+	box-shadow: inset 0px 0px 40px 5px rgba(0, 0, 0, 0.75), 0px 0px 50px 10px rgba(255, 255, 255, 0.75);
+    transition-delay: 100ms;
+
+}
+.brick.selected, .brick.selected-remote {
+  -webkit-transform: rotateX(89deg);
+  transform: rotateX(89deg);
+}
+.brick.selected-remote {
+	opacity:0.2;
+}
+.brick.selected-remote .default-state {
+	opacity:0;
+}
+
+.brick.red .default-state {
+	background-color: #DE000D;	
+}
+.brick.red .active-state {
+	color: #DE000D;
+	border-color: #DE000D;
+}
+
+.brick.green .default-state {
+	background-color: #009624;	
+}
+.brick.green .active-state {
+	color: #009624;
+	border-color: #009624;
+}
+
+.brick.blue .default-state {
+	background-color: #0057A8;	
+}
+.brick.blue .active-state {
+	color: #0057A8;
+	border-color: #0057A8;
+}
+
+.brick.orange .default-state {
+	background-color: #F49B00;	
+}
+.brick.orange .active-state {
+	color: #F49B00;
+	border-color: #F49B00;
+}
+
+.brick.yellow .default-state {
+	background-color: #FEC400;	
+}
+.brick.yellow .active-state {
+	color: #FEC400;
+	border-color: #FEC400;
+}
+
+.brick.brown .default-state {
+	background-color: #5B1C0C;	
+}
+.brick.brown .active-state {
+	color: #5B1C0C;
+	border-color: #5B1C0C;
+}
+
+.brick.white .default-state {
+	background-color: #FFF;	
+}
+.brick.white .active-state {
+	color: #FFF;
+	border-color: #FFF;
+}
+
+.brick.lightgreen .default-state {
+	background-color: #95B90B;	
+}
+.brick.lightgreen .active-state {
+	color: #95B90B;
+	border-color: #95B90B;
+}
+
+.brick.lightblue .default-state {
+	background-color: #87C0EA;	
+}
+.brick.lightblue .active-state {
+	color: #87C0EA;
+	border-color: #87C0EA;
+}

@@ -24,6 +24,7 @@ var globs = {
   sass: 'src/style/**/*.scss',
   templates: 'src/templates/**/*.html',
   assets: 'src/assets/**/*.*',
+  static: 'src/static/**/*.*',
   app: 'src/app/**/*.ts',
   // karma typescript preprocessor generates a bunch of .ktp.ts which gets picked
   // up by the watch, rinse and repeat
@@ -40,6 +41,7 @@ var destinations = {
   js: outputFolder + "/src",
   libs: outputFolder + "/vendor",
   assets: outputFolder + "/assets",
+  static: outputFolder + "/static",
   index: outputFolder
 };
 
@@ -191,6 +193,11 @@ gulp.task('copy-assets', function () {
     .pipe(gulp.dest(destinations.assets));
 });
 
+gulp.task('copy-static', function () {
+    return gulp.src(globs.static)
+        .pipe(gulp.dest(destinations.static));
+});
+
 gulp.task('index', function () {
   var target = gulp.src(globs.index);
   var _injectPaths = isDist ? injectPaths.dist : injectPaths.dev;
@@ -223,6 +230,7 @@ gulp.task('watch', function() {
   gulp.watch(globs.templates, gulp.series('templates'));
   gulp.watch(globs.index, gulp.series('index'));
   gulp.watch(globs.assets, gulp.series('copy-assets'));
+  gulp.watch(globs.static, gulp.series('copy-static'));
   gulp.watch(globs.serverFiles, gulp.series('server'));
 });
 
@@ -230,7 +238,7 @@ gulp.task(
   'build',
   gulp.series(
     'clean',
-    gulp.parallel('sass', 'icons', 'copy-assets', 'ts-compile', 'templates', 'copy-vendor'),
+    gulp.parallel('sass', 'icons', 'copy-assets', 'ts-compile', 'templates', 'copy-vendor', 'copy-static'),
     'index'
   )
 );
