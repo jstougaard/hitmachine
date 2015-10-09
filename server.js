@@ -5,8 +5,8 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
-var stageIP = "10.11.98.8";
-var buildIP = "10.11.98.8";
+var stageIP = "10.11.98.6";
+var buildIP = "10.11.98.6";
 
 //var connector = require('./server/DummyConnector')();
 //var connector = require('./server/TcpConnector')(7778);
