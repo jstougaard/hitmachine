@@ -3,7 +3,7 @@ $(function () {
         var playerId = window.location.hash;
 
         if (!playerId) {
-          playerId = prompt("Please enter a player id", "player1");
+          playerId = prompt("Please enter a unique tablet id", "pad1");
           window.location.hash = playerId;
         }
 
