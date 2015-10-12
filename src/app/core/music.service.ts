@@ -48,7 +48,7 @@ class MusicService implements core.IMusicService {
     public filterValue: number = null;
 
     private numberOfLeads: number = 10;
-    private numberOfSounds: number = 127;
+    private numberOfSounds: number = 57;
 
     private chordTracks: number = 5;  // Define number of chords tracks
 

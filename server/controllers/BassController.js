@@ -47,13 +47,16 @@ BassController.prototype.registerBeatEvents = function() {
     var _this = this;
 
     this._musicplayer.addListener("beat", function(beatCount) {
-        if (_this.isMuted()) return;
+
 
         if (_this._notePlaying && (_this._notePlaying.start + _this._notePlaying.length == beatCount || _this._notePlaying.start > beatCount)) {
             // Stop note
             _this._musicplayer.stopNote(_this.name, _this._notePlaying.note);
             _this._notePlaying = null;
         } else if (_this._indexedPattern[beatCount]) {
+
+            if (_this.isMuted()) return;
+
             // Play note
             _this._musicplayer.playNote(_this.name, _this.getBaseNote(), _this.getConfig().volume);
             _this._notePlaying = _this._indexedPattern[beatCount];

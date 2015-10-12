@@ -44,6 +44,7 @@ StagingController.prototype.addToStage = function(instrumentId, stageId) {
     if (config.instrumentConfig[instrumentId]) {
         config.instrumentConfig[instrumentId].buildMode = false;
         config.instrumentConfig[instrumentId].stageId = stageId;
+        this._musicplayer.changeSound(instrumentId, config.instrumentConfig[instrumentId].sound);
     }
 };
 
@@ -51,6 +52,7 @@ StagingController.prototype.removeFromStage = function(instrumentId) {
     if (config.instrumentConfig[instrumentId]) {
         config.instrumentConfig[instrumentId].buildMode = true;
         config.instrumentConfig[instrumentId].stageId = null;
+        this._musicplayer.changeSound(instrumentId, config.instrumentConfig[instrumentId].sound);
     }
 };
 
