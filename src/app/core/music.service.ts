@@ -80,7 +80,8 @@ class MusicService implements core.IMusicService {
         return {
             volume: 100,
             sound: 0,
-            onStage: false
+            onStage: false,
+            isAlive: false
         };
     }
 
@@ -102,6 +103,8 @@ class MusicService implements core.IMusicService {
         this.socket.on("adjust-filter-value", this.onAdjustFilter.bind(this));
         this.socket.on("change-sound", this.onInstrumentSoundChanged.bind(this));
         this.socket.on("selected-for-stage", this.onSelectedForStage.bind(this));
+        this.socket.on("device-status-changed", this.onDeviceStatusChanged.bind(this));
+
     }
 
     onNewBasePattern(pattern) {
@@ -142,6 +145,11 @@ class MusicService implements core.IMusicService {
 
     onSelectedForStage(playerId, instrumentId) {
         this.currentlyStaged[playerId] = instrumentId;
+    }
+
+    onDeviceStatusChanged(instrumentId, isAlive) {
+        console.log("Status changed", instrumentId, isAlive);
+        this[instrumentId].isAlive = isAlive;
     }
 
     onBeat(beatNumber) {
@@ -232,6 +240,10 @@ class MusicService implements core.IMusicService {
             }
         }
         return false;
+    }
+
+    isDead(instrument) {
+        return !this[instrument].isAlive;
     }
 
 }

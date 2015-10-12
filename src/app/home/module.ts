@@ -38,6 +38,11 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
             }
         }
     });
+    $stateProvider.state("lead_overview", {
+        url: "/lead_overview",
+        controller: "OverviewController as vm",
+        templateUrl: "home/overview.html"
+    });
     $stateProvider.state("lead", {
         url: "/lead1",
         controller: "LeadController as vm",

@@ -34,6 +34,10 @@ class HeaderController {
         }
     }
 
+    range(n) {
+        return new Array(n);
+    }
+
 }
 
 angular
