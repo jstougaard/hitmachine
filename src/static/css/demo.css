@@ -7,12 +7,26 @@ body {
 
 }
 .container {
-	height:100%;
+	display: none;
+    height:100%;
 	padding-top:8%;
 }
 .row {
 	margin-top:5%;
 }
+
+
+#setup_container {
+    text-align: center;
+}
+#setup_container .btn {
+    width:80%;
+    padding: 1em;
+    font-size: 2em;
+    text-transform: uppercase;
+}
+
+
 h1 {
 	text-align: center;
     color: #FFF;

@@ -20,15 +20,29 @@
     <script src="/socket.io/socket.io.js"></script>
 
     
-    <script src="./index.js"></script>
+
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/demo.css">
 
 
 </head>
 <body>
-    <div class="container">
-        
+    <div id="setup_container" class="container">
+        <h1>Select lead position</h1>
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="btn btn-primary" href="#lead11">Stage Lead 1</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="btn btn-primary" href="#lead12">Stage Lead 2</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="brick_container" class="container">
         <div class="row">
             <div class="col-sm-4">
                 <div id="lead1" class="brick red">
@@ -91,6 +105,6 @@
 
     </div>
 
-
+    <script src="./index.js"></script>
 </body>
 </html>

@@ -74,7 +74,7 @@ MusicPlayer.prototype.sendMessage = function(message) {
     if (this._buildConnector && musicState.isInstrumentInBuildMode(instrument)) {
         this.sendBuildMessage(message);
     } else {
-        this.sendStageMessage(message);
+        this.sendStageMessage( this._convertToStageMessage(instrument, message) );
     }
 };
 
@@ -92,7 +92,15 @@ MusicPlayer.prototype._getInstrumentFromMessage = function(message) {
         return message.substring(0, i);
     }
     return message;
-}
+};
+
+MusicPlayer.prototype._convertToStageMessage = function(instrument, message) {
+    var stageId = musicState.getStageInstrumentStageId(instrument);
+    if (stageId !== instrument) {
+        return message.replace(instrument, stageId);
+    }
+    return message;
+};
 
 MusicPlayer.prototype.start = function() {
 

@@ -100,7 +100,14 @@ module.exports.getCurrentSongProgression = function() {
  */
 module.exports.isInstrumentInBuildMode = function(instrumentName) {
     return config.instrumentConfig[instrumentName] && config.instrumentConfig[instrumentName].buildMode ? true : false;
-}
+};
+
+module.exports.getStageInstrumentStageId = function(instrumentName) {
+    if (config.instrumentConfig[instrumentName] && config.instrumentConfig[instrumentName].stageId) {
+        return config.instrumentConfig[instrumentName].stageId;
+    }
+    return instrumentName;
+};
 
 
 

@@ -11,6 +11,7 @@ var buildIP = process.env.BUILD_IP || "127.0.0.1";
 
 //var connector = require('./server/DummyConnector')();
 //var connector = require('./server/TcpConnector')(7778);
+//var stageConnector = require('./server/DummyConnector')();
 var stageConnector = require('./server/UdpConnector')(8051, stageIP);
 var buildConnector = require('./server/UdpConnector')(8051, buildIP);
 //var buildConnector = require('./server/DummyConnector')();
