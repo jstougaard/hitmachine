@@ -4,14 +4,14 @@
 class OverviewController {
 
     public colors = {
-        lead1: "#C55A26",
-        lead2: "#066031",
-        lead3: "#007ee5",
-        lead4: "#7d6a96",
-        lead5: "#f9fc00",
+        lead1: "#b5022c",
+        lead2: "#f9fc00",
+        lead3: "#066031",
+        lead4: "#92c272",
+        lead5: "#007ee5",
         lead6: "#fbb4e3",
-        lead7: "#92c272",
-        lead8: "#b5022c"
+        lead7: "#C55A26",
+        lead8: "#7d6a96"
     };
 
   /* @ngInject */

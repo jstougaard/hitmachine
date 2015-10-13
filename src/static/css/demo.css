@@ -134,10 +134,10 @@ h1 span {
 	border-color: #f9fc00;
 }
 
-.brick.brown .default-state {
+.brick.red .default-state {
 	background-color: #b5022c;
 }
-.brick.brown .active-state {
+.brick.red .active-state {
 	color: #b5022c;
 	border-color: #b5022c;
 }
