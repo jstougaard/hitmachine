@@ -94,74 +94,74 @@ h1 span {
 	opacity:0;
 }
 
-.brick.red .default-state {
-	background-color: #DE000D;	
+.brick.orange .default-state {
+	background-color: #C55A26;
 }
-.brick.red .active-state {
-	color: #DE000D;
-	border-color: #DE000D;
+.brick.orange .active-state {
+	color: #C55A26;
+	border-color: #C55A26;
 }
 
 .brick.green .default-state {
-	background-color: #009624;	
+	background-color: #066031;
 }
 .brick.green .active-state {
-	color: #009624;
-	border-color: #009624;
+	color: #066031;
+	border-color: #066031;
 }
 
 .brick.blue .default-state {
-	background-color: #0057A8;	
+	background-color: #007ee5;
 }
 .brick.blue .active-state {
-	color: #0057A8;
-	border-color: #0057A8;
+	color: #007ee5;
+	border-color: #007ee5;
 }
 
-.brick.orange .default-state {
-	background-color: #F49B00;	
+.brick.purple .default-state {
+	background-color: #7d6a96;
 }
-.brick.orange .active-state {
-	color: #F49B00;
-	border-color: #F49B00;
+.brick.purple .active-state {
+	color: #7d6a96;
+	border-color: #7d6a96;
 }
 
 .brick.yellow .default-state {
-	background-color: #FEC400;	
+	background-color: #f9fc00;
 }
 .brick.yellow .active-state {
-	color: #FEC400;
-	border-color: #FEC400;
+	color: #f9fc00;
+	border-color: #f9fc00;
 }
 
 .brick.brown .default-state {
-	background-color: #5B1C0C;	
+	background-color: #b5022c;
 }
 .brick.brown .active-state {
-	color: #5B1C0C;
-	border-color: #5B1C0C;
+	color: #b5022c;
+	border-color: #b5022c;
 }
 
-.brick.white .default-state {
-	background-color: #FFF;	
+.brick.pink .default-state {
+	background-color: #fbb4e3;
 }
-.brick.white .active-state {
-	color: #FFF;
-	border-color: #FFF;
+.brick.pink .active-state {
+	color: #fbb4e3;
+	border-color: #fbb4e3;
 }
 
 .brick.lightgreen .default-state {
-	background-color: #95B90B;	
+	background-color: #92c272;
 }
 .brick.lightgreen .active-state {
-	color: #95B90B;
-	border-color: #95B90B;
+	color: #92c272;
+	border-color: #92c272;
 }
 
 .brick.lightblue .default-state {
-	background-color: #87C0EA;	
+	background-color: #32c2c9;
 }
 .brick.lightblue .active-state {
-	color: #87C0EA;
-	border-color: #87C0EA;
+	color: #32c2c9;
+	border-color: #32c2c9;
 }
