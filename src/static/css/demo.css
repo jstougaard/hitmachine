@@ -95,11 +95,11 @@ h1 span {
 }
 
 .brick.orange .default-state {
-	background-color: #C55A26;
+	background-color: #DA5A0E;
 }
 .brick.orange .active-state {
-	color: #C55A26;
-	border-color: #C55A26;
+	color: #DA5A0E;
+	border-color: #DA5A0E;
 }
 
 .brick.green .default-state {
@@ -127,19 +127,19 @@ h1 span {
 }
 
 .brick.yellow .default-state {
-	background-color: #f9fc00;
+	background-color: #FFFF00;
 }
 .brick.yellow .active-state {
-	color: #f9fc00;
-	border-color: #f9fc00;
+	color: #FFFF00;
+	border-color: #FFFF00;
 }
 
 .brick.red .default-state {
-	background-color: #b5022c;
+	background-color: #D40505;
 }
 .brick.red .active-state {
-	color: #b5022c;
-	border-color: #b5022c;
+	color: #D40505;
+	border-color: #D40505;
 }
 
 .brick.pink .default-state {
@@ -165,3 +165,37 @@ h1 span {
 	color: #32c2c9;
 	border-color: #32c2c9;
 }
+
+
+/*@media print {
+    html, body {
+        background-color: #FFF;
+    }
+    .container {
+        padding:0;
+
+    }
+    #brick_container {
+        display:block;
+    }
+    .brick {
+        margin:10px auto 10px;
+        width:98%;
+    }
+    .brick .default-state {
+        border-top:15px dashed #FFF;
+    }
+    .brick .active-state {
+        display:none;
+    }
+    .col-sm-4 {
+        width: 49%;
+        line-height:0;
+        display:inline-block;
+        margin:0;
+        padding:0;
+    }
+    #leadtitle {
+        display: none;
+    }
+}*/
