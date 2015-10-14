@@ -1,0 +1,91 @@
+<div class="page-header">
+    <h1>Beat Builder</h1>
+    <p>Press apply to play your new fresh beat</p>
+</div>
+
+
+<!--BASE RHYTHM-->
+<h3 class="divider-title bg-primary">Rhythm</h3>
+<div class="section-container">
+    <div class="row">
+        <div class="col-xs-4 col-sm-2 col-lg-2"><h4>BPM</h4></div>
+        <div class="col-xs-8 col-sm-6 col-lg-4">
+            <slider class="bpm-slider" floor="30" ceiling="240" step="2" precision="1" ng-model="vm.BeatBuilderService.bpm"></slider>
+        </div>
+    </div>
+
+    <div class="well track-container">
+        <div class="row">
+            <div class="col-md-1 col-xs-2">
+                <h2 class="track-label icon-rhythm" ng-click="vm.BeatBuilderService.resetPatterns()"></h2>
+            </div>
+            <div class="col-md-11 col-xs-10">
+                <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="50" pattern="vm.BeatBuilderService.basePattern" rhythm></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--BASS-->
+<h3 class="divider-title bg-primary">Bass</h3>
+<div class="section-container">
+
+    <div class="well track-container">
+        <div class="row">
+            <div class="col-md-1 col-xs-2">
+                <h2 class="track-label icon-bass" ng-click="vm.BeatBuilderService.bassPattern = []"></h2>
+            </div>
+            <div class="col-md-11 col-xs-10">
+                <canvas id="bass_rhythm" class="rhythm-pattern" width="1200" height="50" pattern="vm.BeatBuilderService.bassPattern" base-pattern="vm.BeatBuilderService.basePattern" rhythm></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--CHORDS-->
+<h3 class="divider-title bg-primary">Chords</h3>
+<div class="section-container">
+
+    <div class="row">
+        <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Progression</h4></div>
+        <div class="col-xs-8 col-sm-6 col-lg-4">
+
+            <select name="progressionSelect" id="progressionSelect" class="form-control"
+                    ng-options="name for name in vm.MusicService.chordProgressionNames"
+                    ng-model="vm.BeatBuilderService.currentProgressionName"></select>
+        </div>
+    </div>
+
+    <div ng-repeat="(key, pattern) in vm.BeatBuilderService.chordPatterns" class="well track-container">
+        <div class="row">
+            <div class="col-md-1 col-xs-2">
+                <h2 class="track-label" ng-click="vm.BeatBuilderService.chordPatterns[key] = []"><span>{{key + 1}}</span></h2>
+            </div>
+            <div class="col-md-11 col-xs-10">
+                <canvas id="rhythm_{{key}}" class="rhythm-pattern" width="1200" height="50" pattern="pattern" base-pattern="vm.BeatBuilderService.basePattern" rhythm></canvas>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!--DRUMS-->
+<h3 class="divider-title bg-primary">Drums</h3>
+<div class="section-container">
+
+    <div class="well track-container" ng-repeat="(drumName, pattern) in vm.BeatBuilderService.drumPatterns">
+        <div class="row">
+            <div class="col-md-1 col-xs-2">
+                <h2 class="track-label icon-{{drumName}}" ng-click="vm.BeatBuilderService.drumPatterns[drumName] = []"></h2>
+            </div>
+            <div class="col-md-11 col-xs-10">
+                <canvas rhythm single-beat-pattern id="{{drumName}}" class="rhythm-pattern" width="1200" height="50" base-pattern="drumName == 'hihat' ? vm.BeatBuilderService.basePattern : null" pattern="pattern"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<button ng-click="vm.BeatBuilderService.apply()" class="btn btn-success btn-apply-beat">APPLY</button>

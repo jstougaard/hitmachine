@@ -3,6 +3,11 @@
 
 /* @ngInject */
 function homeConfig($stateProvider: ng.ui.IStateProvider) {
+    $stateProvider.state("beatbuilder", {
+        url: "/beatbuilder",
+        controller: "BeatBuilderController as vm",
+        templateUrl: "home/beatbuilder.html"
+    });
     $stateProvider.state("rhythm", {
         url: "/rhythm",
         controller: "RhythmController as vm",
@@ -43,106 +48,23 @@ function homeConfig($stateProvider: ng.ui.IStateProvider) {
         controller: "OverviewController as vm",
         templateUrl: "home/overview.html"
     });
-    $stateProvider.state("lead", {
-        url: "/lead1",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead1";
-            }
-        }
-    });
-    $stateProvider.state("lead2", {
-        url: "/lead2",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead2";
-            }
-        }
-    });
-    $stateProvider.state("lead3", {
-        url: "/lead3",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead3";
-            }
-        }
-    });
-    $stateProvider.state("lead4", {
-        url: "/lead4",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead4";
-            }
-        }
-    });
-    $stateProvider.state("lead5", {
-        url: "/lead5",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead5";
-            }
-        }
-    });
-    $stateProvider.state("lead6", {
-        url: "/lead6",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead6";
-            }
-        }
-    });
-    $stateProvider.state("lead7", {
-        url: "/lead7",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead7";
-            }
-        }
-    });
-    $stateProvider.state("lead8", {
-        url: "/lead8",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead8";
-            }
-        }
-    });
-    $stateProvider.state("lead9", {
-        url: "/lead9",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead9";
-            }
-        }
-    });
-    $stateProvider.state("lead10", {
-        url: "/lead10",
-        controller: "LeadController as vm",
-        templateUrl: "home/lead.html",
-        resolve: {
-            name: function() {
-                return "lead10";
-            }
-        }
-    });
+
+    // Init leads
+    var numberOfLeads = 8;
+    for (var i=1;i<=numberOfLeads;i++) {
+        (function(leadId) {
+            $stateProvider.state(leadId, {
+                url: "/" + leadId,
+                controller: "LeadController as vm",
+                templateUrl: "home/lead.html",
+                resolve: {
+                    name: function() {
+                        return leadId;
+                    }
+                }
+            });
+        })("lead" + i);
+    }
 }
 
 angular
