@@ -199,9 +199,37 @@ canvas.rhythm-pattern {
 .icon-kick {
   background-image: url("../assets/kick.png");
 }
+.icon-rhythm {
+  background-image: url("../assets/metronome.png");
+}
+.icon-bass {
+  background-image: url("../assets/bass.png");
+}
 .uppercase {
   text-transform: uppercase;
 }
 .overview.row {
   margin-bottom: 0.5em;
+}
+
+.divider-title {
+  font-size:17px;
+  padding:10px 15px;
+  margin:0;
+  border-radius: 3px;
+}
+.section-container {
+  padding: 10px 15px;
+  margin-bottom:30px;
+
+  .track-container {
+    margin-top:10px;
+  }
+}
+.btn-apply-beat, .btn-apply-beat:focus {
+  width: 100%;
+  font-size: 2em;
+  font-weight: bold;
+  outline:none;
+  border-color: inherit;
 }

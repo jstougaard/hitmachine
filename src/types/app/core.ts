@@ -35,4 +35,16 @@ declare module core {
         volume?: number;
         sound?: number;
     }
+
+    interface IBeatBuilderService {
+
+        basePattern: Array<RhythmBlock>;
+        bassPattern: Array<RhythmBlock>;
+        chordPatterns: Array<Array<RhythmBlock>>;
+        drumPatterns: {[drumName:string]:Array<RhythmBlock>;};
+
+        currentProgressionName: string;
+
+        apply(): void;
+    }
 }
