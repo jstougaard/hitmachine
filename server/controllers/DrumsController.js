@@ -4,7 +4,6 @@ var utils = require('../music-utils'),
 
 var kickPattern = [ {"start": 0, "length": 1}, {"start": 4, "length": 1}, {"start": 8, "length": 1}, {"start": 12, "length": 1} ];
 var snarePattern = [ {"start": 4, "length": 1}, {"start": 12, "length": 1} ];
-var crashPattern = [ {"start": 0, "length": 1} ];
 
 // Constructor
 function DrumsController(io, musicplayer) {
@@ -20,8 +19,7 @@ function DrumsController(io, musicplayer) {
         "kick": kickPattern,
         "snare": snarePattern,
         "hihat": [],
-        "ride": [],
-        "crash": crashPattern
+        "ride": []
     };
 
     // Init index pattern
@@ -44,9 +42,7 @@ DrumsController.prototype.registerSocketEvents = function(socket) {
 
     // Init
     for (var drumName in _this._patterns) {
-        if (drumName !== "crash") {
-            socket.emit('update-drum-pattern', drumName, this._patterns[drumName]);
-        }
+        socket.emit('update-drum-pattern', drumName, this._patterns[drumName]);
     }
 
     socket.on('update-drum-pattern', function(drumName, pattern) {
@@ -89,6 +85,22 @@ DrumsController.prototype.registerBeatEvents = function() {
             }
         }
 
+    });
+
+
+    // Play crash
+    var loopCount = 0;
+    var crashDrumName = "crash";
+    this._musicplayer.addListener("loop", function() {
+
+        // Start notes
+        if (loopCount === 0 && !_this.isMuted(crashDrumName)) {
+            var note = _this.getDrumNote(crashDrumName);
+            _this._musicplayer.playNote(_this.name, note, _this.getConfig(crashDrumName).volume);
+            _this._drumsPlaying.push(note);
+        }
+
+        loopCount = (loopCount + 1) % 4;
     });
 };
 

@@ -105,6 +105,7 @@ MusicPlayer.prototype._convertToStageMessage = function(instrument, message) {
 };
 
 MusicPlayer.prototype.start = function() {
+    if (this.isStarted()) return;
 
     // Create heart for keeping time
     this._heart = heartbeats.createHeart( this._getHeartBeatIntervalTime() );
