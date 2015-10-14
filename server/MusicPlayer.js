@@ -24,6 +24,8 @@ function MusicPlayer(stageConnector, buildConnector, options) {
     this._beatCount = 0;
     this._beatMessageQueue = [];
 
+    this.sendBpmOptions(this.options.bpm);
+
     this.setMaxListeners(20);
 }
 
@@ -131,8 +133,14 @@ MusicPlayer.prototype.stop = function() {
 
 MusicPlayer.prototype.setBPM = function(bpm) {
     this.options.bpm = bpm;
+    this.sendBpmOptions(bpm);
     if (this.isStarted())
         this._heart.setHeartrate( this._getHeartBeatIntervalTime() );
+};
+
+MusicPlayer.prototype.sendBpmOptions = function(bpm) {
+    var bpmValue = ((bpm - 30) / 210).toFixed(6);
+    this.sendStageMessage("bpm "+bpmValue);
 };
 
 MusicPlayer.prototype._getHeartBeatIntervalTime = function() {
