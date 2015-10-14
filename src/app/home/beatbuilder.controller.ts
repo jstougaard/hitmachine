@@ -4,7 +4,6 @@
 class BeatBuilderController {
 
     public commonDrumSound = null;
-    private drumNames = ["hihat", "snare", "kick"];
 
     /* @ngInject */
     constructor(
@@ -25,7 +24,7 @@ class BeatBuilderController {
     }
 
     setDrumSounds() {
-        this.drumNames.forEach((drumName) => {
+        ["hihat", "snare", "kick", "ride", "crash"].forEach((drumName) => {
             this.BeatBuilderService.soundSettings[drumName] = parseInt(this.commonDrumSound, 10) + 1;
         });
     }
