@@ -12,10 +12,12 @@ class BeatBuilderService implements core.IBeatBuilderService {
     public soundSettings = {
         bass: 1,
         chords: 1,
-        snare: 1,
         pads:1,
+        snare: 1,
         kick: 1,
-        hihat: 1
+        hihat: 1,
+        ride: 1,
+        crash: 1
     }
 
     /* @ngInject */
@@ -33,7 +35,8 @@ class BeatBuilderService implements core.IBeatBuilderService {
         this.drumPatterns = {
             "snare": [ {"start": 4, "length": 1}, {"start": 12, "length": 1} ],
             "hihat": [],
-            "kick": [ {"start": 0, "length": 1}, {"start": 4, "length": 1}, {"start": 8, "length": 1}, {"start": 12, "length": 1} ]
+            "kick": [ {"start": 0, "length": 1}, {"start": 4, "length": 1}, {"start": 8, "length": 1}, {"start": 12, "length": 1} ],
+            "ride": []
         };
     }
 

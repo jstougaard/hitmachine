@@ -4,20 +4,13 @@
 class DrumsController extends PlayController {
 
     public commonDrumSound = null;
-    private drumNames = ["hihat", "snare", "kick"];
+    private drumNames = ["hihat", "snare", "kick", "ride", "crash"];
 
     noteKeyMap = {
         49: "kick",
         50: "snare",
         51: "hihat"
     };
-
-    volumeChanged(volume) {
-        console.log("Volume changed", volume);
-        this.MusicService.volumeChanged('snare', volume);
-        this.MusicService.volumeChanged('hihat', volume);
-        this.MusicService.volumeChanged('kick', volume);
-    }
 
     patternChanged(drumName: string) {
         //console.log("Drums changed", drumName, this.MusicService.drumPatterns[drumName]);

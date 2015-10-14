@@ -21,14 +21,24 @@ module.exports = {
         kick: {
             volume: 100,
             muted: false,
-            note: 60
+            note: 36
         },
         snare: {
             volume: 100,
             muted: false,
-            note: 72
+            note: 48
         },
         hihat: {
+            volume: 100,
+            muted: false,
+            note: 60
+        },
+        ride: {
+            volume: 100,
+            muted: false,
+            note: 72
+        },
+        crash: {
             volume: 100,
             muted: false,
             note: 84
@@ -55,7 +65,7 @@ module.exports = {
         "verse": [ "kick", "snare", "bass", "pads" /*, "chords"*/],
         "verse-bridge": [ "kick", "snare", "hihat", "bass", "pads"],
         "chorus-buildup": [ "chords"],
-        "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads"] //TODO: crash
+        "chorus": [ "kick", "snare", "hihat", "bass", "chords", "pads", "ride", "crash"] //TODO: crash
     },
     songProgression: [ "chorus" ]
 

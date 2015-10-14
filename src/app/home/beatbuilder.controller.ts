@@ -30,6 +30,11 @@ class BeatBuilderController {
         });
     }
 
+    basePatternChanged() {
+        this.BeatBuilderService.drumPatterns['ride'] = _.clone(this.BeatBuilderService.basePattern);
+        this.$scope.$apply();
+    }
+
 }
 
 angular

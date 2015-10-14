@@ -22,8 +22,11 @@ class MusicService implements core.IMusicService {
     public drumPatterns: {[drumName:string]:Array<core.RhythmBlock>;} = {
         "snare": [],
         "hihat": [],
-        "kick": []
+        "kick": [],
+        "ride": []
     };
+
+    public drumsInOrder = ["ride", "hihat", "snare", "kick"];
 
     public bass: core.IMusicComponentConfig = {
         volume: 100,
@@ -61,6 +64,18 @@ class MusicService implements core.IMusicService {
         numberOfSounds: 9
     };
 
+    public ride: core.IMusicComponentConfig = {
+        volume: 100,
+        sound:1,
+        numberOfSounds: 9
+    };
+
+    public crash: core.IMusicComponentConfig = {
+        volume: 100,
+        sound:1,
+        numberOfSounds: 9
+    };
+
     public filterValue: number = null;
 
     private numberOfLeads: number = 10;
@@ -71,9 +86,7 @@ class MusicService implements core.IMusicService {
     private currentlyStaged = {};
 
     public soundNames = {
-        hihat: ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"],
-        kick:  ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"],
-        snare: ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"]
+        drums: ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"]
     }
 
     /* @ngInject */

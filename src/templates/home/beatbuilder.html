@@ -20,7 +20,7 @@
                 <h2 class="track-label icon-rhythm" ng-click="vm.BeatBuilderService.resetPatterns()"></h2>
             </div>
             <div class="col-md-11 col-xs-10">
-                <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="50" pattern="vm.BeatBuilderService.basePattern" rhythm></canvas>
+                <canvas id="main_rhythm" class="rhythm-pattern" width="1200" height="50" pattern="vm.BeatBuilderService.basePattern" call-on-change="vm.basePatternChanged()" rhythm></canvas>
             </div>
         </div>
     </div>
@@ -121,19 +121,32 @@
         <div class="col-md-11 col-xs-10">
 
             <select name="drumSoundSelect" id="drumSoundSelect" class="form-control"
-                    ng-options="idx as name for (idx, name) in vm.MusicService.soundNames.snare"
+                    ng-options="idx as name for (idx, name) in vm.MusicService.soundNames.drums"
                     ng-model="vm.commonDrumSound"
                     ng-change="vm.setDrumSounds()"></select>
         </div>
     </div>
 
-    <div class="well track-container" ng-repeat="(drumName, pattern) in vm.BeatBuilderService.drumPatterns">
+    <div class="well track-container">
+        <div class="row">
+            <div class="col-xs-4 col-md-1"><h4>Crash Sound</h4></div>
+            <div class="col-xs-8 col-md-11">
+                <div class="btn-group btn-group-justified">
+                    <a ng-click="vm.BeatBuilderService.prevInstrumentSound('crash')" class="btn btn-info"><i class="fa fa-chevron-left"></i> Prev</a>
+                    <a class="btn btn-info disabled">{{vm.MusicService.getSoundName('drums', vm.BeatBuilderService.soundSettings['crash'])}}</a>
+                    <a ng-click="vm.BeatBuilderService.nextInstrumentSound('crash')" class="btn btn-info">Next <i class="fa fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="well track-container" ng-repeat="drumName in vm.MusicService.drumsInOrder">
         <div class="row">
             <div class="col-md-1 col-xs-2">
                 <h2 class="track-label icon-{{drumName}}" ng-click="vm.BeatBuilderService.drumPatterns[drumName] = []"></h2>
             </div>
             <div class="col-md-11 col-xs-10">
-                <canvas rhythm single-beat-pattern id="{{drumName}}" class="rhythm-pattern" width="1200" height="50" base-pattern="drumName == 'hihat' ? vm.BeatBuilderService.basePattern : null" pattern="pattern"></canvas>
+                <canvas rhythm single-beat-pattern id="{{drumName}}" class="rhythm-pattern" width="1200" height="50" base-pattern="drumName == 'hihat' || drumName == 'ride' ? vm.BeatBuilderService.basePattern : null" pattern="vm.BeatBuilderService.drumPatterns[drumName]"></canvas>
             </div>
         </div>
         <div class="row top-buffer">
@@ -141,7 +154,7 @@
             <div class="col-md-11 col-xs-8">
                 <div class="btn-group btn-group-justified">
                     <a ng-click="vm.BeatBuilderService.prevInstrumentSound(drumName)" class="btn btn-info"><i class="fa fa-chevron-left"></i> Prev</a>
-                    <a class="btn btn-info disabled">{{vm.MusicService.getSoundName(drumName, vm.BeatBuilderService.soundSettings[drumName])}}</a>
+                    <a class="btn btn-info disabled">{{vm.MusicService.getSoundName('drums', vm.BeatBuilderService.soundSettings[drumName])}}</a>
                     <a ng-click="vm.BeatBuilderService.nextInstrumentSound(drumName)" class="btn btn-info">Next <i class="fa fa-chevron-right"></i></a>
                 </div>
             </div>

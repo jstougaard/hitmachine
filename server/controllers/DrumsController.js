@@ -4,6 +4,7 @@ var utils = require('../music-utils'),
 
 var kickPattern = [ {"start": 0, "length": 1}, {"start": 4, "length": 1}, {"start": 8, "length": 1}, {"start": 12, "length": 1} ];
 var snarePattern = [ {"start": 4, "length": 1}, {"start": 12, "length": 1} ];
+var crashPattern = [ {"start": 0, "length": 1} ];
 
 // Constructor
 function DrumsController(io, musicplayer) {
@@ -18,7 +19,9 @@ function DrumsController(io, musicplayer) {
     this._patterns = {
         "kick": kickPattern,
         "snare": snarePattern,
-        "hihat": []
+        "hihat": [],
+        "ride": [],
+        "crash": crashPattern
     };
 
     // Init index pattern
@@ -41,7 +44,9 @@ DrumsController.prototype.registerSocketEvents = function(socket) {
 
     // Init
     for (var drumName in _this._patterns) {
-        socket.emit('update-drum-pattern', drumName, this._patterns[drumName]);
+        if (drumName !== "crash") {
+            socket.emit('update-drum-pattern', drumName, this._patterns[drumName]);
+        }
     }
 
     socket.on('update-drum-pattern', function(drumName, pattern) {
@@ -104,7 +109,7 @@ DrumsController.prototype.doesDrumExist = function(drumName) {
 };
 
 DrumsController.prototype.isFullyMuted = function() {
-    return this.isMuted("kick") && this.isMuted("snare") && this.isMuted("hihat");
+    return this.isMuted("kick") && this.isMuted("snare") && this.isMuted("hihat") && this.isMuted("ride") && this.isMuted("crash");
 };
 
 DrumsController.prototype.isMuted = function(drumName) {
