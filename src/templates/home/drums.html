@@ -20,6 +20,16 @@
             <slider class="volume-slider bg-darken" floor="0" ceiling="100" step="1" precision="1" ng-model="vm.MusicService[drumName].volume" change="vm.MusicService.volumeChanged(drumName)"></slider>
         </div>
     </div>
+    <div class="row top-buffer">
+        <div class="col-xs-4 col-md-1"><h4>Sound</h4></div>
+        <div class="col-xs-8 col-md-4">
+            <div class="btn-group btn-group-justified">
+                <a ng-click="vm.MusicService.prevInstrumentSound(drumName)" class="btn btn-success"><i class="fa fa-chevron-left"></i> Prev</a>
+                <a class="btn btn-success disabled">{{vm.MusicService[drumName].sound}}</a>
+                <a ng-click="vm.MusicService.nextInstrumentSound(drumName)" class="btn btn-success">Next <i class="fa fa-chevron-right"></i></a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="instrument-player" ngsf-fullscreen="fullscreenCtrl">

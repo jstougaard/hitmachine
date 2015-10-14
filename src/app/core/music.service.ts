@@ -26,23 +26,33 @@ class MusicService implements core.IMusicService {
     };
 
     public bass: core.IMusicComponentConfig = {
-        volume: 100
+        volume: 100,
+        sound:1,
+        numberOfSounds: 30
     };
 
     public chords: core.IMusicComponentConfig = {
-        volume: 100
+        volume: 100,
+        sound:1,
+        numberOfSounds: 30
     };
 
     public kick: core.IMusicComponentConfig = {
-        volume: 100
+        volume: 100,
+        sound:1,
+        numberOfSounds: 9
     };
 
     public snare: core.IMusicComponentConfig = {
-        volume: 100
+        volume: 100,
+        sound:1,
+        numberOfSounds: 9
     };
 
     public hihat: core.IMusicComponentConfig = {
-        volume: 100
+        volume: 100,
+        sound:1,
+        numberOfSounds: 9
     };
 
     public filterValue: number = null;
@@ -80,6 +90,7 @@ class MusicService implements core.IMusicService {
         return {
             volume: 100,
             sound: 0,
+            numberOfSounds: this.numberOfSounds,
             onStage: false,
             isAlive: false
         };
@@ -211,11 +222,15 @@ class MusicService implements core.IMusicService {
         this.socket.emit("adjust-filter-value", this.filterValue);
     }
 
+    getNumberOfSoundsAvailable(instrumentName:string) {
+        return this[instrumentName].numberOfSounds || 1;
+    }
+
     prevInstrumentSound(instrumentName:string) {
         console.log("Prev", instrumentName);
         this[instrumentName].sound--;
         if (this[instrumentName].sound <= 0) {
-            this[instrumentName].sound = this.numberOfSounds;
+            this[instrumentName].sound = this.getNumberOfSoundsAvailable(instrumentName);
         }
         this.updateInstrumentSound(instrumentName);
     }
@@ -223,7 +238,7 @@ class MusicService implements core.IMusicService {
     nextInstrumentSound(instrumentName:string) {
         console.log("Next", instrumentName);
         this[instrumentName].sound++;
-        if (this[instrumentName].sound > this.numberOfSounds) {
+        if (this[instrumentName].sound > this.getNumberOfSoundsAvailable(instrumentName)) {
             this[instrumentName].sound = 1;
         }
         this.updateInstrumentSound(instrumentName);

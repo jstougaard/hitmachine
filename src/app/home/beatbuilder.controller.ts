@@ -14,7 +14,9 @@ class BeatBuilderController {
     ) {
         $rootScope.pageTitle = "BUILD AND APPLY";
         $timeout(() => {
-            this.BeatBuilderService.currentProgressionName = "1-5-6-4";
+            if (!this.BeatBuilderService) {
+                this.BeatBuilderService.currentProgressionName = "1-5-6-4";
+            }
         }, 500);
 
     }

@@ -9,9 +9,18 @@ class BeatBuilderService implements core.IBeatBuilderService {
 
     public currentProgressionName: string = null;
 
+    public soundSettings = {
+        bass: 1,
+        chords: 1,
+        snare: 1,
+        kick: 1,
+        hihat: 1
+    }
+
     /* @ngInject */
     constructor(
-        private socket: ng.socketIO.IWebSocket
+        private socket: ng.socketIO.IWebSocket,
+        private MusicService: core.IMusicService
     ) {
         this.initPatterns();
     }
@@ -42,6 +51,22 @@ class BeatBuilderService implements core.IBeatBuilderService {
         this.socket.emit("update-drum-pattern", "snare", this.drumPatterns['snare']);
         this.socket.emit("update-drum-pattern", "hihat", this.drumPatterns['hihat']);
         this.socket.emit("update-drum-pattern", "kick", this.drumPatterns['kick']);
+    }
+
+    prevInstrumentSound(instrumentName:string) {
+        console.log("Prev", instrumentName);
+        this.soundSettings[instrumentName].sound--;
+        if (this.soundSettings[instrumentName].sound <= 0) {
+            this.soundSettings[instrumentName].sound = this.MusicService.getNumberOfSoundsAvailable(instrumentName);
+        }
+    }
+
+    nextInstrumentSound(instrumentName:string) {
+        console.log("Next", instrumentName);
+        this.soundSettings[instrumentName].sound++;
+        if (this.soundSettings[instrumentName].sound > this.MusicService.getNumberOfSoundsAvailable(instrumentName)) {
+            this.soundSettings[instrumentName].sound = 1;
+        }
     }
 }
 

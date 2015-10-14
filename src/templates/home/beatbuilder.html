@@ -31,6 +31,17 @@
 <h3 class="divider-title bg-primary">Bass</h3>
 <div class="section-container">
 
+    <div class="row">
+        <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Sound</h4></div>
+        <div class="col-xs-8 col-sm-6 col-lg-4">
+            <div class="btn-group btn-group-justified">
+                <a ng-click="vm.BeatBuilderService.prevInstrumentSound('bass')" class="btn btn-success"><i class="fa fa-chevron-left"></i> Prev</a>
+                <a class="btn btn-success disabled">{{vm.BeatBuilderService.soundSettings['bass']}}</a>
+                <a ng-click="vm.BeatBuilderService.nextInstrumentSound('bass')" class="btn btn-success">Next <i class="fa fa-chevron-right"></i></a>
+            </div>
+        </div>
+    </div>
+
     <div class="well track-container">
         <div class="row">
             <div class="col-md-1 col-xs-2">

@@ -26,12 +26,12 @@ module.exports = {
         snare: {
             volume: 100,
             muted: false,
-            note: 62
+            note: 72
         },
         hihat: {
             volume: 100,
             muted: false,
-            note: 65
+            note: 84
         },
         pads: {
             volume: 100,

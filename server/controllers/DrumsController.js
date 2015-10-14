@@ -65,9 +65,9 @@ DrumsController.prototype.registerBeatEvents = function() {
 
     this._musicplayer.addListener("beat", function(beatCount) {
 
-        _this._drumsPlaying.forEach(function(drumName) {
+        _this._drumsPlaying.forEach(function(note) {
             // Always stop - Drums do not have length
-            _this._musicplayer.stopNote(_this.name, _this.getDrumNote(drumName));
+            _this._musicplayer.stopNote(_this.name, note);
         });
         _this._drumsPlaying = [];
 
@@ -78,8 +78,9 @@ DrumsController.prototype.registerBeatEvents = function() {
             if (_this.isMuted(drumName)) continue;
 
             if (_this._indexedPatterns[drumName][beatCount]) {
-                _this._musicplayer.playNote(_this.name, _this.getDrumNote(drumName), _this.getConfig(drumName).volume);
-                _this._drumsPlaying.push(drumName);
+                var note = _this.getDrumNote(drumName);
+                _this._musicplayer.playNote(_this.name, note, _this.getConfig(drumName).volume);
+                _this._drumsPlaying.push(note);
             }
         }
 
@@ -91,7 +92,11 @@ DrumsController.prototype.getConfig = function(drumName) {
 };
 
 DrumsController.prototype.getDrumNote = function(drumName) {
-    return this.getConfig(drumName).note;
+    return this.getConfig(drumName).note + this.getDrumNoteOffset(drumName);
+};
+
+DrumsController.prototype.getDrumNoteOffset = function(drumName) {
+    return this.getConfig(drumName).sound ? this.getConfig(drumName).sound - 1 : 0;
 };
 
 DrumsController.prototype.doesDrumExist = function(drumName) {

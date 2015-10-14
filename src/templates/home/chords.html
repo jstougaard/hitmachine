@@ -16,6 +16,7 @@
     </div>
 </div>
 
+
 <div class="row">
     <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Progression</h4></div>
     <div class="col-xs-8 col-sm-6 col-lg-4">
@@ -27,7 +28,16 @@
     </div>
 </div>
 
-
+<div class="row top-buffer">
+    <div class="col-xs-4 col-sm-2 col-lg-2"><h4>Sound</h4></div>
+    <div class="col-xs-8 col-sm-6 col-lg-4">
+        <div class="btn-group btn-group-justified">
+            <a ng-click="vm.MusicService.prevInstrumentSound(vm.name)" class="btn btn-success"><i class="fa fa-chevron-left"></i> Prev</a>
+            <a class="btn btn-success disabled">{{vm.MusicService[vm.name].sound}}</a>
+            <a ng-click="vm.MusicService.nextInstrumentSound(vm.name)" class="btn btn-success">Next <i class="fa fa-chevron-right"></i></a>
+        </div>
+    </div>
+</div>
 
 <div ng-repeat="(key, pattern) in vm.MusicService.chordPatterns" class="well track-container">
     <div class="row">
