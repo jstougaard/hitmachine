@@ -37,6 +37,12 @@ class MusicService implements core.IMusicService {
         numberOfSounds: 30
     };
 
+    public pads: core.IMusicComponentConfig = {
+        volume: 100,
+        sound:1,
+        numberOfSounds: 30
+    };
+
     public kick: core.IMusicComponentConfig = {
         volume: 100,
         sound:1,
@@ -63,6 +69,12 @@ class MusicService implements core.IMusicService {
     private chordTracks: number = 5;  // Define number of chords tracks
 
     private currentlyStaged = {};
+
+    private soundNames = {
+        hihat: ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"],
+        kick:  ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"],
+        snare: ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"]
+    }
 
     /* @ngInject */
     constructor(
@@ -225,6 +237,15 @@ class MusicService implements core.IMusicService {
     getNumberOfSoundsAvailable(instrumentName:string) {
         return this[instrumentName].numberOfSounds || 1;
     }
+
+    getSoundName(instrumentName:string, soundId:number) {
+        //console.log("Get sound name", soundId, soundId+1);
+        if (this.soundNames[instrumentName] && this.soundNames[instrumentName][soundId - 1]) {
+            return this.soundNames[instrumentName][soundId - 1];
+        }
+        return soundId;
+    }
+
 
     prevInstrumentSound(instrumentName:string) {
         console.log("Prev", instrumentName);

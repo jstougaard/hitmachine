@@ -36,12 +36,13 @@ function generateLeadNoteMap(newChord) {
     // Update current note map
     var leadNotePattern = arrayUnique(config.leadNotePattern.concat( getNotePatternFromNotes(newChord) )).sort(sortNumber);
 
-    var noteMapBelow = generateNoteMapFromPattern(config.leadBaseNote - 12, leadNotePattern);
+
     var noteMap = generateNoteMapFromPattern(config.leadBaseNote, leadNotePattern);
     var noteMapAbove = generateNoteMapFromPattern(config.leadBaseNote + 12, leadNotePattern);
     var noteMapTwoAbove = generateNoteMapFromPattern(config.leadBaseNote + 24, leadNotePattern);
+    var noteMapThreeAbove = generateNoteMapFromPattern(config.leadBaseNote + 36, leadNotePattern);
 
-    var leadNoteMap = noteMapBelow.concat(noteMap, noteMapAbove, noteMapTwoAbove);
+    var leadNoteMap = noteMap.concat(noteMap, noteMapAbove, noteMapTwoAbove, noteMapThreeAbove);
 
     // Limit array size
     //return leadNoteMap.slice(Math.max(leadNoteMap.length - config.maxLeadTones, 1));

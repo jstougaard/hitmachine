@@ -53,10 +53,11 @@ BassController.prototype.registerBeatEvents = function() {
             // Stop note
             _this._musicplayer.stopNote(_this.name, _this._notePlaying.note);
             _this._notePlaying = null;
-        } else if (_this._indexedPattern[beatCount]) {
+        }
 
-            if (_this.isMuted()) return;
+        if (_this.isMuted()) return;
 
+        if (_this._indexedPattern[beatCount]) {
             // Play note
             _this._musicplayer.playNote(_this.name, _this.getBaseNote(), _this.getConfig().volume);
             _this._notePlaying = _this._indexedPattern[beatCount];

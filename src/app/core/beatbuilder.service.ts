@@ -13,6 +13,7 @@ class BeatBuilderService implements core.IBeatBuilderService {
         bass: 1,
         chords: 1,
         snare: 1,
+        pads:1,
         kick: 1,
         hihat: 1
     }
@@ -41,7 +42,16 @@ class BeatBuilderService implements core.IBeatBuilderService {
     }
 
     public apply() :void {
-        console.log("BUILD: Apply changes", this.basePattern);
+        console.log("BUILD: Apply changes", this.soundSettings);
+
+        // Send sounds
+        for (var instrument in this.soundSettings) {
+            if (this.soundSettings.hasOwnProperty(instrument)) {
+                this.socket.emit("change-sound", instrument, this.soundSettings[instrument]);
+            }
+        }
+
+
         this.socket.emit("adjust-bpm", this.bpm);
         this.socket.emit("update-base-pattern", this.basePattern);
         this.socket.emit("update-bass-pattern", this.bassPattern);
@@ -54,18 +64,16 @@ class BeatBuilderService implements core.IBeatBuilderService {
     }
 
     prevInstrumentSound(instrumentName:string) {
-        console.log("Prev", instrumentName);
-        this.soundSettings[instrumentName].sound--;
-        if (this.soundSettings[instrumentName].sound <= 0) {
-            this.soundSettings[instrumentName].sound = this.MusicService.getNumberOfSoundsAvailable(instrumentName);
+        this.soundSettings[instrumentName]--;
+        if (this.soundSettings[instrumentName] <= 0) {
+            this.soundSettings[instrumentName] = this.MusicService.getNumberOfSoundsAvailable(instrumentName);
         }
     }
 
     nextInstrumentSound(instrumentName:string) {
-        console.log("Next", instrumentName);
-        this.soundSettings[instrumentName].sound++;
-        if (this.soundSettings[instrumentName].sound > this.MusicService.getNumberOfSoundsAvailable(instrumentName)) {
-            this.soundSettings[instrumentName].sound = 1;
+        this.soundSettings[instrumentName]++;
+        if (this.soundSettings[instrumentName] > this.MusicService.getNumberOfSoundsAvailable(instrumentName)) {
+            this.soundSettings[instrumentName] = 1;
         }
     }
 }
