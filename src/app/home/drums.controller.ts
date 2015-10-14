@@ -3,6 +3,9 @@
 
 class DrumsController extends PlayController {
 
+    public commonDrumSound = null;
+    private drumNames = ["hihat", "snare", "kick"];
+
     noteKeyMap = {
         49: "kick",
         50: "snare",
@@ -24,6 +27,13 @@ class DrumsController extends PlayController {
     resetPattern(drumName: string) {
         this.MusicService.drumPatterns[drumName] = [];
         this.patternChanged(drumName);
+    }
+
+    setDrumSounds() {
+
+        this.drumNames.forEach((drumName) => {
+            this.MusicService.setInstrumentSound(drumName, parseInt(this.commonDrumSound, 10) + 1);
+        });
     }
 
 }

@@ -26,10 +26,13 @@ declare module core {
         chordProgressionNames: Array<string>;
         currentProgressionName: string;
 
+        soundNames: any;
+
         play(): void;
         stop(): void;
         volumeChanged(instrumentName: string, newVolume?: number): void;
         getNumberOfSoundsAvailable(instrumentName): number;
+        setInstrumentSound(instrumentName:string, soundId:number):void;
     }
 
     interface IMusicComponentConfig {
@@ -45,6 +48,8 @@ declare module core {
         drumPatterns: {[drumName:string]:Array<RhythmBlock>;};
 
         currentProgressionName: string;
+
+        soundSettings: any; //{[instrumentName:string]:number;};
 
         apply(): void;
     }

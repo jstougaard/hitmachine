@@ -3,6 +3,9 @@
 
 class BeatBuilderController {
 
+    public commonDrumSound = null;
+    private drumNames = ["hihat", "snare", "kick"];
+
     /* @ngInject */
     constructor(
         private $rootScope: core.IRootScope,
@@ -19,6 +22,12 @@ class BeatBuilderController {
             }
         }, 500);
 
+    }
+
+    setDrumSounds() {
+        this.drumNames.forEach((drumName) => {
+            this.BeatBuilderService.soundSettings[drumName] = parseInt(this.commonDrumSound, 10) + 1;
+        });
     }
 
 }

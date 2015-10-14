@@ -70,7 +70,7 @@ class MusicService implements core.IMusicService {
 
     private currentlyStaged = {};
 
-    private soundNames = {
+    public soundNames = {
         hihat: ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"],
         kick:  ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"],
         snare: ["EDM 1", "EDM 2", "Dubstep", "Neptunian Beat", "Dubstep 2", "House", "Analog", "Club Hiphop", "Dr. Dre Hiphop"]
@@ -262,6 +262,11 @@ class MusicService implements core.IMusicService {
         if (this[instrumentName].sound > this.getNumberOfSoundsAvailable(instrumentName)) {
             this[instrumentName].sound = 1;
         }
+        this.updateInstrumentSound(instrumentName);
+    }
+
+    setInstrumentSound(instrumentName:string, soundId:number) {
+        this[instrumentName].sound = soundId;
         this.updateInstrumentSound(instrumentName);
     }
 
