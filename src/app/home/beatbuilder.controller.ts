@@ -34,6 +34,17 @@ class BeatBuilderController {
         this.$scope.$apply();
     }
 
+    randomizeSounds() {
+        for (var instrument in this.BeatBuilderService.soundSettings) {
+            if (this.BeatBuilderService.soundSettings.hasOwnProperty(instrument)) {
+                this.BeatBuilderService.soundSettings[instrument] = this.randomNumber(1, this.MusicService.getNumberOfSoundsAvailable(instrument));
+            }
+        }
+    }
+
+    randomNumber(min:number, max:number) {
+        return Math.floor(Math.random() * max) + min;
+    }
 }
 
 angular
