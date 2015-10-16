@@ -2,7 +2,8 @@ var utils = require('../music-utils'),
     //musicState = require('../music-state'),
     noteHelper = require('../play-note-helper'),
     config = require('../music-config'),
-    rhythm = require('../rhythm-keeper');
+    rhythm = require('../rhythm-keeper'),
+    logger = require('../Logger');
 
 // Constructor
 function BassController(io, musicplayer) {
@@ -32,6 +33,8 @@ BassController.prototype.registerSocketEvents = function(socket) {
 
     socket.on('update-bass-pattern', function(pattern) {
         console.log("New bass pattern", pattern);
+
+        logger.newBassPattern(pattern);
 
         _this._pattern = pattern;
         _this._indexedPattern = utils.indexPattern(pattern);

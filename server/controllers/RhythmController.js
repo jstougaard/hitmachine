@@ -1,5 +1,6 @@
 var state = require('../music-state'),
-    rhythm = require('../rhythm-keeper');
+    rhythm = require('../rhythm-keeper'),
+    logger = require('../Logger');
 
 // Constructor
 function RhythmController(io, musicplayer) {
@@ -28,6 +29,8 @@ RhythmController.prototype.registerSocketEvents = function(socket) {
     socket.on('update-base-pattern', function(pattern) {
         console.log("New base pattern", pattern);
 
+        logger.newBasePattern(pattern);
+
         // TODO: Only do this at beginning of loop
         rhythm.setBasePattern(pattern);
         // _this._nextBasePattern = pattern; //TODO: Use this?
@@ -37,8 +40,11 @@ RhythmController.prototype.registerSocketEvents = function(socket) {
 
     socket.on('start-beat', function() {
         console.log("Start playing!");
+
         _this._musicplayer.start();
         _this._io.emit('start-beat', true); // Send to all clients
+
+        logger.beginSession();
     });
 
     socket.on('stop-beat', function() {
@@ -46,6 +52,8 @@ RhythmController.prototype.registerSocketEvents = function(socket) {
         _this._musicplayer.stop();
         // TODO: Kill all sounds
         _this._io.emit('stop-beat', true); // Send to all clients
+
+        logger.endSession();
     });
 }
 

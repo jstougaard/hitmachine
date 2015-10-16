@@ -1,6 +1,7 @@
 var utils = require('../music-utils'),
     musicState = require('../music-state'),
-    config = require('../music-config');
+    config = require('../music-config'),
+    logger = require('../Logger');
 
 /*var chordProgressions = {
     "Chords 1": [[72, 76, 79, 60, 48], [67, 71, 74, 55, 43], [69, 72, 76, 57, 45], [65, 69, 72, 53, 41]],
@@ -44,6 +45,8 @@ ChordController.prototype.registerSocketEvents = function(socket) {
 
     socket.on('update-chord-pattern', function(pattern) {
 
+        logger.newChordsPattern(pattern);
+
         _this._chordPattern = pattern; // TODO: Only do this at beginning of loop ?
         _this._indexedChordPattern = indexChordPatterns(_this._chordPattern);
 
@@ -55,6 +58,7 @@ ChordController.prototype.registerSocketEvents = function(socket) {
 
     socket.on('set-chord-progression', function(progressionName) {
         if (config.chordProgressions[_this._currentProgression]) {
+
             _this._nextProgression = progressionName;
 
             _this._io.emit('set-chord-progression', progressionName);
@@ -79,6 +83,9 @@ ChordController.prototype.registerBeatEvents = function() {
             _this._currentChordNumber = 0;
 
             if (_this._nextProgression) {
+
+                logger.newChordProgression(_this._nextProgression);
+
                 _this._currentProgression = _this._nextProgression;
                 _this._nextProgression = null;
             }

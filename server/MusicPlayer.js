@@ -1,7 +1,8 @@
 var events = require('events').EventEmitter,
     heartbeats = require('heartbeats'),
     utils = require('./music-utils'),
-    musicState = require('./music-state');
+    musicState = require('./music-state'),
+    logger = require('./Logger');
 
 
 var defaultOptions = {
@@ -63,6 +64,8 @@ MusicPlayer.prototype.playNoteNow = function(instrument, note, volume) {
 };
 
 MusicPlayer.prototype.changeSound = function(instrument, newSound) {
+    logger.newInstrumentSound(instrument, newSound);
+
     this.sendMessage(instrument + " midiOff");
     this.sendMessage(instrument + " changeProgram " + newSound);
 };
@@ -133,6 +136,8 @@ MusicPlayer.prototype.stop = function() {
 
 
 MusicPlayer.prototype.setBPM = function(bpm) {
+    logger.adjustedBPM(bpm);
+
     this.options.bpm = bpm;
     this.sendBpmOptions(bpm);
     if (this.isStarted())

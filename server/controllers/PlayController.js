@@ -2,7 +2,8 @@ var utils = require('../music-utils'),
     config = require('../music-config'),
     musicState = require('../music-state'),
     noteHelper = require('../play-note-helper'),
-    rhythm = require('../rhythm-keeper');
+    rhythm = require('../rhythm-keeper'),
+    logger = require('../Logger');
 
 // TODO: Use correct note values + enable notes from chord
 
@@ -65,6 +66,8 @@ PlayController.prototype._onStartNoteRequest = function(noteName) {
 
     if (this.isNoteInStartQueue(noteName)) return;
 
+    // TODO: Somehow log difference in when it was requested played and when it was actually played
+    logger.playedNote(this.name, noteName, this.getNote(noteName));
 
     if (this.isWithinBeatDelay()) {
         this.logMessage("Play note now! " + noteName);

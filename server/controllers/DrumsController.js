@@ -1,6 +1,7 @@
 var utils = require('../music-utils'),
     config = require('../music-config'),
-    rhythm = require('../rhythm-keeper');
+    rhythm = require('../rhythm-keeper'),
+    logger = require('../Logger');
 
 var kickPattern = [ {"start": 0, "length": 1}, {"start": 4, "length": 1}, {"start": 8, "length": 1}, {"start": 12, "length": 1} ];
 var snarePattern = [ {"start": 4, "length": 1}, {"start": 12, "length": 1} ];
@@ -51,6 +52,9 @@ DrumsController.prototype.registerSocketEvents = function(socket) {
             return;
         }
         console.log("New drum pattern", drumName, pattern);
+
+        logger.newDrumPattern(drumName, pattern);
+
         _this._patterns[drumName] = pattern;
         _this._indexedPatterns[drumName] = utils.indexPattern(pattern);
         _this._io.emit('update-drum-pattern', drumName, pattern); // Send to all clients

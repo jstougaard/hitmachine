@@ -1,4 +1,5 @@
-var config = require('../music-config');
+var config = require('../music-config'),
+    logger = require('../Logger');
 
 // Constructor
 function StagingController(io, musicplayer) {
@@ -45,11 +46,16 @@ StagingController.prototype.addToStage = function(instrumentId, stageId) {
         config.instrumentConfig[instrumentId].buildMode = false;
         config.instrumentConfig[instrumentId].stageId = stageId;
         this._musicplayer.changeSound(instrumentId, config.instrumentConfig[instrumentId].sound);
+
+        logger.addedToStage(instrumentId, stageId);
     }
 };
 
 StagingController.prototype.removeFromStage = function(instrumentId) {
     if (config.instrumentConfig[instrumentId]) {
+
+        logger.removedFromStage(instrumentId, config.instrumentConfig[instrumentId].stageId);
+
         config.instrumentConfig[instrumentId].buildMode = true;
         config.instrumentConfig[instrumentId].stageId = null;
         this._musicplayer.changeSound(instrumentId, config.instrumentConfig[instrumentId].sound);
