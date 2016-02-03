@@ -179,21 +179,30 @@ h1 span {
         display:block;
     }
     .brick {
-        margin:10px auto 10px;
-        width:98%;
+        width:100%;
+        height: 80vh;
     }
     .brick .default-state {
-        border-top:15px dashed #FFF;
+        border-top:40px dashed #FFF;
+
+        height:40vh;
+        page-break-before:always;
+        page-break-after:always;
     }
     .brick .active-state {
         display:none;
     }
+    .row {
+        margin:0;
+        padding:0;
+    }
     .col-sm-4 {
-        width: 49%;
+        width: 100%;
         line-height:0;
         display:inline-block;
         margin:0;
         padding:0;
+
     }
     #leadtitle {
         display: none;

@@ -40,7 +40,7 @@ $(function () {
             }
 
             socket.on('selected-for-stage', function (_stageId, id) {
-
+                console.log("Selected", _stageId, id, "ME="+stageId);
                 if (_stageId == stageId) {
 
                     if (id) {
@@ -52,7 +52,7 @@ $(function () {
                 } else {
                     // Remove existing selected
                     if (selectedRemote[_stageId]) {
-                        $('#' + id).addClass('selected-remote');
+                        $('#' + selectedRemote[_stageId]).removeClass('selected-remote');
                     }
 
                     if (id) {
